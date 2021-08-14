@@ -1,0 +1,62 @@
+datasource db {
+    provider = "postgres"
+    url      = "postgresql://postgres:admin@localhost:5432/commondb?schema=zkschema"
+}
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "./generated/commondb_client"
+}
+
+model ZarkUser {
+    zkuid             Int         @id @default(autoincrement())
+    firstname         String      @db.VarChar(15)
+    lastname          String      @db.VarChar(15)
+    email             String?     @unique @db.VarChar(50)
+    mobile_number     String?     @unique @db.VarChar(20)
+    createAt          DateTime    @db.Timestamptz
+    updatedAt         DateTime    @updatedAt
+    isEmailValid      Boolean     @default(false)
+    isMobileValid     Boolean     @default(false)
+    password          String?     @db.VarChar(60)
+    loginType         LOGIN_TYPE  @default(EMAIL)
+    authToken         Authtoken[]
+    otherLoginDetails Json?
+    country           String      @db.VarChar(6)
+    timezone          String      @db.VarChar(6)
+    language          LANGUAGE    @default(en)
+    isActive          Boolean     @default(true)
+
+    @@unique([email, mobile_number])
+}
+
+model Authtoken {
+    authId      Int      @id @default(autoincrement())
+    createAt    DateTime @db.Timestamptz
+    updatedAt   DateTime @updatedAt
+    expiration  DateTime
+    loginInfo   Json
+    authToken   String   @db.VarChar(100)
+    authUserKey ZarkUser @relation(fields: [authUserId], references: [zkuid])
+    authUserId  Int
+
+}
+
+model ZarkCompany {
+    zkcid          Int    @id @default(autoincrement())
+    companyName    String @db.VarChar(150)
+    companyAddress String @db.Text
+    country        String @db.VarChar(6)
+    taxNumber      String @db.VarChar(25)
+}
+
+enum LOGIN_TYPE {
+    FACEBOOK
+    GOOGLE
+    APPLE
+    EMAIL
+}
+
+enum LANGUAGE {
+    en
+}
