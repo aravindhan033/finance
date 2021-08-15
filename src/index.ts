@@ -1,9 +1,6 @@
 import fastify from 'fastify';
-import UserRoute from './API/User/Controller/UserRoute';
 
 const server = fastify();
-
-server.register(UserRoute)
 
 server.get("/ping", (req, reply) => {
     reply.send("ponguu");
