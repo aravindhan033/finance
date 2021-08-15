@@ -15,11 +15,10 @@ const userRoutes: FastifyPluginAsync = async (server: FastifyInstance, options: 
         handler: UserRoutingHandlers.createUser
     });
 
-    server.route({
-        method: "GET",
-        url: "/getuser",
-        handler: UserRoutingHandlers.createUser
-    });
+    server.get("/get", (req, reply) => {
+        UserRoutingHandlers.createUser(req, reply);
+    })
+
 }
 
 export default fp(userRoutes)
