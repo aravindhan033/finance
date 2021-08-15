@@ -16,8 +16,6 @@ const userRoutes: FastifyPluginAsync = async (server: FastifyInstance, options: 
     });
 
     server.get("/get", (req, reply) => {
-       const a= server.diContainer.resolve("userCommand");
-       
         UserRoutingHandlers.createUser(req, reply);
     })
 
