@@ -4,6 +4,7 @@ export interface ZKUser {
     zkuid: Number,
     firstname: String,
     lastname: String,
+    password: String,
     email: String,
     mobile_number: String,
     isEmailValid: Boolean,

@@ -59,6 +59,8 @@ export type ZarkCompany = {
   companyAddress: string
   country: string
   taxNumber: string
+  createAt: Date
+  updatedAt: Date
 }
 
 
@@ -2721,6 +2723,8 @@ export namespace Prisma {
     companyAddress: string | null
     country: string | null
     taxNumber: string | null
+    createAt: Date | null
+    updatedAt: Date | null
   }
 
   export type ZarkCompanyMaxAggregateOutputType = {
@@ -2729,6 +2733,8 @@ export namespace Prisma {
     companyAddress: string | null
     country: string | null
     taxNumber: string | null
+    createAt: Date | null
+    updatedAt: Date | null
   }
 
   export type ZarkCompanyCountAggregateOutputType = {
@@ -2737,6 +2743,8 @@ export namespace Prisma {
     companyAddress: number
     country: number
     taxNumber: number
+    createAt: number
+    updatedAt: number
     _all: number
   }
 
@@ -2755,6 +2763,8 @@ export namespace Prisma {
     companyAddress?: true
     country?: true
     taxNumber?: true
+    createAt?: true
+    updatedAt?: true
   }
 
   export type ZarkCompanyMaxAggregateInputType = {
@@ -2763,6 +2773,8 @@ export namespace Prisma {
     companyAddress?: true
     country?: true
     taxNumber?: true
+    createAt?: true
+    updatedAt?: true
   }
 
   export type ZarkCompanyCountAggregateInputType = {
@@ -2771,6 +2783,8 @@ export namespace Prisma {
     companyAddress?: true
     country?: true
     taxNumber?: true
+    createAt?: true
+    updatedAt?: true
     _all?: true
   }
 
@@ -2892,6 +2906,8 @@ export namespace Prisma {
     companyAddress: string
     country: string
     taxNumber: string
+    createAt: Date
+    updatedAt: Date
     _count: ZarkCompanyCountAggregateOutputType | null
     _avg: ZarkCompanyAvgAggregateOutputType | null
     _sum: ZarkCompanySumAggregateOutputType | null
@@ -2919,6 +2935,8 @@ export namespace Prisma {
     companyAddress?: boolean
     country?: boolean
     taxNumber?: boolean
+    createAt?: boolean
+    updatedAt?: boolean
   }
 
   export type ZarkCompanyGetPayload<
@@ -3595,7 +3613,9 @@ export namespace Prisma {
     companyName: 'companyName',
     companyAddress: 'companyAddress',
     country: 'country',
-    taxNumber: 'taxNumber'
+    taxNumber: 'taxNumber',
+    createAt: 'createAt',
+    updatedAt: 'updatedAt'
   };
 
   export type ZarkCompanyScalarFieldEnum = (typeof ZarkCompanyScalarFieldEnum)[keyof typeof ZarkCompanyScalarFieldEnum]
@@ -3743,6 +3763,8 @@ export namespace Prisma {
     companyAddress?: StringFilter | string
     country?: StringFilter | string
     taxNumber?: StringFilter | string
+    createAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
   }
 
   export type ZarkCompanyOrderByInput = {
@@ -3751,6 +3773,8 @@ export namespace Prisma {
     companyAddress?: SortOrder
     country?: SortOrder
     taxNumber?: SortOrder
+    createAt?: SortOrder
+    updatedAt?: SortOrder
   }
 
   export type ZarkCompanyWhereUniqueInput = {
@@ -3766,6 +3790,8 @@ export namespace Prisma {
     companyAddress?: StringWithAggregatesFilter | string
     country?: StringWithAggregatesFilter | string
     taxNumber?: StringWithAggregatesFilter | string
+    createAt?: DateTimeWithAggregatesFilter | Date | string
+    updatedAt?: DateTimeWithAggregatesFilter | Date | string
   }
 
   export type ZarkUserCreateInput = {
@@ -3773,7 +3799,7 @@ export namespace Prisma {
     lastname: string
     email?: string | null
     mobile_number?: string | null
-    createAt: Date | string
+    createAt?: Date | string
     updatedAt?: Date | string
     isEmailValid?: boolean
     isMobileValid?: boolean
@@ -3793,7 +3819,7 @@ export namespace Prisma {
     lastname: string
     email?: string | null
     mobile_number?: string | null
-    createAt: Date | string
+    createAt?: Date | string
     updatedAt?: Date | string
     isEmailValid?: boolean
     isMobileValid?: boolean
@@ -3852,7 +3878,7 @@ export namespace Prisma {
     lastname: string
     email?: string | null
     mobile_number?: string | null
-    createAt: Date | string
+    createAt?: Date | string
     updatedAt?: Date | string
     isEmailValid?: boolean
     isMobileValid?: boolean
@@ -3903,7 +3929,7 @@ export namespace Prisma {
   }
 
   export type AuthtokenCreateInput = {
-    createAt: Date | string
+    createAt?: Date | string
     updatedAt?: Date | string
     expiration: Date | string
     loginInfo: InputJsonValue
@@ -3913,7 +3939,7 @@ export namespace Prisma {
 
   export type AuthtokenUncheckedCreateInput = {
     authId?: number
-    createAt: Date | string
+    createAt?: Date | string
     updatedAt?: Date | string
     expiration: Date | string
     loginInfo: InputJsonValue
@@ -3942,7 +3968,7 @@ export namespace Prisma {
 
   export type AuthtokenCreateManyInput = {
     authId?: number
-    createAt: Date | string
+    createAt?: Date | string
     updatedAt?: Date | string
     expiration: Date | string
     loginInfo: InputJsonValue
@@ -3973,6 +3999,8 @@ export namespace Prisma {
     companyAddress: string
     country: string
     taxNumber: string
+    createAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ZarkCompanyUncheckedCreateInput = {
@@ -3981,6 +4009,8 @@ export namespace Prisma {
     companyAddress: string
     country: string
     taxNumber: string
+    createAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ZarkCompanyUpdateInput = {
@@ -3988,6 +4018,8 @@ export namespace Prisma {
     companyAddress?: StringFieldUpdateOperationsInput | string
     country?: StringFieldUpdateOperationsInput | string
     taxNumber?: StringFieldUpdateOperationsInput | string
+    createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ZarkCompanyUncheckedUpdateInput = {
@@ -3996,6 +4028,8 @@ export namespace Prisma {
     companyAddress?: StringFieldUpdateOperationsInput | string
     country?: StringFieldUpdateOperationsInput | string
     taxNumber?: StringFieldUpdateOperationsInput | string
+    createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ZarkCompanyCreateManyInput = {
@@ -4004,6 +4038,8 @@ export namespace Prisma {
     companyAddress: string
     country: string
     taxNumber: string
+    createAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type ZarkCompanyUpdateManyMutationInput = {
@@ -4011,6 +4047,8 @@ export namespace Prisma {
     companyAddress?: StringFieldUpdateOperationsInput | string
     country?: StringFieldUpdateOperationsInput | string
     taxNumber?: StringFieldUpdateOperationsInput | string
+    createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type ZarkCompanyUncheckedUpdateManyInput = {
@@ -4019,6 +4057,8 @@ export namespace Prisma {
     companyAddress?: StringFieldUpdateOperationsInput | string
     country?: StringFieldUpdateOperationsInput | string
     taxNumber?: StringFieldUpdateOperationsInput | string
+    createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
   export type IntFilter = {
@@ -4806,7 +4846,7 @@ export namespace Prisma {
   }
 
   export type AuthtokenCreateWithoutAuthUserKeyInput = {
-    createAt: Date | string
+    createAt?: Date | string
     updatedAt?: Date | string
     expiration: Date | string
     loginInfo: InputJsonValue
@@ -4815,7 +4855,7 @@ export namespace Prisma {
 
   export type AuthtokenUncheckedCreateWithoutAuthUserKeyInput = {
     authId?: number
-    createAt: Date | string
+    createAt?: Date | string
     updatedAt?: Date | string
     expiration: Date | string
     loginInfo: InputJsonValue
@@ -4866,7 +4906,7 @@ export namespace Prisma {
     lastname: string
     email?: string | null
     mobile_number?: string | null
-    createAt: Date | string
+    createAt?: Date | string
     updatedAt?: Date | string
     isEmailValid?: boolean
     isMobileValid?: boolean
@@ -4885,7 +4925,7 @@ export namespace Prisma {
     lastname: string
     email?: string | null
     mobile_number?: string | null
-    createAt: Date | string
+    createAt?: Date | string
     updatedAt?: Date | string
     isEmailValid?: boolean
     isMobileValid?: boolean
@@ -4947,7 +4987,7 @@ export namespace Prisma {
 
   export type AuthtokenCreateManyAuthUserKeyInput = {
     authId?: number
-    createAt: Date | string
+    createAt?: Date | string
     updatedAt?: Date | string
     expiration: Date | string
     loginInfo: InputJsonValue

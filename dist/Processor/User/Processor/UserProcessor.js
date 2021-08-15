@@ -15,6 +15,7 @@ class UserProcessor {
     createUser(zkuser) {
         return __awaiter(this, void 0, void 0, function* () {
             const cmd = new UserCommand_1.UserCommand();
+            console.log("in processor");
             return yield cmd.createUser(zkuser);
         });
     }

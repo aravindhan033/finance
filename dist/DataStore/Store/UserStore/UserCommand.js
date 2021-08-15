@@ -18,11 +18,12 @@ class UserCommand extends BaseStore_1.BaseStore {
             plainToEntityType: { get: () => super.plainToEntityType }
         });
         return __awaiter(this, void 0, void 0, function* () {
+            console.log("in store");
             const persistence = new CommonClientPerisistence_1.commonClientPersistence();
-            persistence.db.$transaction;
             const newZkuser = yield persistence.db.zarkUser.create({
                 data: JSON.parse(JSON.stringify(zkuser))
             });
+            console.log("in store over");
             const rawJson = _super.plainToEntityType.call(this, newZkuser);
             return rawJson;
         });

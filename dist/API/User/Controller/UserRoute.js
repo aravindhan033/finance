@@ -13,19 +13,22 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fastify_plugin_1 = __importDefault(require("fastify-plugin"));
+const UserProcessor_1 = require("../../../Processor/User/Processor/UserProcessor");
+const UserSchema_1 = require("../Schema/UserSchema");
 class UserRoutingHandlers {
-    static createUser(request, reply) {
-        reply.send({ res: "i am ready" });
+    createUser(request, reply) {
+        console.log("in router");
+        let zkUser = request.body;
+        const userProcessor = new UserProcessor_1.UserProcessor();
+        userProcessor.createUser(zkUser).then((res) => {
+            reply.send(res);
+        });
     }
 }
 const userRoutes = (server, options) => __awaiter(void 0, void 0, void 0, function* () {
-    server.route({
-        method: "POST",
-        url: "/createuser",
-        handler: UserRoutingHandlers.createUser
-    });
-    server.get("/get", (req, reply) => {
-        UserRoutingHandlers.createUser(req, reply);
+    const routeHandler = new UserRoutingHandlers();
+    server.post("/createuser", { schema: UserSchema_1.createUser }, (req, reply) => {
+        routeHandler.createUser(req, reply);
     });
 });
 exports.default = fastify_plugin_1.default(userRoutes);

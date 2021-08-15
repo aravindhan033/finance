@@ -4,8 +4,10 @@
   "description": "",
   "main": "dist/app.js",
   "scripts": {
-    "start": "tsc && node dist/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "tsc && nodemon -L dist/index.js",
+    "debug": "tsc && nodemon --inspect dist/index.js",
+    "build": "tsc --watch --preserveWatchOutput",
+    "dev": "concurrently \"npm:build:dev\" \"npm:start:dev\""
   },
   "repository": {
     "type": "git",
