@@ -1,6 +1,7 @@
 export interface Authtoken {
-    authid: Number,
-    expiration: Date,
+    authId: Number,
+    expiration: Number,
     loginInfo: JSON,
-    authUserId: Number
+    authUserId: Number,
+    authToken: String
 }

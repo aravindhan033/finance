@@ -14,5 +14,19 @@ const createUser = {
 
     }
 }
+const userlogin = {
+    body: {
+        type: "object",
+        properties: {
+            email: { type: "string" },
+            mobile_number: { type: "string" },
+            password: { type: "string" },
+        },
+        required: ["passwor"]
+
+    }
+}
+
+
 
 export { createUser };
