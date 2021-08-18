@@ -1,6 +1,8 @@
 const config = {
-    refreshTokenExpire: 17280000000,
-    refreshTokenSecret: process.env.PASSWORD_HASH_SECRET
+    refreshTokenExpire: (60*60*24)*200,    // 200 days
+    refreshTokenSecret: process.env.PASSWORD_HASH_SECRET,
+    accessTokenExpire: 60*20,
+    accessTokenSecret: process.env.PASSWORD_HASH_SECRET,
 }
 
 export default config;
