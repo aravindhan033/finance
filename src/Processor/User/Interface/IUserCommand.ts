@@ -5,5 +5,5 @@ export interface IUserCommand {
     updateUser(zkuser: ZKUser): Promise<ZKUser>;
     deleteUser(zkuser: ZKUser): Promise<void>;
     addAuthToken(zkuser: ZKUser): Promise<ZKUser>;
-
+    getUserAuthToken(zkuid:number): Promise<any>;
 }

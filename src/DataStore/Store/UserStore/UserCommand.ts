@@ -40,5 +40,23 @@ export class UserCommand extends BaseStore<ZKUser> implements IUserCommand {
         }
         return zkuser;
     }
+    async getUserAuthToken(zkuid:number): Promise<any>{
+        let refreshTokenArr:Authtoken=null;
+        try {
+            const persistence = new commonClientPersistence();
+             let authToken = await persistence.db.authtoken.findMany({
+                where:{
+                    authUserId:{
+                        equals:zkuid
+                    }
+                }
+            });
+            refreshTokenArr = JSON.parse(JSON.stringify(authToken));
+        }
+        catch(erro){
+
+        }
+        return refreshTokenArr;
+    }
 
 }

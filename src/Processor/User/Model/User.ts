@@ -1,7 +1,7 @@
 import { Authtoken } from "./Authtoken";
 
 export interface ZKUser {
-    zkuid: Number,
+    zkuid: number,
     firstname: String,
     lastname: String,
     password: String,

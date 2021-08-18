@@ -3,7 +3,7 @@ import { IUserProcessor } from "../Interface/IUserProcessor";
 import { ZKUser } from "../Model/User";
 import { bcrypt } from 'bcrypt';
 import { UserQuery } from "../../../DataStore/Store/UserStore/UserQuery";
-=import { jwt } from 'jsonwebtoken';
+import { jwt } from 'jsonwebtoken';
 import config from "../../../config";
 import { Authtoken } from "../Model/Authtoken";
 export class UserProcessor implements IUserProcessor {
@@ -20,16 +20,21 @@ export class UserProcessor implements IUserProcessor {
         return zkuser;
     }
 
-    async userLogin(zkuser: ZKUser): Promise<ZKUser> {
+    async userLogin(zkuser: ZKUser,loginInfo:JSON): Promise<JSON> {
         const cmd = new UserQuery();
         const dbUser: ZKUser = await cmd.getUser(zkuser) as ZKUser;
-        if (await bcrypt.compare(zkuser.password, dbUser.password)) {
+        let resultObject=null;
+        if ( dbUser!=null && dbUser.password!=null && await bcrypt.compare(zkuser.password, dbUser.password)) {
+            zkuser.authToken.loginInfo=loginInfo;
             zkuser = await this.createAndSaveRefreshToken(zkuser);
-            return dbUser;
+            let accessToken:Authtoken =await this.getAccessToken(zkuser.authToken.authToken);
+            resultObject.accessToken=accessToken.authToken;
+            resultObject.zkuid=zkuser.zkuid;
         }
-        else {
-            return null;
+        else{
+            
         }
+        return resultObject;
     }
 
     async createAndSaveRefreshToken(zkuser: ZKUser): Promise<ZKUser> {
@@ -46,24 +51,37 @@ export class UserProcessor implements IUserProcessor {
 
         return zkuser;
     }
-    async getAccessToken(refreshToken:Authtoken): Promise<Authtoken>{
+    async getAccessToken(refreshToken:String): Promise<Authtoken>{
         let accessToken={} as Authtoken;
-        accessToken.expiration = Math.floor(Date.now() / 1000) + (config.accessTokenExpire);
-
-        jwt.verify(refreshToken.authToken,config.refreshTokenSecret,(err,res)=>{
+                
+        await jwt.verify(refreshToken,config.refreshTokenSecret,async (err,res)=>{
             if(err){
-                return accessToken;
+                return null;
             }
             else{
-                   accessToken.authToken = await jwt.sign({
-                     exp: accessToken.expiration,
-                     data: { zkuid: zkuser.zkuid }
-                  }, config.accessTokenSecret);
-                return accessToken;
+                let zkuid=1;
+                const cmd = new UserCommand();
+                let refreshTokenArr=await cmd.getUserAuthToken(zkuid);
+                let isRefreshTokenValid=false;
+                if(refreshTokenArr!=null && refreshTokenArr.length>0){
+                    for(let i=0;i<refreshTokenArr.length;i++){
+                        if(refreshToken==refreshTokenArr[i]["authToken"]){
+                            isRefreshTokenValid=true;
+                            break;
+                        }                        
+                    }
+                }
+                if(!isRefreshTokenValid){
+                    return null;
+                }
+                accessToken.authToken = await jwt.sign({
+                    exp: accessToken.expiration,
+                    data: {"refreshToken":refreshToken,"zkuid": zkuid }
+                }, config.accessTokenSecret);
+                
             }
         });
-        
-        
+        return accessToken;
         
     }
 
