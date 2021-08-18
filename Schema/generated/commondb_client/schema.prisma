@@ -1,6 +1,6 @@
 datasource db {
     provider = "postgres"
-    url      = "postgresql://postgres:admin@localhost:5432/commondb?schema=zkschema"
+    url      = env("PRIMSA_COMMON_DB_SQL_URL")
 }
 
 generator client {
@@ -34,9 +34,9 @@ model Authtoken {
     authId      Int      @id @default(autoincrement())
     createAt    DateTime @default(now()) @db.Timestamptz
     updatedAt   DateTime @updatedAt
-    expiration  DateTime
+    expiration  Int
     loginInfo   Json
-    authToken   String   @db.VarChar(100)
+    authToken   String   @db.VarChar(255)
     authUserKey ZarkUser @relation(fields: [authUserId], references: [zkuid])
     authUserId  Int
 

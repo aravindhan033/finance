@@ -21,9 +21,9 @@ const userlogin = {
             email: { type: "string" },
             mobile_number: { type: "string" },
             password: { type: "string" },
-            device:{type:"string"},
-            location:{type:"string"},
-            ipaddress:{type:"string"}
+            device: { type: "string" },
+            location: { type: "string" },
+            ipaddress: { type: "string" }
         },
         required: ["password"]
 
@@ -32,4 +32,4 @@ const userlogin = {
 
 
 
-export { createUser };
+export { createUser, userlogin };

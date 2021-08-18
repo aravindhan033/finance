@@ -5,10 +5,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const fastify_1 = __importDefault(require("fastify"));
 const UserRoute_1 = __importDefault(require("./API/User/Controller/UserRoute"));
+const BaseResponse_1 = __importDefault(require("./API/BaseResponse"));
+const Auth_1 = __importDefault(require("./Library/Middleware/Auth"));
 const server = fastify_1.default({ logger: true });
+server.register(BaseResponse_1.default);
 server.register(UserRoute_1.default);
+server.register(require('fastify-boom'));
 server.get("/ping", (req, reply) => {
-    reply.send("ponguu");
+    //  console.log("=>"+req.headers);
+    reply.send(req.headers);
+});
+server.get("/authcheck", { preValidation: Auth_1.default }, (req, reply) => {
+    //  console.log("=>"+req.headers);
+    reply.send({});
 });
 server.listen(8000, (err, address) => {
     if (err) {

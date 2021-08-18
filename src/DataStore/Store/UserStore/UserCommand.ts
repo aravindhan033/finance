@@ -6,16 +6,23 @@ import { BaseStore } from "../BaseStore";
 
 export class UserCommand extends BaseStore<ZKUser> implements IUserCommand {
     async createUser(zkuser: ZKUser): Promise<ZKUser> {
-        const rawJson = null;
+        let rawJson = null;
+        const persistence = new commonClientPersistence();
         try {
-            const persistence = new commonClientPersistence();
             const newZkuser = await persistence.db.zarkUser.create({
                 data: JSON.parse(JSON.stringify(zkuser))
+            }).catch((err) => {
+                throw (err)
+            }).finally(async () => {
+                persistence.db.$disconnect();
             });
-            const rawJson = super.plainToEntityType(newZkuser);
+            rawJson = super.plainToEntityType(newZkuser);
         }
         catch (error) {
-
+            console.log(error);
+        }
+        finally {
+            persistence.db.$disconnect();
         }
         return rawJson;
     }
@@ -27,35 +34,50 @@ export class UserCommand extends BaseStore<ZKUser> implements IUserCommand {
     }
 
     async addAuthToken(zkuser: ZKUser): Promise<ZKUser> {
+        const persistence = new commonClientPersistence();
+
         try {
             const authtoken = zkuser.authToken;
-            const persistence = new commonClientPersistence();
             let newToken = await persistence.db.authtoken.create({
                 data: JSON.parse(JSON.stringify(authtoken))
+            }).catch((err) => {
+                throw (err)
+            }).finally(async () => {
+                persistence.db.$disconnect();
             });
             zkuser.authToken = JSON.parse(JSON.stringify(newToken));
         }
         catch (error) {
-
+            console.log(error);
+        }
+        finally {
+            persistence.db.$disconnect();
         }
         return zkuser;
     }
-    async getUserAuthToken(zkuid:number): Promise<any>{
-        let refreshTokenArr:Authtoken=null;
+    async getUserAuthToken(zkuid: number): Promise<any> {
+        let refreshTokenArr: Authtoken = null;
+        const persistence = new commonClientPersistence();
+
         try {
-            const persistence = new commonClientPersistence();
-             let authToken = await persistence.db.authtoken.findMany({
-                where:{
-                    authUserId:{
-                        equals:zkuid
+            let authToken = await persistence.db.authtoken.findMany({
+                where: {
+                    authUserId: {
+                        equals: zkuid
                     }
                 }
-            });
-            refreshTokenArr = JSON.parse(JSON.stringify(authToken));
+            }).catch((err) => {
+                throw (err)
+            }).finally(async () => {
+                persistence.db.$disconnect();
+            }); refreshTokenArr = JSON.parse(JSON.stringify(authToken));
         }
-        catch(erro){
+        catch (erro) {
+            console.log(erro);
+        } finally {
+            persistence.db.$disconnect();
+        }
 
-        }
         return refreshTokenArr;
     }
 

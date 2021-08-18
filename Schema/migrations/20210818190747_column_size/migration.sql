@@ -1,0 +1,2 @@
+-- AlterTable
+ALTER TABLE "Authtoken" ALTER COLUMN "authToken" SET DATA TYPE VARCHAR(255);

@@ -18,13 +18,24 @@ class UserCommand extends BaseStore_1.BaseStore {
             plainToEntityType: { get: () => super.plainToEntityType }
         });
         return __awaiter(this, void 0, void 0, function* () {
-            console.log("in store");
+            let rawJson = null;
             const persistence = new CommonClientPerisistence_1.commonClientPersistence();
-            const newZkuser = yield persistence.db.zarkUser.create({
-                data: JSON.parse(JSON.stringify(zkuser))
-            });
-            console.log("in store over");
-            const rawJson = _super.plainToEntityType.call(this, newZkuser);
+            try {
+                const newZkuser = yield persistence.db.zarkUser.create({
+                    data: JSON.parse(JSON.stringify(zkuser))
+                }).catch((err) => {
+                    throw (err);
+                }).finally(() => __awaiter(this, void 0, void 0, function* () {
+                    persistence.db.$disconnect();
+                }));
+                rawJson = _super.plainToEntityType.call(this, newZkuser);
+            }
+            catch (error) {
+                console.log(error);
+            }
+            finally {
+                persistence.db.$disconnect();
+            }
             return rawJson;
         });
     }
@@ -33,6 +44,56 @@ class UserCommand extends BaseStore_1.BaseStore {
     }
     deleteUser(zkuser) {
         throw new Error("Method not implemented.");
+    }
+    addAuthToken(zkuser) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const persistence = new CommonClientPerisistence_1.commonClientPersistence();
+            try {
+                const authtoken = zkuser.authToken;
+                let newToken = yield persistence.db.authtoken.create({
+                    data: JSON.parse(JSON.stringify(authtoken))
+                }).catch((err) => {
+                    throw (err);
+                }).finally(() => __awaiter(this, void 0, void 0, function* () {
+                    persistence.db.$disconnect();
+                }));
+                zkuser.authToken = JSON.parse(JSON.stringify(newToken));
+            }
+            catch (error) {
+                console.log(error);
+            }
+            finally {
+                persistence.db.$disconnect();
+            }
+            return zkuser;
+        });
+    }
+    getUserAuthToken(zkuid) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let refreshTokenArr = null;
+            const persistence = new CommonClientPerisistence_1.commonClientPersistence();
+            try {
+                let authToken = yield persistence.db.authtoken.findMany({
+                    where: {
+                        authUserId: {
+                            equals: zkuid
+                        }
+                    }
+                }).catch((err) => {
+                    throw (err);
+                }).finally(() => __awaiter(this, void 0, void 0, function* () {
+                    persistence.db.$disconnect();
+                }));
+                refreshTokenArr = JSON.parse(JSON.stringify(authToken));
+            }
+            catch (erro) {
+                console.log(erro);
+            }
+            finally {
+                persistence.db.$disconnect();
+            }
+            return refreshTokenArr;
+        });
     }
 }
 exports.UserCommand = UserCommand;

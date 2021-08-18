@@ -23,12 +23,17 @@
     "@prisma/client": "^2.29.1",
     "@sinclair/typebox": "^0.20.4",
     "bcrypt": "^5.0.1",
+    "boom": "^7.3.0",
+    "dotenv": "^10.0.0",
     "fastify": "^3.20.1",
+    "fastify-boom": "^1.0.0",
     "fastify-plugin": "^3.0.0",
     "jsonwebtoken": "^8.5.1",
-    "prisma": "^2.29.1"
+    "prisma": "^2.29.1",
+    "uninstall": "0.0.0"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.0",
     "@types/node": "^16.6.1",
     "typescript": "^4.3.5"
   }

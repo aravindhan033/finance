@@ -5,7 +5,7 @@
 
 import * as runtime from './runtime';
 declare const prisma: unique symbol
-export type PrismaPromise<A> = Promise<A> & { [prisma]: true }
+export type PrismaPromise<A> = Promise<A> & {[prisma]: true}
 type UnwrapPromise<P extends any> = P extends Promise<infer R> ? R : P
 type UnwrapTuple<Tuple extends readonly unknown[]> = {
   [K in keyof Tuple]: K extends `${number}` ? Tuple[K] extends PrismaPromise<infer X> ? X : UnwrapPromise<Tuple[K]> : UnwrapPromise<Tuple[K]>
@@ -43,7 +43,7 @@ export type Authtoken = {
   authId: number
   createAt: Date
   updatedAt: Date
-  expiration: Date
+  expiration: number
   loginInfo: Prisma.JsonValue
   authToken: string
   authUserId: number
@@ -106,50 +106,50 @@ export class PrismaClient<
   T extends Prisma.PrismaClientOptions = Prisma.PrismaClientOptions,
   U = 'log' extends keyof T ? T['log'] extends Array<Prisma.LogLevel | Prisma.LogDefinition> ? Prisma.GetEvents<T['log']> : never : never,
   GlobalReject = 'rejectOnNotFound' extends keyof T
-  ? T['rejectOnNotFound']
-  : false
-  > {
-  /**
-   * @private
-   */
-  private fetcher;
-  /**
-   * @private
-   */
-  private readonly dmmf;
-  /**
-   * @private
-   */
-  private connectionPromise?;
-  /**
-   * @private
-   */
-  private disconnectionPromise?;
-  /**
-   * @private
-   */
-  private readonly engineConfig;
-  /**
-   * @private
-   */
-  private readonly measurePerformance;
+    ? T['rejectOnNotFound']
+    : false
+      > {
+      /**
+       * @private
+       */
+      private fetcher;
+      /**
+       * @private
+       */
+      private readonly dmmf;
+      /**
+       * @private
+       */
+      private connectionPromise?;
+      /**
+       * @private
+       */
+      private disconnectionPromise?;
+      /**
+       * @private
+       */
+      private readonly engineConfig;
+      /**
+       * @private
+       */
+      private readonly measurePerformance;
 
-  /**
- * ##  Prisma Client ʲˢ
- * 
- * Type-safe database client for TypeScript & Node.js
- * @example
- * ```
- * const prisma = new PrismaClient()
- * // Fetch zero or more ZarkUsers
- * const zarkUsers = await prisma.zarkUser.findMany()
- * ```
- *
- * 
- * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
- */
+    /**
+   * ##  Prisma Client ʲˢ
+   * 
+   * Type-safe database client for TypeScript & Node.js
+   * @example
+   * ```
+   * const prisma = new PrismaClient()
+   * // Fetch zero or more ZarkUsers
+   * const zarkUsers = await prisma.zarkUser.findMany()
+   * ```
+   *
+   * 
+   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client).
+   */
 
-  constructor(optionsArg?: Prisma.Subset<T, Prisma.PrismaClientOptions>);
+  constructor(optionsArg ?: Prisma.Subset<T, Prisma.PrismaClientOptions>);
   $on<V extends (U | 'beforeExit')>(eventType: V, callback: (event: V extends 'query' ? Prisma.QueryEvent : V extends 'beforeExit' ? () => Promise<void> : Prisma.LogEvent) => void): void;
 
   /**
@@ -179,7 +179,7 @@ export class PrismaClient<
   * 
   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
   */
-  $executeRaw<T = any>(query: string | TemplateStringsArray | Prisma.Sql, ...values: any[]): PrismaPromise<number>;
+  $executeRaw < T = any > (query: string | TemplateStringsArray | Prisma.Sql, ...values: any[]): PrismaPromise<number>;
 
   /**
    * Performs a raw query and returns the SELECT data
@@ -193,7 +193,7 @@ export class PrismaClient<
   * 
   * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
   */
-  $queryRaw<T = any>(query: string | TemplateStringsArray | Prisma.Sql, ...values: any[]): PrismaPromise<T>;
+  $queryRaw < T = any > (query: string | TemplateStringsArray | Prisma.Sql, ...values: any[]): PrismaPromise<T>;
 
   /**
    * Allows the running of a sequence of read/write operations that are guaranteed to either succeed or fail as a whole.
@@ -210,14 +210,14 @@ export class PrismaClient<
    */
   $transaction<P extends PrismaPromise<any>[]>(arg: [...P]): Promise<UnwrapTuple<P>>
 
-  /**
-* `prisma.zarkUser`: Exposes CRUD operations for the **ZarkUser** model.
-* Example usage:
-* ```ts
-* // Fetch zero or more ZarkUsers
-* const zarkUsers = await prisma.zarkUser.findMany()
-* ```
-*/
+      /**
+   * `prisma.zarkUser`: Exposes CRUD operations for the **ZarkUser** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ZarkUsers
+    * const zarkUsers = await prisma.zarkUser.findMany()
+    * ```
+    */
   get zarkUser(): Prisma.ZarkUserDelegate<GlobalReject>;
 
   /**
@@ -275,7 +275,7 @@ export namespace Prisma {
     client: string
   }
 
-  export const prismaVersion: PrismaVersion
+  export const prismaVersion: PrismaVersion 
 
   /**
    * Utility Types
@@ -286,14 +286,14 @@ export namespace Prisma {
    * Matches a JSON object.
    * This type can be useful to enforce some input to be JSON-compatible or as a super-type to be extended from. 
    */
-  export type JsonObject = { [Key in string]?: JsonValue }
-
+  export type JsonObject = {[Key in string]?: JsonValue}
+ 
   /**
    * From https://github.com/sindresorhus/type-fest/
    * Matches a JSON array.
    */
-  export interface JsonArray extends Array<JsonValue> { }
-
+  export interface JsonArray extends Array<JsonValue> {}
+ 
   /**
    * From https://github.com/sindresorhus/type-fest/
    * Matches any valid JSON value.
@@ -303,12 +303,12 @@ export namespace Prisma {
   /**
    * Same as JsonObject, but allows undefined
    */
-  export type InputJsonObject = { [Key in string]?: JsonValue }
-
-  export interface InputJsonArray extends Array<JsonValue> { }
-
-  export type InputJsonValue = undefined | string | number | boolean | null | InputJsonObject | InputJsonArray
-  type SelectAndInclude = {
+  export type InputJsonObject = {[Key in string]?: JsonValue}
+ 
+  export interface InputJsonArray extends Array<JsonValue> {}
+ 
+  export type InputJsonValue = undefined |  string | number | boolean | null | InputJsonObject | InputJsonArray
+   type SelectAndInclude = {
     select: any
     include: any
   }
@@ -340,7 +340,7 @@ export namespace Prisma {
    * From T, pick a set of properties whose keys are in the union K
    */
   type Prisma__Pick<T, K extends keyof T> = {
-    [P in K]: T[P];
+      [P in K]: T[P];
   };
 
 
@@ -398,16 +398,16 @@ export namespace Prisma {
    * Is T a Record?
    */
   type IsObject<T extends any> = T extends Array<any>
-    ? False
-    : T extends Date
-    ? False
-    : T extends Buffer
-    ? False
-    : T extends BigInt
-    ? False
-    : T extends object
-    ? True
-    : False
+  ? False
+  : T extends Date
+  ? False
+  : T extends Buffer
+  ? False
+  : T extends BigInt
+  ? False
+  : T extends object
+  ? True
+  : False
 
 
   /**
@@ -433,16 +433,16 @@ export namespace Prisma {
     O extends object,
     K extends Key,
     strict extends Boolean
-    > = {
-      1: EitherStrict<O, K>
-      0: EitherLoose<O, K>
-    }[strict]
+  > = {
+    1: EitherStrict<O, K>
+    0: EitherLoose<O, K>
+  }[strict]
 
   type Either<
     O extends object,
     K extends Key,
     strict extends Boolean = 1
-    > = O extends unknown ? _Either<O, K, strict> : never
+  > = O extends unknown ? _Either<O, K, strict> : never
 
   export type Union = any
 
@@ -458,11 +458,11 @@ export namespace Prisma {
     : never
 
   export type Overwrite<O extends object, O1 extends object> = {
-    [K in keyof O]: K extends keyof O1 ? O1[K] : O[K];
+      [K in keyof O]: K extends keyof O1 ? O1[K] : O[K];
   } & {};
 
   type _Merge<U extends object> = IntersectOf<Overwrite<U, {
-    [K in keyof U]-?: At<U, K>;
+      [K in keyof U]-?: At<U, K>;
   }>>;
 
   type Key = string | number | symbol;
@@ -470,8 +470,8 @@ export namespace Prisma {
   type AtStrict<O extends object, K extends Key> = O[K & keyof O];
   type AtLoose<O extends object, K extends Key> = O extends unknown ? AtStrict<O, K> : never;
   export type At<O extends object, K extends Key, strict extends Boolean = 1> = {
-    1: AtStrict<O, K>;
-    0: AtLoose<O, K>;
+      1: AtStrict<O, K>;
+      0: AtLoose<O, K>;
   }[strict];
 
   export type ComputeRaw<A extends any> = A extends Function ? A : {
@@ -536,11 +536,11 @@ export namespace Prisma {
 
   export type Keys<U extends Union> = U extends unknown ? keyof U : never
 
-  type Exact<A, W = unknown> =
-    W extends unknown ? A extends Narrowable ? Cast<A, W> : Cast<
-      { [K in keyof A]: K extends keyof W ? Exact<A[K], W[K]> : never },
-      { [K in keyof W]: K extends keyof A ? Exact<A[K], W[K]> : W[K] }>
-    : never;
+  type Exact<A, W = unknown> = 
+  W extends unknown ? A extends Narrowable ? Cast<A, W> : Cast<
+  {[K in keyof A]: K extends keyof W ? Exact<A[K], W[K]> : never},
+  {[K in keyof W]: K extends keyof A ? Exact<A[K], W[K]> : W[K]}>
+  : never;
 
   type Narrowable = string | number | boolean | bigint;
 
@@ -556,29 +556,29 @@ export namespace Prisma {
 
   export type GetScalarType<T, O> = O extends object ? {
     [P in keyof T]: P extends keyof O
-    ? O[P]
-    : never
+      ? O[P]
+      : never
   } : never
 
   type FieldPaths<
     T,
     U = Omit<T, '_avg' | '_sum' | '_count' | '_min' | '_max'>
-    > = IsObject<T> extends True ? U : T
+  > = IsObject<T> extends True ? U : T
 
   type GetHavingFields<T> = {
     [K in keyof T]: Or<
       Or<Extends<'OR', K>, Extends<'AND', K>>,
       Extends<'NOT', K>
     > extends True
-    ? // infer is only needed to not hit TS limit
-    // based on the brilliant idea of Pierre-Antoine Mills
-    // https://github.com/microsoft/TypeScript/issues/30188#issuecomment-478938437
-    T[K] extends infer TK
-    ? GetHavingFields<UnEnumerate<TK> extends object ? Merge<UnEnumerate<TK>> : never>
-    : never
-    : {} extends FieldPaths<T[K]>
-    ? never
-    : K
+      ? // infer is only needed to not hit TS limit
+        // based on the brilliant idea of Pierre-Antoine Mills
+        // https://github.com/microsoft/TypeScript/issues/30188#issuecomment-478938437
+        T[K] extends infer TK
+        ? GetHavingFields<UnEnumerate<TK> extends object ? Merge<UnEnumerate<TK>> : never>
+        : never
+      : {} extends FieldPaths<T[K]>
+      ? never
+      : K
   }[keyof T]
 
   /**
@@ -623,25 +623,25 @@ export namespace Prisma {
 
   export type RejectOnNotFound = boolean | ((error: Error) => Error)
   export type RejectPerModel = { [P in ModelName]?: RejectOnNotFound }
-  export type RejectPerOperation = { [P in "findUnique" | "findFirst"]?: RejectPerModel | RejectOnNotFound }
+  export type RejectPerOperation =  { [P in "findUnique" | "findFirst"]?: RejectPerModel | RejectOnNotFound } 
   type IsReject<T> = T extends true ? True : T extends (err: Error) => Error ? True : False
   export type HasReject<
     GlobalRejectSettings extends Prisma.PrismaClientOptions['rejectOnNotFound'],
     LocalRejectSettings,
     Action extends PrismaAction,
     Model extends ModelName
-    > = LocalRejectSettings extends RejectOnNotFound
+  > = LocalRejectSettings extends RejectOnNotFound
     ? IsReject<LocalRejectSettings>
     : GlobalRejectSettings extends RejectPerOperation
     ? Action extends keyof GlobalRejectSettings
-    ? GlobalRejectSettings[Action] extends boolean
-    ? IsReject<GlobalRejectSettings[Action]>
-    : GlobalRejectSettings[Action] extends RejectPerModel
-    ? Model extends keyof GlobalRejectSettings[Action]
-    ? IsReject<GlobalRejectSettings[Action][Model]>
-    : False
-    : False
-    : False
+      ? GlobalRejectSettings[Action] extends boolean
+        ? IsReject<GlobalRejectSettings[Action]>
+        : GlobalRejectSettings[Action] extends RejectPerModel
+        ? Model extends keyof GlobalRejectSettings[Action]
+          ? IsReject<GlobalRejectSettings[Action][Model]>
+          : False
+        : False
+      : False
     : IsReject<GlobalRejectSettings>
   export type ErrorFormat = 'pretty' | 'colorless' | 'minimal'
 
@@ -756,7 +756,7 @@ export namespace Prisma {
   ) => Promise<T>
 
   // tested in getLogLevel.test.ts
-  export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined;
+  export function getLogLevel(log: Array<LogLevel | LogDefinition>): LogLevel | undefined; 
   export type Datasource = {
     url?: string
   }
@@ -1005,16 +1005,16 @@ export namespace Prisma {
   }
 
   export type GetZarkUserAggregateType<T extends ZarkUserAggregateArgs> = {
-    [P in keyof T & keyof AggregateZarkUser]: P extends '_count' | 'count'
-    ? T[P] extends true
-    ? number
-    : GetScalarType<T[P], AggregateZarkUser[P]>
-    : GetScalarType<T[P], AggregateZarkUser[P]>
+        [P in keyof T & keyof AggregateZarkUser]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateZarkUser[P]>
+      : GetScalarType<T[P], AggregateZarkUser[P]>
   }
 
 
-
-
+    
+    
   export type ZarkUserGroupByArgs = {
     where?: ZarkUserWhereInput
     orderBy?: Enumerable<ZarkUserOrderByInput>
@@ -1056,16 +1056,16 @@ export namespace Prisma {
 
   type GetZarkUserGroupByPayload<T extends ZarkUserGroupByArgs> = Promise<
     Array<
-      PickArray<ZarkUserGroupByOutputType, T['by']> &
-      {
-        [P in ((keyof T) & (keyof ZarkUserGroupByOutputType))]: P extends '_count'
-        ? T[P] extends boolean
-        ? number
-        : GetScalarType<T[P], ZarkUserGroupByOutputType[P]>
-        : GetScalarType<T[P], ZarkUserGroupByOutputType[P]>
-      }
+      PickArray<ZarkUserGroupByOutputType, T['by']> & 
+        {
+          [P in ((keyof T) & (keyof ZarkUserGroupByOutputType))]: P extends '_count' 
+            ? T[P] extends boolean 
+              ? number 
+              : GetScalarType<T[P], ZarkUserGroupByOutputType[P]> 
+            : GetScalarType<T[P], ZarkUserGroupByOutputType[P]>
+        }
+      > 
     >
-  >
 
 
   export type ZarkUserSelect = {
@@ -1095,26 +1095,26 @@ export namespace Prisma {
   export type ZarkUserGetPayload<
     S extends boolean | null | undefined | ZarkUserArgs,
     U = keyof S
-    > = S extends true
-    ? ZarkUser
+      > = S extends true
+        ? ZarkUser
     : S extends undefined
     ? never
     : S extends ZarkUserArgs | ZarkUserFindManyArgs
-    ? 'include' extends U
-    ? ZarkUser & {
-      [P in TrueKeys<S['include']>]:
-      P extends 'authToken'
-      ? Array<AuthtokenGetPayload<S['include'][P]>> : never
-    }
+    ?'include' extends U
+    ? ZarkUser  & {
+    [P in TrueKeys<S['include']>]: 
+          P extends 'authToken'
+        ? Array < AuthtokenGetPayload<S['include'][P]>>  : never
+  } 
     : 'select' extends U
     ? {
-      [P in TrueKeys<S['select']>]: P extends keyof ZarkUser ? ZarkUser[P]
-      :
-      P extends 'authToken'
-      ? Array<AuthtokenGetPayload<S['select'][P]>> : never
-    }
+    [P in TrueKeys<S['select']>]: P extends keyof ZarkUser ?ZarkUser [P]
+  : 
+          P extends 'authToken'
+        ? Array < AuthtokenGetPayload<S['select'][P]>>  : never
+  } 
     : ZarkUser
-    : ZarkUser
+  : ZarkUser
 
 
   type ZarkUserCountArgs = Merge<
@@ -1135,9 +1135,9 @@ export namespace Prisma {
      *   }
      * })
     **/
-    findUnique<T extends ZarkUserFindUniqueArgs, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+    findUnique<T extends ZarkUserFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args: SelectSubset<T, ZarkUserFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ZarkUser'> extends True ? CheckSelect<T, Prisma__ZarkUserClient<ZarkUser>, Prisma__ZarkUserClient<ZarkUserGetPayload<T>>> : CheckSelect<T, Prisma__ZarkUserClient<ZarkUser | null>, Prisma__ZarkUserClient<ZarkUserGetPayload<T> | null>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ZarkUser'> extends True ? CheckSelect<T, Prisma__ZarkUserClient<ZarkUser>, Prisma__ZarkUserClient<ZarkUserGetPayload<T>>> : CheckSelect<T, Prisma__ZarkUserClient<ZarkUser | null >, Prisma__ZarkUserClient<ZarkUserGetPayload<T> | null >>
 
     /**
      * Find the first ZarkUser that matches the filter.
@@ -1152,9 +1152,9 @@ export namespace Prisma {
      *   }
      * })
     **/
-    findFirst<T extends ZarkUserFindFirstArgs, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+    findFirst<T extends ZarkUserFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args?: SelectSubset<T, ZarkUserFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ZarkUser'> extends True ? CheckSelect<T, Prisma__ZarkUserClient<ZarkUser>, Prisma__ZarkUserClient<ZarkUserGetPayload<T>>> : CheckSelect<T, Prisma__ZarkUserClient<ZarkUser | null>, Prisma__ZarkUserClient<ZarkUserGetPayload<T> | null>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ZarkUser'> extends True ? CheckSelect<T, Prisma__ZarkUserClient<ZarkUser>, Prisma__ZarkUserClient<ZarkUserGetPayload<T>>> : CheckSelect<T, Prisma__ZarkUserClient<ZarkUser | null >, Prisma__ZarkUserClient<ZarkUserGetPayload<T> | null >>
 
     /**
      * Find zero or more ZarkUsers that matches the filter.
@@ -1318,10 +1318,10 @@ export namespace Prisma {
       args?: Subset<T, ZarkUserCountArgs>,
     ): PrismaPromise<
       T extends _Record<'select', any>
-      ? T['select'] extends true
-      ? number
-      : GetScalarType<T['select'], ZarkUserCountAggregateOutputType>
-      : number
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ZarkUserCountAggregateOutputType>
+        : number
     >
 
     /**
@@ -1375,8 +1375,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-      ? { orderBy: ZarkUserGroupByArgs['orderBy'] }
-      : { orderBy?: ZarkUserGroupByArgs['orderBy'] },
+        ? { orderBy: ZarkUserGroupByArgs['orderBy'] }
+        : { orderBy?: ZarkUserGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -1387,44 +1387,44 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-        [P in HavingFields]: P extends ByFields
-        ? never
-        : P extends string
-        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-        : [
-          Error,
-          'Field ',
-          P,
-          ` in "having" needs to be provided in "by"`,
-        ]
-      }[HavingFields]
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "take", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
     >(args: SubsetIntersection<T, ZarkUserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetZarkUserGroupByPayload<T> : Promise<InputErrors>
   }
 
@@ -1785,11 +1785,13 @@ export namespace Prisma {
 
   export type AuthtokenAvgAggregateOutputType = {
     authId: number | null
+    expiration: number | null
     authUserId: number | null
   }
 
   export type AuthtokenSumAggregateOutputType = {
     authId: number | null
+    expiration: number | null
     authUserId: number | null
   }
 
@@ -1797,7 +1799,7 @@ export namespace Prisma {
     authId: number | null
     createAt: Date | null
     updatedAt: Date | null
-    expiration: Date | null
+    expiration: number | null
     authToken: string | null
     authUserId: number | null
   }
@@ -1806,7 +1808,7 @@ export namespace Prisma {
     authId: number | null
     createAt: Date | null
     updatedAt: Date | null
-    expiration: Date | null
+    expiration: number | null
     authToken: string | null
     authUserId: number | null
   }
@@ -1825,11 +1827,13 @@ export namespace Prisma {
 
   export type AuthtokenAvgAggregateInputType = {
     authId?: true
+    expiration?: true
     authUserId?: true
   }
 
   export type AuthtokenSumAggregateInputType = {
     authId?: true
+    expiration?: true
     authUserId?: true
   }
 
@@ -1949,16 +1953,16 @@ export namespace Prisma {
   }
 
   export type GetAuthtokenAggregateType<T extends AuthtokenAggregateArgs> = {
-    [P in keyof T & keyof AggregateAuthtoken]: P extends '_count' | 'count'
-    ? T[P] extends true
-    ? number
-    : GetScalarType<T[P], AggregateAuthtoken[P]>
-    : GetScalarType<T[P], AggregateAuthtoken[P]>
+        [P in keyof T & keyof AggregateAuthtoken]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateAuthtoken[P]>
+      : GetScalarType<T[P], AggregateAuthtoken[P]>
   }
 
 
-
-
+    
+    
   export type AuthtokenGroupByArgs = {
     where?: AuthtokenWhereInput
     orderBy?: Enumerable<AuthtokenOrderByInput>
@@ -1978,7 +1982,7 @@ export namespace Prisma {
     authId: number
     createAt: Date
     updatedAt: Date
-    expiration: Date
+    expiration: number
     loginInfo: JsonValue
     authToken: string
     authUserId: number
@@ -1991,16 +1995,16 @@ export namespace Prisma {
 
   type GetAuthtokenGroupByPayload<T extends AuthtokenGroupByArgs> = Promise<
     Array<
-      PickArray<AuthtokenGroupByOutputType, T['by']> &
-      {
-        [P in ((keyof T) & (keyof AuthtokenGroupByOutputType))]: P extends '_count'
-        ? T[P] extends boolean
-        ? number
-        : GetScalarType<T[P], AuthtokenGroupByOutputType[P]>
-        : GetScalarType<T[P], AuthtokenGroupByOutputType[P]>
-      }
+      PickArray<AuthtokenGroupByOutputType, T['by']> & 
+        {
+          [P in ((keyof T) & (keyof AuthtokenGroupByOutputType))]: P extends '_count' 
+            ? T[P] extends boolean 
+              ? number 
+              : GetScalarType<T[P], AuthtokenGroupByOutputType[P]> 
+            : GetScalarType<T[P], AuthtokenGroupByOutputType[P]>
+        }
+      > 
     >
-  >
 
 
   export type AuthtokenSelect = {
@@ -2021,26 +2025,26 @@ export namespace Prisma {
   export type AuthtokenGetPayload<
     S extends boolean | null | undefined | AuthtokenArgs,
     U = keyof S
-    > = S extends true
-    ? Authtoken
+      > = S extends true
+        ? Authtoken
     : S extends undefined
     ? never
     : S extends AuthtokenArgs | AuthtokenFindManyArgs
-    ? 'include' extends U
-    ? Authtoken & {
-      [P in TrueKeys<S['include']>]:
-      P extends 'authUserKey'
-      ? ZarkUserGetPayload<S['include'][P]> : never
-    }
+    ?'include' extends U
+    ? Authtoken  & {
+    [P in TrueKeys<S['include']>]: 
+          P extends 'authUserKey'
+        ? ZarkUserGetPayload<S['include'][P]> : never
+  } 
     : 'select' extends U
     ? {
-      [P in TrueKeys<S['select']>]: P extends keyof Authtoken ? Authtoken[P]
-      :
-      P extends 'authUserKey'
-      ? ZarkUserGetPayload<S['select'][P]> : never
-    }
+    [P in TrueKeys<S['select']>]: P extends keyof Authtoken ?Authtoken [P]
+  : 
+          P extends 'authUserKey'
+        ? ZarkUserGetPayload<S['select'][P]> : never
+  } 
     : Authtoken
-    : Authtoken
+  : Authtoken
 
 
   type AuthtokenCountArgs = Merge<
@@ -2061,9 +2065,9 @@ export namespace Prisma {
      *   }
      * })
     **/
-    findUnique<T extends AuthtokenFindUniqueArgs, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+    findUnique<T extends AuthtokenFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args: SelectSubset<T, AuthtokenFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Authtoken'> extends True ? CheckSelect<T, Prisma__AuthtokenClient<Authtoken>, Prisma__AuthtokenClient<AuthtokenGetPayload<T>>> : CheckSelect<T, Prisma__AuthtokenClient<Authtoken | null>, Prisma__AuthtokenClient<AuthtokenGetPayload<T> | null>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'Authtoken'> extends True ? CheckSelect<T, Prisma__AuthtokenClient<Authtoken>, Prisma__AuthtokenClient<AuthtokenGetPayload<T>>> : CheckSelect<T, Prisma__AuthtokenClient<Authtoken | null >, Prisma__AuthtokenClient<AuthtokenGetPayload<T> | null >>
 
     /**
      * Find the first Authtoken that matches the filter.
@@ -2078,9 +2082,9 @@ export namespace Prisma {
      *   }
      * })
     **/
-    findFirst<T extends AuthtokenFindFirstArgs, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+    findFirst<T extends AuthtokenFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args?: SelectSubset<T, AuthtokenFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Authtoken'> extends True ? CheckSelect<T, Prisma__AuthtokenClient<Authtoken>, Prisma__AuthtokenClient<AuthtokenGetPayload<T>>> : CheckSelect<T, Prisma__AuthtokenClient<Authtoken | null>, Prisma__AuthtokenClient<AuthtokenGetPayload<T> | null>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'Authtoken'> extends True ? CheckSelect<T, Prisma__AuthtokenClient<Authtoken>, Prisma__AuthtokenClient<AuthtokenGetPayload<T>>> : CheckSelect<T, Prisma__AuthtokenClient<Authtoken | null >, Prisma__AuthtokenClient<AuthtokenGetPayload<T> | null >>
 
     /**
      * Find zero or more Authtokens that matches the filter.
@@ -2244,10 +2248,10 @@ export namespace Prisma {
       args?: Subset<T, AuthtokenCountArgs>,
     ): PrismaPromise<
       T extends _Record<'select', any>
-      ? T['select'] extends true
-      ? number
-      : GetScalarType<T['select'], AuthtokenCountAggregateOutputType>
-      : number
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], AuthtokenCountAggregateOutputType>
+        : number
     >
 
     /**
@@ -2301,8 +2305,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-      ? { orderBy: AuthtokenGroupByArgs['orderBy'] }
-      : { orderBy?: AuthtokenGroupByArgs['orderBy'] },
+        ? { orderBy: AuthtokenGroupByArgs['orderBy'] }
+        : { orderBy?: AuthtokenGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -2313,44 +2317,44 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-        [P in HavingFields]: P extends ByFields
-        ? never
-        : P extends string
-        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-        : [
-          Error,
-          'Field ',
-          P,
-          ` in "having" needs to be provided in "by"`,
-        ]
-      }[HavingFields]
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "take", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
     >(args: SubsetIntersection<T, AuthtokenGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAuthtokenGroupByPayload<T> : Promise<InputErrors>
   }
 
@@ -2377,7 +2381,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    authUserKey<T extends ZarkUserArgs = {}>(args?: Subset<T, ZarkUserArgs>): CheckSelect<T, Prisma__ZarkUserClient<ZarkUser | null>, Prisma__ZarkUserClient<ZarkUserGetPayload<T> | null>>;
+    authUserKey<T extends ZarkUserArgs = {}>(args?: Subset<T, ZarkUserArgs>): CheckSelect<T, Prisma__ZarkUserClient<ZarkUser | null >, Prisma__ZarkUserClient<ZarkUserGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -2875,16 +2879,16 @@ export namespace Prisma {
   }
 
   export type GetZarkCompanyAggregateType<T extends ZarkCompanyAggregateArgs> = {
-    [P in keyof T & keyof AggregateZarkCompany]: P extends '_count' | 'count'
-    ? T[P] extends true
-    ? number
-    : GetScalarType<T[P], AggregateZarkCompany[P]>
-    : GetScalarType<T[P], AggregateZarkCompany[P]>
+        [P in keyof T & keyof AggregateZarkCompany]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateZarkCompany[P]>
+      : GetScalarType<T[P], AggregateZarkCompany[P]>
   }
 
 
-
-
+    
+    
   export type ZarkCompanyGroupByArgs = {
     where?: ZarkCompanyWhereInput
     orderBy?: Enumerable<ZarkCompanyOrderByInput>
@@ -2917,16 +2921,16 @@ export namespace Prisma {
 
   type GetZarkCompanyGroupByPayload<T extends ZarkCompanyGroupByArgs> = Promise<
     Array<
-      PickArray<ZarkCompanyGroupByOutputType, T['by']> &
-      {
-        [P in ((keyof T) & (keyof ZarkCompanyGroupByOutputType))]: P extends '_count'
-        ? T[P] extends boolean
-        ? number
-        : GetScalarType<T[P], ZarkCompanyGroupByOutputType[P]>
-        : GetScalarType<T[P], ZarkCompanyGroupByOutputType[P]>
-      }
+      PickArray<ZarkCompanyGroupByOutputType, T['by']> & 
+        {
+          [P in ((keyof T) & (keyof ZarkCompanyGroupByOutputType))]: P extends '_count' 
+            ? T[P] extends boolean 
+              ? number 
+              : GetScalarType<T[P], ZarkCompanyGroupByOutputType[P]> 
+            : GetScalarType<T[P], ZarkCompanyGroupByOutputType[P]>
+        }
+      > 
     >
-  >
 
 
   export type ZarkCompanySelect = {
@@ -2942,21 +2946,21 @@ export namespace Prisma {
   export type ZarkCompanyGetPayload<
     S extends boolean | null | undefined | ZarkCompanyArgs,
     U = keyof S
-    > = S extends true
-    ? ZarkCompany
+      > = S extends true
+        ? ZarkCompany
     : S extends undefined
     ? never
     : S extends ZarkCompanyArgs | ZarkCompanyFindManyArgs
-    ? 'include' extends U
-    ? ZarkCompany
+    ?'include' extends U
+    ? ZarkCompany 
     : 'select' extends U
     ? {
-      [P in TrueKeys<S['select']>]: P extends keyof ZarkCompany ? ZarkCompany[P]
-      :
-      never
-    }
+    [P in TrueKeys<S['select']>]: P extends keyof ZarkCompany ?ZarkCompany [P]
+  : 
+     never
+  } 
     : ZarkCompany
-    : ZarkCompany
+  : ZarkCompany
 
 
   type ZarkCompanyCountArgs = Merge<
@@ -2977,9 +2981,9 @@ export namespace Prisma {
      *   }
      * })
     **/
-    findUnique<T extends ZarkCompanyFindUniqueArgs, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+    findUnique<T extends ZarkCompanyFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args: SelectSubset<T, ZarkCompanyFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ZarkCompany'> extends True ? CheckSelect<T, Prisma__ZarkCompanyClient<ZarkCompany>, Prisma__ZarkCompanyClient<ZarkCompanyGetPayload<T>>> : CheckSelect<T, Prisma__ZarkCompanyClient<ZarkCompany | null>, Prisma__ZarkCompanyClient<ZarkCompanyGetPayload<T> | null>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ZarkCompany'> extends True ? CheckSelect<T, Prisma__ZarkCompanyClient<ZarkCompany>, Prisma__ZarkCompanyClient<ZarkCompanyGetPayload<T>>> : CheckSelect<T, Prisma__ZarkCompanyClient<ZarkCompany | null >, Prisma__ZarkCompanyClient<ZarkCompanyGetPayload<T> | null >>
 
     /**
      * Find the first ZarkCompany that matches the filter.
@@ -2994,9 +2998,9 @@ export namespace Prisma {
      *   }
      * })
     **/
-    findFirst<T extends ZarkCompanyFindFirstArgs, LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+    findFirst<T extends ZarkCompanyFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
       args?: SelectSubset<T, ZarkCompanyFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ZarkCompany'> extends True ? CheckSelect<T, Prisma__ZarkCompanyClient<ZarkCompany>, Prisma__ZarkCompanyClient<ZarkCompanyGetPayload<T>>> : CheckSelect<T, Prisma__ZarkCompanyClient<ZarkCompany | null>, Prisma__ZarkCompanyClient<ZarkCompanyGetPayload<T> | null>>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ZarkCompany'> extends True ? CheckSelect<T, Prisma__ZarkCompanyClient<ZarkCompany>, Prisma__ZarkCompanyClient<ZarkCompanyGetPayload<T>>> : CheckSelect<T, Prisma__ZarkCompanyClient<ZarkCompany | null >, Prisma__ZarkCompanyClient<ZarkCompanyGetPayload<T> | null >>
 
     /**
      * Find zero or more ZarkCompanies that matches the filter.
@@ -3160,10 +3164,10 @@ export namespace Prisma {
       args?: Subset<T, ZarkCompanyCountArgs>,
     ): PrismaPromise<
       T extends _Record<'select', any>
-      ? T['select'] extends true
-      ? number
-      : GetScalarType<T['select'], ZarkCompanyCountAggregateOutputType>
-      : number
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ZarkCompanyCountAggregateOutputType>
+        : number
     >
 
     /**
@@ -3217,8 +3221,8 @@ export namespace Prisma {
         Extends<'take', Keys<T>>
       >,
       OrderByArg extends True extends HasSelectOrTake
-      ? { orderBy: ZarkCompanyGroupByArgs['orderBy'] }
-      : { orderBy?: ZarkCompanyGroupByArgs['orderBy'] },
+        ? { orderBy: ZarkCompanyGroupByArgs['orderBy'] }
+        : { orderBy?: ZarkCompanyGroupByArgs['orderBy'] },
       OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
       ByFields extends TupleToUnion<T['by']>,
       ByValid extends Has<ByFields, OrderFields>,
@@ -3229,44 +3233,44 @@ export namespace Prisma {
       ? `Error: "by" must not be empty.`
       : HavingValid extends False
       ? {
-        [P in HavingFields]: P extends ByFields
-        ? never
-        : P extends string
-        ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-        : [
-          Error,
-          'Field ',
-          P,
-          ` in "having" needs to be provided in "by"`,
-        ]
-      }[HavingFields]
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
       : 'take' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "take", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
       : 'skip' extends Keys<T>
       ? 'orderBy' extends Keys<T>
-      ? ByValid extends True
-      ? {}
-      : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
-      : 'Error: If you provide "skip", you also need to provide "orderBy"'
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
       : ByValid extends True
       ? {}
       : {
-        [P in OrderFields]: P extends ByFields
-        ? never
-        : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-      }[OrderFields]
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
     >(args: SubsetIntersection<T, ZarkCompanyGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetZarkCompanyGroupByPayload<T> : Promise<InputErrors>
   }
 
@@ -3720,7 +3724,7 @@ export namespace Prisma {
     authId?: IntFilter | number
     createAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
-    expiration?: DateTimeFilter | Date | string
+    expiration?: IntFilter | number
     loginInfo?: JsonFilter
     authToken?: StringFilter | string
     authUserKey?: XOR<ZarkUserRelationFilter, ZarkUserWhereInput>
@@ -3748,7 +3752,7 @@ export namespace Prisma {
     authId?: IntWithAggregatesFilter | number
     createAt?: DateTimeWithAggregatesFilter | Date | string
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
-    expiration?: DateTimeWithAggregatesFilter | Date | string
+    expiration?: IntWithAggregatesFilter | number
     loginInfo?: JsonWithAggregatesFilter
     authToken?: StringWithAggregatesFilter | string
     authUserId?: IntWithAggregatesFilter | number
@@ -3931,7 +3935,7 @@ export namespace Prisma {
   export type AuthtokenCreateInput = {
     createAt?: Date | string
     updatedAt?: Date | string
-    expiration: Date | string
+    expiration: number
     loginInfo: InputJsonValue
     authToken: string
     authUserKey: ZarkUserCreateNestedOneWithoutAuthTokenInput
@@ -3941,7 +3945,7 @@ export namespace Prisma {
     authId?: number
     createAt?: Date | string
     updatedAt?: Date | string
-    expiration: Date | string
+    expiration: number
     loginInfo: InputJsonValue
     authToken: string
     authUserId: number
@@ -3950,7 +3954,7 @@ export namespace Prisma {
   export type AuthtokenUpdateInput = {
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiration?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiration?: IntFieldUpdateOperationsInput | number
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
     authUserKey?: ZarkUserUpdateOneRequiredWithoutAuthTokenInput
@@ -3960,7 +3964,7 @@ export namespace Prisma {
     authId?: IntFieldUpdateOperationsInput | number
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiration?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiration?: IntFieldUpdateOperationsInput | number
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
     authUserId?: IntFieldUpdateOperationsInput | number
@@ -3970,7 +3974,7 @@ export namespace Prisma {
     authId?: number
     createAt?: Date | string
     updatedAt?: Date | string
-    expiration: Date | string
+    expiration: number
     loginInfo: InputJsonValue
     authToken: string
     authUserId: number
@@ -3979,7 +3983,7 @@ export namespace Prisma {
   export type AuthtokenUpdateManyMutationInput = {
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiration?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiration?: IntFieldUpdateOperationsInput | number
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
   }
@@ -3988,7 +3992,7 @@ export namespace Prisma {
     authId?: IntFieldUpdateOperationsInput | number
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiration?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiration?: IntFieldUpdateOperationsInput | number
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
     authUserId?: IntFieldUpdateOperationsInput | number
@@ -4130,11 +4134,11 @@ export namespace Prisma {
     some?: AuthtokenWhereInput
     none?: AuthtokenWhereInput
   }
-  export type JsonNullableFilter =
+  export type JsonNullableFilter = 
     | PatchUndefined<
-      Either<Required<JsonNullableFilterBase>, Exclude<keyof Required<JsonNullableFilterBase>, 'path'>>,
-      Required<JsonNullableFilterBase>
-    >
+        Either<Required<JsonNullableFilterBase>, Exclude<keyof Required<JsonNullableFilterBase>, 'path'>>,
+        Required<JsonNullableFilterBase>
+      >
     | OptionalFlat<Omit<Required<JsonNullableFilterBase>, 'path'>>
 
   export type JsonNullableFilterBase = {
@@ -4337,11 +4341,11 @@ export namespace Prisma {
     **/
     max?: NestedEnumLOGIN_TYPEFilter
   }
-  export type JsonNullableWithAggregatesFilter =
+  export type JsonNullableWithAggregatesFilter = 
     | PatchUndefined<
-      Either<Required<JsonNullableWithAggregatesFilterBase>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase>, 'path'>>,
-      Required<JsonNullableWithAggregatesFilterBase>
-    >
+        Either<Required<JsonNullableWithAggregatesFilterBase>, Exclude<keyof Required<JsonNullableWithAggregatesFilterBase>, 'path'>>,
+        Required<JsonNullableWithAggregatesFilterBase>
+      >
     | OptionalFlat<Omit<Required<JsonNullableWithAggregatesFilterBase>, 'path'>>
 
   export type JsonNullableWithAggregatesFilterBase = {
@@ -4391,11 +4395,11 @@ export namespace Prisma {
     **/
     max?: NestedEnumLANGUAGEFilter
   }
-  export type JsonFilter =
+  export type JsonFilter = 
     | PatchUndefined<
-      Either<Required<JsonFilterBase>, Exclude<keyof Required<JsonFilterBase>, 'path'>>,
-      Required<JsonFilterBase>
-    >
+        Either<Required<JsonFilterBase>, Exclude<keyof Required<JsonFilterBase>, 'path'>>,
+        Required<JsonFilterBase>
+      >
     | OptionalFlat<Omit<Required<JsonFilterBase>, 'path'>>
 
   export type JsonFilterBase = {
@@ -4407,11 +4411,11 @@ export namespace Prisma {
     is?: ZarkUserWhereInput
     isNot?: ZarkUserWhereInput
   }
-  export type JsonWithAggregatesFilter =
+  export type JsonWithAggregatesFilter = 
     | PatchUndefined<
-      Either<Required<JsonWithAggregatesFilterBase>, Exclude<keyof Required<JsonWithAggregatesFilterBase>, 'path'>>,
-      Required<JsonWithAggregatesFilterBase>
-    >
+        Either<Required<JsonWithAggregatesFilterBase>, Exclude<keyof Required<JsonWithAggregatesFilterBase>, 'path'>>,
+        Required<JsonWithAggregatesFilterBase>
+      >
     | OptionalFlat<Omit<Required<JsonWithAggregatesFilterBase>, 'path'>>
 
   export type JsonWithAggregatesFilterBase = {
@@ -4797,11 +4801,11 @@ export namespace Prisma {
     **/
     max?: NestedEnumLOGIN_TYPEFilter
   }
-  export type NestedJsonNullableFilter =
+  export type NestedJsonNullableFilter = 
     | PatchUndefined<
-      Either<Required<NestedJsonNullableFilterBase>, Exclude<keyof Required<NestedJsonNullableFilterBase>, 'path'>>,
-      Required<NestedJsonNullableFilterBase>
-    >
+        Either<Required<NestedJsonNullableFilterBase>, Exclude<keyof Required<NestedJsonNullableFilterBase>, 'path'>>,
+        Required<NestedJsonNullableFilterBase>
+      >
     | OptionalFlat<Omit<Required<NestedJsonNullableFilterBase>, 'path'>>
 
   export type NestedJsonNullableFilterBase = {
@@ -4833,11 +4837,11 @@ export namespace Prisma {
     **/
     max?: NestedEnumLANGUAGEFilter
   }
-  export type NestedJsonFilter =
+  export type NestedJsonFilter = 
     | PatchUndefined<
-      Either<Required<NestedJsonFilterBase>, Exclude<keyof Required<NestedJsonFilterBase>, 'path'>>,
-      Required<NestedJsonFilterBase>
-    >
+        Either<Required<NestedJsonFilterBase>, Exclude<keyof Required<NestedJsonFilterBase>, 'path'>>,
+        Required<NestedJsonFilterBase>
+      >
     | OptionalFlat<Omit<Required<NestedJsonFilterBase>, 'path'>>
 
   export type NestedJsonFilterBase = {
@@ -4848,7 +4852,7 @@ export namespace Prisma {
   export type AuthtokenCreateWithoutAuthUserKeyInput = {
     createAt?: Date | string
     updatedAt?: Date | string
-    expiration: Date | string
+    expiration: number
     loginInfo: InputJsonValue
     authToken: string
   }
@@ -4857,7 +4861,7 @@ export namespace Prisma {
     authId?: number
     createAt?: Date | string
     updatedAt?: Date | string
-    expiration: Date | string
+    expiration: number
     loginInfo: InputJsonValue
     authToken: string
   }
@@ -4895,7 +4899,7 @@ export namespace Prisma {
     authId?: IntFilter | number
     createAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
-    expiration?: DateTimeFilter | Date | string
+    expiration?: IntFilter | number
     loginInfo?: JsonFilter
     authToken?: StringFilter | string
     authUserId?: IntFilter | number
@@ -4989,7 +4993,7 @@ export namespace Prisma {
     authId?: number
     createAt?: Date | string
     updatedAt?: Date | string
-    expiration: Date | string
+    expiration: number
     loginInfo: InputJsonValue
     authToken: string
   }
@@ -4997,7 +5001,7 @@ export namespace Prisma {
   export type AuthtokenUpdateWithoutAuthUserKeyInput = {
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiration?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiration?: IntFieldUpdateOperationsInput | number
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
   }
@@ -5006,7 +5010,7 @@ export namespace Prisma {
     authId?: IntFieldUpdateOperationsInput | number
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiration?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiration?: IntFieldUpdateOperationsInput | number
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
   }
@@ -5015,7 +5019,7 @@ export namespace Prisma {
     authId?: IntFieldUpdateOperationsInput | number
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
-    expiration?: DateTimeFieldUpdateOperationsInput | Date | string
+    expiration?: IntFieldUpdateOperationsInput | number
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
   }
