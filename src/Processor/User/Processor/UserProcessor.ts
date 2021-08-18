@@ -36,7 +36,7 @@ export class UserProcessor implements IUserProcessor {
         let refreshToken = zkuser.authToken as Authtoken;
         refreshToken.expiration = Math.floor(Date.now() / 1000) + (config.refreshTokenExpire);
         refreshToken.authToken = await jwt.sign({
-            exp: Math.floor(Date.now() / 1000) + (config.refreshTokenExpire),
+            exp:refreshToken.expiration,
             data: { zkuid: zkuser.zkuid }
         }, config.refreshTokenSecret);
 
@@ -46,6 +46,25 @@ export class UserProcessor implements IUserProcessor {
 
         return zkuser;
     }
+    async getAccessToken(refreshToken:Authtoken): Promise<Authtoken>{
+        let accessToken={} as Authtoken;
+        accessToken.expiration = Math.floor(Date.now() / 1000) + (config.accessTokenExpire);
 
+        jwt.verify(refreshToken.authToken,config.refreshTokenSecret,(err,res)=>{
+            if(err){
+                return accessToken;
+            }
+            else{
+                   accessToken.authToken = await jwt.sign({
+                     exp: accessToken.expiration,
+                     data: { zkuid: zkuser.zkuid }
+                  }, config.accessTokenSecret);
+                return accessToken;
+            }
+        });
+        
+        
+        
+    }
 
 }
