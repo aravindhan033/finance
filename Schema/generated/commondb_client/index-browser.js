@@ -107,7 +107,8 @@ exports.Prisma.ZarkCompanyScalarFieldEnum = makeEnum({
   country: 'country',
   taxNumber: 'taxNumber',
   createAt: 'createAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  createdBy: 'createdBy'
 });
 
 exports.Prisma.SortOrder = makeEnum({

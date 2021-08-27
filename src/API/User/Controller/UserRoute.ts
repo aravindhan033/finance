@@ -28,7 +28,7 @@ const userRoutes: FastifyPluginAsync = async (server: FastifyInstance, options: 
         reply.send({result:await userProcessor.checkIsExistingUser(zkUser)});
     });
 
-    server.post("/userlogin", { schema: userlogin }, (req, reply) => {
+    server.put("/userlogin", { schema: userlogin }, (req, reply) => {
         let zkUser: ZKUser = req.body as ZKUser;
         let loginInfo: JSON = {} as JSON;
         loginInfo["device"] = req.body["device"]
@@ -47,7 +47,7 @@ const userRoutes: FastifyPluginAsync = async (server: FastifyInstance, options: 
         });
     });
     
-    server.post("/updateuser", { schema: userupdate , preValidation: AuthtokenValidation }, (req, reply) => {
+    server.put("/updateuser", { schema: userupdate , preValidation: AuthtokenValidation }, (req, reply) => {
         let zkUser: ZKUser = req.body as ZKUser;
         const userProcessor: UserProcessor = new UserProcessor();
         userProcessor.updateUser(zkUser).then((res)=>{

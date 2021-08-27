@@ -8,13 +8,11 @@ const responseHooks: FastifyPluginAsync = async (server: FastifyInstance, option
     console.log("i am a error me")
     done()
   })
-
-  server.addHook('onError', (request, reply, error, done) => {
-    // Some code
-    console.log("send me")
-    done()
+/*
+  server.addHook('onSend', (request, reply, payload, done) => {    
+    done(null, {status:reply.statusCode,data:payload});
   })
-
+*/
   server.addHook('onClose', (instance, done) => {
     done()
   })

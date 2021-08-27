@@ -34,7 +34,7 @@ const userRoutes = (server, options) => __awaiter(void 0, void 0, void 0, functi
         const userProcessor = new UserProcessor_1.UserProcessor();
         reply.send({ result: yield userProcessor.checkIsExistingUser(zkUser) });
     }));
-    server.post("/userlogin", { schema: UserSchema_1.userlogin }, (req, reply) => {
+    server.put("/userlogin", { schema: UserSchema_1.userlogin }, (req, reply) => {
         let zkUser = req.body;
         let loginInfo = {};
         loginInfo["device"] = req.body["device"];
@@ -51,7 +51,7 @@ const userRoutes = (server, options) => __awaiter(void 0, void 0, void 0, functi
             reply.send({});
         });
     });
-    server.post("/updateuser", { schema: UserSchema_1.userupdate, preValidation: Auth_1.default }, (req, reply) => {
+    server.put("/updateuser", { schema: UserSchema_1.userupdate, preValidation: Auth_1.default }, (req, reply) => {
         let zkUser = req.body;
         const userProcessor = new UserProcessor_1.UserProcessor();
         userProcessor.updateUser(zkUser).then((res) => {

@@ -19,10 +19,8 @@ const responseHooks = (server, options) => __awaiter(void 0, void 0, void 0, fun
         console.log("i am a error me");
         done();
     });
-    server.addHook('onError', (request, reply, error, done) => {
-        // Some code
-        console.log("send me");
-        done();
+    server.addHook('onSend', (request, reply, payload, done) => {
+        done(null, { status: reply.statusCode, data: payload });
     });
     server.addHook('onClose', (instance, done) => {
         done();

@@ -57,11 +57,12 @@ export type Authtoken = {
 export type ZarkCompany = {
   zkcid: number
   companyName: string
-  companyAddress: string
-  country: string
-  taxNumber: string
+  companyAddress: string | null
+  country: string | null
+  taxNumber: string | null
   createAt: Date
   updatedAt: Date
+  createdBy: number
 }
 
 
@@ -1087,10 +1088,12 @@ export namespace Prisma {
     timezone?: boolean
     language?: boolean
     isActive?: boolean
+    ZarkCompany?: boolean | ZarkCompanyFindManyArgs
   }
 
   export type ZarkUserInclude = {
     authToken?: boolean | AuthtokenFindManyArgs
+    ZarkCompany?: boolean | ZarkCompanyFindManyArgs
   }
 
   export type ZarkUserGetPayload<
@@ -1105,14 +1108,18 @@ export namespace Prisma {
     ? ZarkUser  & {
     [P in TrueKeys<S['include']>]: 
           P extends 'authToken'
-        ? Array < AuthtokenGetPayload<S['include'][P]>>  : never
+        ? Array < AuthtokenGetPayload<S['include'][P]>>  :
+        P extends 'ZarkCompany'
+        ? Array < ZarkCompanyGetPayload<S['include'][P]>>  : never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof ZarkUser ?ZarkUser [P]
   : 
           P extends 'authToken'
-        ? Array < AuthtokenGetPayload<S['select'][P]>>  : never
+        ? Array < AuthtokenGetPayload<S['select'][P]>>  :
+        P extends 'ZarkCompany'
+        ? Array < ZarkCompanyGetPayload<S['select'][P]>>  : never
   } 
     : ZarkUser
   : ZarkUser
@@ -1453,6 +1460,8 @@ export namespace Prisma {
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
     authToken<T extends AuthtokenFindManyArgs = {}>(args?: Subset<T, AuthtokenFindManyArgs>): CheckSelect<T, PrismaPromise<Array<Authtoken>>, PrismaPromise<Array<AuthtokenGetPayload<T>>>>;
+
+    ZarkCompany<T extends ZarkCompanyFindManyArgs = {}>(args?: Subset<T, ZarkCompanyFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ZarkCompany>>, PrismaPromise<Array<ZarkCompanyGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -2724,10 +2733,12 @@ export namespace Prisma {
 
   export type ZarkCompanyAvgAggregateOutputType = {
     zkcid: number | null
+    createdBy: number | null
   }
 
   export type ZarkCompanySumAggregateOutputType = {
     zkcid: number | null
+    createdBy: number | null
   }
 
   export type ZarkCompanyMinAggregateOutputType = {
@@ -2738,6 +2749,7 @@ export namespace Prisma {
     taxNumber: string | null
     createAt: Date | null
     updatedAt: Date | null
+    createdBy: number | null
   }
 
   export type ZarkCompanyMaxAggregateOutputType = {
@@ -2748,6 +2760,7 @@ export namespace Prisma {
     taxNumber: string | null
     createAt: Date | null
     updatedAt: Date | null
+    createdBy: number | null
   }
 
   export type ZarkCompanyCountAggregateOutputType = {
@@ -2758,16 +2771,19 @@ export namespace Prisma {
     taxNumber: number
     createAt: number
     updatedAt: number
+    createdBy: number
     _all: number
   }
 
 
   export type ZarkCompanyAvgAggregateInputType = {
     zkcid?: true
+    createdBy?: true
   }
 
   export type ZarkCompanySumAggregateInputType = {
     zkcid?: true
+    createdBy?: true
   }
 
   export type ZarkCompanyMinAggregateInputType = {
@@ -2778,6 +2794,7 @@ export namespace Prisma {
     taxNumber?: true
     createAt?: true
     updatedAt?: true
+    createdBy?: true
   }
 
   export type ZarkCompanyMaxAggregateInputType = {
@@ -2788,6 +2805,7 @@ export namespace Prisma {
     taxNumber?: true
     createAt?: true
     updatedAt?: true
+    createdBy?: true
   }
 
   export type ZarkCompanyCountAggregateInputType = {
@@ -2798,6 +2816,7 @@ export namespace Prisma {
     taxNumber?: true
     createAt?: true
     updatedAt?: true
+    createdBy?: true
     _all?: true
   }
 
@@ -2916,11 +2935,12 @@ export namespace Prisma {
   export type ZarkCompanyGroupByOutputType = {
     zkcid: number
     companyName: string
-    companyAddress: string
-    country: string
-    taxNumber: string
+    companyAddress: string | null
+    country: string | null
+    taxNumber: string | null
     createAt: Date
     updatedAt: Date
+    createdBy: number
     _count: ZarkCompanyCountAggregateOutputType | null
     _avg: ZarkCompanyAvgAggregateOutputType | null
     _sum: ZarkCompanySumAggregateOutputType | null
@@ -2950,6 +2970,12 @@ export namespace Prisma {
     taxNumber?: boolean
     createAt?: boolean
     updatedAt?: boolean
+    createByFKey?: boolean | ZarkUserArgs
+    createdBy?: boolean
+  }
+
+  export type ZarkCompanyInclude = {
+    createByFKey?: boolean | ZarkUserArgs
   }
 
   export type ZarkCompanyGetPayload<
@@ -2961,12 +2987,17 @@ export namespace Prisma {
     ? never
     : S extends ZarkCompanyArgs | ZarkCompanyFindManyArgs
     ?'include' extends U
-    ? ZarkCompany 
+    ? ZarkCompany  & {
+    [P in TrueKeys<S['include']>]: 
+          P extends 'createByFKey'
+        ? ZarkUserGetPayload<S['include'][P]> : never
+  } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof ZarkCompany ?ZarkCompany [P]
   : 
-     never
+          P extends 'createByFKey'
+        ? ZarkUserGetPayload<S['select'][P]> : never
   } 
     : ZarkCompany
   : ZarkCompany
@@ -3306,6 +3337,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
+    createByFKey<T extends ZarkUserArgs = {}>(args?: Subset<T, ZarkUserArgs>): CheckSelect<T, Prisma__ZarkUserClient<ZarkUser | null >, Prisma__ZarkUserClient<ZarkUserGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -3342,6 +3374,11 @@ export namespace Prisma {
     **/
     select?: ZarkCompanySelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZarkCompanyInclude | null
+    /**
      * Throw an Error if a ZarkCompany can't be found
      * 
     **/
@@ -3363,6 +3400,11 @@ export namespace Prisma {
      * 
     **/
     select?: ZarkCompanySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZarkCompanyInclude | null
     /**
      * Throw an Error if a ZarkCompany can't be found
      * 
@@ -3421,6 +3463,11 @@ export namespace Prisma {
     **/
     select?: ZarkCompanySelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZarkCompanyInclude | null
+    /**
      * Filter, which ZarkCompanies to fetch.
      * 
     **/
@@ -3467,6 +3514,11 @@ export namespace Prisma {
     **/
     select?: ZarkCompanySelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZarkCompanyInclude | null
+    /**
      * The data needed to create a ZarkCompany.
      * 
     **/
@@ -3492,6 +3544,11 @@ export namespace Prisma {
      * 
     **/
     select?: ZarkCompanySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZarkCompanyInclude | null
     /**
      * The data needed to update a ZarkCompany.
      * 
@@ -3524,6 +3581,11 @@ export namespace Prisma {
     **/
     select?: ZarkCompanySelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZarkCompanyInclude | null
+    /**
      * The filter to search for the ZarkCompany to update in case it exists.
      * 
     **/
@@ -3551,6 +3613,11 @@ export namespace Prisma {
     **/
     select?: ZarkCompanySelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZarkCompanyInclude | null
+    /**
      * Filter which ZarkCompany to delete.
      * 
     **/
@@ -3575,6 +3642,11 @@ export namespace Prisma {
      * 
     **/
     select?: ZarkCompanySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZarkCompanyInclude | null
   }
 
 
@@ -3629,7 +3701,8 @@ export namespace Prisma {
     country: 'country',
     taxNumber: 'taxNumber',
     createAt: 'createAt',
-    updatedAt: 'updatedAt'
+    updatedAt: 'updatedAt',
+    createdBy: 'createdBy'
   };
 
   export type ZarkCompanyScalarFieldEnum = (typeof ZarkCompanyScalarFieldEnum)[keyof typeof ZarkCompanyScalarFieldEnum]
@@ -3677,6 +3750,7 @@ export namespace Prisma {
     timezone?: StringFilter | string
     language?: EnumLANGUAGEFilter | LANGUAGE
     isActive?: BoolFilter | boolean
+    ZarkCompany?: ZarkCompanyListRelationFilter
   }
 
   export type ZarkUserOrderByInput = {
@@ -3777,11 +3851,13 @@ export namespace Prisma {
     NOT?: Enumerable<ZarkCompanyWhereInput>
     zkcid?: IntFilter | number
     companyName?: StringFilter | string
-    companyAddress?: StringFilter | string
-    country?: StringFilter | string
-    taxNumber?: StringFilter | string
+    companyAddress?: StringNullableFilter | string | null
+    country?: StringNullableFilter | string | null
+    taxNumber?: StringNullableFilter | string | null
     createAt?: DateTimeFilter | Date | string
     updatedAt?: DateTimeFilter | Date | string
+    createByFKey?: XOR<ZarkUserRelationFilter, ZarkUserWhereInput>
+    createdBy?: IntFilter | number
   }
 
   export type ZarkCompanyOrderByInput = {
@@ -3792,6 +3868,7 @@ export namespace Prisma {
     taxNumber?: SortOrder
     createAt?: SortOrder
     updatedAt?: SortOrder
+    createdBy?: SortOrder
   }
 
   export type ZarkCompanyWhereUniqueInput = {
@@ -3804,11 +3881,12 @@ export namespace Prisma {
     NOT?: Enumerable<ZarkCompanyScalarWhereWithAggregatesInput>
     zkcid?: IntWithAggregatesFilter | number
     companyName?: StringWithAggregatesFilter | string
-    companyAddress?: StringWithAggregatesFilter | string
-    country?: StringWithAggregatesFilter | string
-    taxNumber?: StringWithAggregatesFilter | string
+    companyAddress?: StringNullableWithAggregatesFilter | string | null
+    country?: StringNullableWithAggregatesFilter | string | null
+    taxNumber?: StringNullableWithAggregatesFilter | string | null
     createAt?: DateTimeWithAggregatesFilter | Date | string
     updatedAt?: DateTimeWithAggregatesFilter | Date | string
+    createdBy?: IntWithAggregatesFilter | number
   }
 
   export type ZarkUserCreateInput = {
@@ -3828,6 +3906,7 @@ export namespace Prisma {
     language?: LANGUAGE
     isActive?: boolean
     authToken?: AuthtokenCreateNestedManyWithoutAuthUserKeyInput
+    ZarkCompany?: ZarkCompanyCreateNestedManyWithoutCreateByFKeyInput
   }
 
   export type ZarkUserUncheckedCreateInput = {
@@ -3848,6 +3927,7 @@ export namespace Prisma {
     language?: LANGUAGE
     isActive?: boolean
     authToken?: AuthtokenUncheckedCreateNestedManyWithoutAuthUserKeyInput
+    ZarkCompany?: ZarkCompanyUncheckedCreateNestedManyWithoutCreateByFKeyInput
   }
 
   export type ZarkUserUpdateInput = {
@@ -3867,6 +3947,7 @@ export namespace Prisma {
     language?: EnumLANGUAGEFieldUpdateOperationsInput | LANGUAGE
     isActive?: BoolFieldUpdateOperationsInput | boolean
     authToken?: AuthtokenUpdateManyWithoutAuthUserKeyInput
+    ZarkCompany?: ZarkCompanyUpdateManyWithoutCreateByFKeyInput
   }
 
   export type ZarkUserUncheckedUpdateInput = {
@@ -3887,6 +3968,7 @@ export namespace Prisma {
     language?: EnumLANGUAGEFieldUpdateOperationsInput | LANGUAGE
     isActive?: BoolFieldUpdateOperationsInput | boolean
     authToken?: AuthtokenUncheckedUpdateManyWithoutAuthUserKeyInput
+    ZarkCompany?: ZarkCompanyUncheckedUpdateManyWithoutCreateByFKeyInput
   }
 
   export type ZarkUserCreateManyInput = {
@@ -4020,57 +4102,62 @@ export namespace Prisma {
 
   export type ZarkCompanyCreateInput = {
     companyName: string
-    companyAddress: string
-    country: string
-    taxNumber: string
+    companyAddress?: string | null
+    country?: string | null
+    taxNumber?: string | null
     createAt?: Date | string
     updatedAt?: Date | string
+    createByFKey: ZarkUserCreateNestedOneWithoutZarkCompanyInput
   }
 
   export type ZarkCompanyUncheckedCreateInput = {
     zkcid?: number
     companyName: string
-    companyAddress: string
-    country: string
-    taxNumber: string
+    companyAddress?: string | null
+    country?: string | null
+    taxNumber?: string | null
     createAt?: Date | string
     updatedAt?: Date | string
+    createdBy: number
   }
 
   export type ZarkCompanyUpdateInput = {
     companyName?: StringFieldUpdateOperationsInput | string
-    companyAddress?: StringFieldUpdateOperationsInput | string
-    country?: StringFieldUpdateOperationsInput | string
-    taxNumber?: StringFieldUpdateOperationsInput | string
+    companyAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    taxNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createByFKey?: ZarkUserUpdateOneRequiredWithoutZarkCompanyInput
   }
 
   export type ZarkCompanyUncheckedUpdateInput = {
     zkcid?: IntFieldUpdateOperationsInput | number
     companyName?: StringFieldUpdateOperationsInput | string
-    companyAddress?: StringFieldUpdateOperationsInput | string
-    country?: StringFieldUpdateOperationsInput | string
-    taxNumber?: StringFieldUpdateOperationsInput | string
+    companyAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    taxNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: IntFieldUpdateOperationsInput | number
   }
 
   export type ZarkCompanyCreateManyInput = {
     zkcid?: number
     companyName: string
-    companyAddress: string
-    country: string
-    taxNumber: string
+    companyAddress?: string | null
+    country?: string | null
+    taxNumber?: string | null
     createAt?: Date | string
     updatedAt?: Date | string
+    createdBy: number
   }
 
   export type ZarkCompanyUpdateManyMutationInput = {
     companyName?: StringFieldUpdateOperationsInput | string
-    companyAddress?: StringFieldUpdateOperationsInput | string
-    country?: StringFieldUpdateOperationsInput | string
-    taxNumber?: StringFieldUpdateOperationsInput | string
+    companyAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    taxNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
@@ -4078,11 +4165,12 @@ export namespace Prisma {
   export type ZarkCompanyUncheckedUpdateManyInput = {
     zkcid?: IntFieldUpdateOperationsInput | number
     companyName?: StringFieldUpdateOperationsInput | string
-    companyAddress?: StringFieldUpdateOperationsInput | string
-    country?: StringFieldUpdateOperationsInput | string
-    taxNumber?: StringFieldUpdateOperationsInput | string
+    companyAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    taxNumber?: NullableStringFieldUpdateOperationsInput | string | null
     createAt?: DateTimeFieldUpdateOperationsInput | Date | string
     updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    createdBy?: IntFieldUpdateOperationsInput | number
   }
 
   export type IntFilter = {
@@ -4171,6 +4259,12 @@ export namespace Prisma {
     in?: Enumerable<LANGUAGE>
     notIn?: Enumerable<LANGUAGE>
     not?: NestedEnumLANGUAGEFilter | LANGUAGE
+  }
+
+  export type ZarkCompanyListRelationFilter = {
+    every?: ZarkCompanyWhereInput
+    some?: ZarkCompanyWhereInput
+    none?: ZarkCompanyWhereInput
   }
 
   export type ZarkUserEmailMobile_numberCompoundUniqueInput = {
@@ -4468,11 +4562,25 @@ export namespace Prisma {
     connect?: Enumerable<AuthtokenWhereUniqueInput>
   }
 
+  export type ZarkCompanyCreateNestedManyWithoutCreateByFKeyInput = {
+    create?: XOR<Enumerable<ZarkCompanyCreateWithoutCreateByFKeyInput>, Enumerable<ZarkCompanyUncheckedCreateWithoutCreateByFKeyInput>>
+    connectOrCreate?: Enumerable<ZarkCompanyCreateOrConnectWithoutCreateByFKeyInput>
+    createMany?: ZarkCompanyCreateManyCreateByFKeyInputEnvelope
+    connect?: Enumerable<ZarkCompanyWhereUniqueInput>
+  }
+
   export type AuthtokenUncheckedCreateNestedManyWithoutAuthUserKeyInput = {
     create?: XOR<Enumerable<AuthtokenCreateWithoutAuthUserKeyInput>, Enumerable<AuthtokenUncheckedCreateWithoutAuthUserKeyInput>>
     connectOrCreate?: Enumerable<AuthtokenCreateOrConnectWithoutAuthUserKeyInput>
     createMany?: AuthtokenCreateManyAuthUserKeyInputEnvelope
     connect?: Enumerable<AuthtokenWhereUniqueInput>
+  }
+
+  export type ZarkCompanyUncheckedCreateNestedManyWithoutCreateByFKeyInput = {
+    create?: XOR<Enumerable<ZarkCompanyCreateWithoutCreateByFKeyInput>, Enumerable<ZarkCompanyUncheckedCreateWithoutCreateByFKeyInput>>
+    connectOrCreate?: Enumerable<ZarkCompanyCreateOrConnectWithoutCreateByFKeyInput>
+    createMany?: ZarkCompanyCreateManyCreateByFKeyInputEnvelope
+    connect?: Enumerable<ZarkCompanyWhereUniqueInput>
   }
 
   export type StringFieldUpdateOperationsInput = {
@@ -4513,6 +4621,20 @@ export namespace Prisma {
     deleteMany?: Enumerable<AuthtokenScalarWhereInput>
   }
 
+  export type ZarkCompanyUpdateManyWithoutCreateByFKeyInput = {
+    create?: XOR<Enumerable<ZarkCompanyCreateWithoutCreateByFKeyInput>, Enumerable<ZarkCompanyUncheckedCreateWithoutCreateByFKeyInput>>
+    connectOrCreate?: Enumerable<ZarkCompanyCreateOrConnectWithoutCreateByFKeyInput>
+    upsert?: Enumerable<ZarkCompanyUpsertWithWhereUniqueWithoutCreateByFKeyInput>
+    createMany?: ZarkCompanyCreateManyCreateByFKeyInputEnvelope
+    connect?: Enumerable<ZarkCompanyWhereUniqueInput>
+    set?: Enumerable<ZarkCompanyWhereUniqueInput>
+    disconnect?: Enumerable<ZarkCompanyWhereUniqueInput>
+    delete?: Enumerable<ZarkCompanyWhereUniqueInput>
+    update?: Enumerable<ZarkCompanyUpdateWithWhereUniqueWithoutCreateByFKeyInput>
+    updateMany?: Enumerable<ZarkCompanyUpdateManyWithWhereWithoutCreateByFKeyInput>
+    deleteMany?: Enumerable<ZarkCompanyScalarWhereInput>
+  }
+
   export type IntFieldUpdateOperationsInput = {
     set?: number
     increment?: number
@@ -4535,6 +4657,20 @@ export namespace Prisma {
     deleteMany?: Enumerable<AuthtokenScalarWhereInput>
   }
 
+  export type ZarkCompanyUncheckedUpdateManyWithoutCreateByFKeyInput = {
+    create?: XOR<Enumerable<ZarkCompanyCreateWithoutCreateByFKeyInput>, Enumerable<ZarkCompanyUncheckedCreateWithoutCreateByFKeyInput>>
+    connectOrCreate?: Enumerable<ZarkCompanyCreateOrConnectWithoutCreateByFKeyInput>
+    upsert?: Enumerable<ZarkCompanyUpsertWithWhereUniqueWithoutCreateByFKeyInput>
+    createMany?: ZarkCompanyCreateManyCreateByFKeyInputEnvelope
+    connect?: Enumerable<ZarkCompanyWhereUniqueInput>
+    set?: Enumerable<ZarkCompanyWhereUniqueInput>
+    disconnect?: Enumerable<ZarkCompanyWhereUniqueInput>
+    delete?: Enumerable<ZarkCompanyWhereUniqueInput>
+    update?: Enumerable<ZarkCompanyUpdateWithWhereUniqueWithoutCreateByFKeyInput>
+    updateMany?: Enumerable<ZarkCompanyUpdateManyWithWhereWithoutCreateByFKeyInput>
+    deleteMany?: Enumerable<ZarkCompanyScalarWhereInput>
+  }
+
   export type ZarkUserCreateNestedOneWithoutAuthTokenInput = {
     create?: XOR<ZarkUserCreateWithoutAuthTokenInput, ZarkUserUncheckedCreateWithoutAuthTokenInput>
     connectOrCreate?: ZarkUserCreateOrConnectWithoutAuthTokenInput
@@ -4547,6 +4683,20 @@ export namespace Prisma {
     upsert?: ZarkUserUpsertWithoutAuthTokenInput
     connect?: ZarkUserWhereUniqueInput
     update?: XOR<ZarkUserUpdateWithoutAuthTokenInput, ZarkUserUncheckedUpdateWithoutAuthTokenInput>
+  }
+
+  export type ZarkUserCreateNestedOneWithoutZarkCompanyInput = {
+    create?: XOR<ZarkUserCreateWithoutZarkCompanyInput, ZarkUserUncheckedCreateWithoutZarkCompanyInput>
+    connectOrCreate?: ZarkUserCreateOrConnectWithoutZarkCompanyInput
+    connect?: ZarkUserWhereUniqueInput
+  }
+
+  export type ZarkUserUpdateOneRequiredWithoutZarkCompanyInput = {
+    create?: XOR<ZarkUserCreateWithoutZarkCompanyInput, ZarkUserUncheckedCreateWithoutZarkCompanyInput>
+    connectOrCreate?: ZarkUserCreateOrConnectWithoutZarkCompanyInput
+    upsert?: ZarkUserUpsertWithoutZarkCompanyInput
+    connect?: ZarkUserWhereUniqueInput
+    update?: XOR<ZarkUserUpdateWithoutZarkCompanyInput, ZarkUserUncheckedUpdateWithoutZarkCompanyInput>
   }
 
   export type NestedIntFilter = {
@@ -4898,6 +5048,35 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ZarkCompanyCreateWithoutCreateByFKeyInput = {
+    companyName: string
+    companyAddress?: string | null
+    country?: string | null
+    taxNumber?: string | null
+    createAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ZarkCompanyUncheckedCreateWithoutCreateByFKeyInput = {
+    zkcid?: number
+    companyName: string
+    companyAddress?: string | null
+    country?: string | null
+    taxNumber?: string | null
+    createAt?: Date | string
+    updatedAt?: Date | string
+  }
+
+  export type ZarkCompanyCreateOrConnectWithoutCreateByFKeyInput = {
+    where: ZarkCompanyWhereUniqueInput
+    create: XOR<ZarkCompanyCreateWithoutCreateByFKeyInput, ZarkCompanyUncheckedCreateWithoutCreateByFKeyInput>
+  }
+
+  export type ZarkCompanyCreateManyCreateByFKeyInputEnvelope = {
+    data: Enumerable<ZarkCompanyCreateManyCreateByFKeyInput>
+    skipDuplicates?: boolean
+  }
+
   export type AuthtokenUpsertWithWhereUniqueWithoutAuthUserKeyInput = {
     where: AuthtokenWhereUniqueInput
     update: XOR<AuthtokenUpdateWithoutAuthUserKeyInput, AuthtokenUncheckedUpdateWithoutAuthUserKeyInput>
@@ -4928,6 +5107,36 @@ export namespace Prisma {
     authUserId?: IntFilter | number
   }
 
+  export type ZarkCompanyUpsertWithWhereUniqueWithoutCreateByFKeyInput = {
+    where: ZarkCompanyWhereUniqueInput
+    update: XOR<ZarkCompanyUpdateWithoutCreateByFKeyInput, ZarkCompanyUncheckedUpdateWithoutCreateByFKeyInput>
+    create: XOR<ZarkCompanyCreateWithoutCreateByFKeyInput, ZarkCompanyUncheckedCreateWithoutCreateByFKeyInput>
+  }
+
+  export type ZarkCompanyUpdateWithWhereUniqueWithoutCreateByFKeyInput = {
+    where: ZarkCompanyWhereUniqueInput
+    data: XOR<ZarkCompanyUpdateWithoutCreateByFKeyInput, ZarkCompanyUncheckedUpdateWithoutCreateByFKeyInput>
+  }
+
+  export type ZarkCompanyUpdateManyWithWhereWithoutCreateByFKeyInput = {
+    where: ZarkCompanyScalarWhereInput
+    data: XOR<ZarkCompanyUpdateManyMutationInput, ZarkCompanyUncheckedUpdateManyWithoutZarkCompanyInput>
+  }
+
+  export type ZarkCompanyScalarWhereInput = {
+    AND?: Enumerable<ZarkCompanyScalarWhereInput>
+    OR?: Enumerable<ZarkCompanyScalarWhereInput>
+    NOT?: Enumerable<ZarkCompanyScalarWhereInput>
+    zkcid?: IntFilter | number
+    companyName?: StringFilter | string
+    companyAddress?: StringNullableFilter | string | null
+    country?: StringNullableFilter | string | null
+    taxNumber?: StringNullableFilter | string | null
+    createAt?: DateTimeFilter | Date | string
+    updatedAt?: DateTimeFilter | Date | string
+    createdBy?: IntFilter | number
+  }
+
   export type ZarkUserCreateWithoutAuthTokenInput = {
     firstname: string
     lastname: string
@@ -4944,6 +5153,7 @@ export namespace Prisma {
     timezone: string
     language?: LANGUAGE
     isActive?: boolean
+    ZarkCompany?: ZarkCompanyCreateNestedManyWithoutCreateByFKeyInput
   }
 
   export type ZarkUserUncheckedCreateWithoutAuthTokenInput = {
@@ -4963,6 +5173,7 @@ export namespace Prisma {
     timezone: string
     language?: LANGUAGE
     isActive?: boolean
+    ZarkCompany?: ZarkCompanyUncheckedCreateNestedManyWithoutCreateByFKeyInput
   }
 
   export type ZarkUserCreateOrConnectWithoutAuthTokenInput = {
@@ -4991,6 +5202,7 @@ export namespace Prisma {
     timezone?: StringFieldUpdateOperationsInput | string
     language?: EnumLANGUAGEFieldUpdateOperationsInput | LANGUAGE
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    ZarkCompany?: ZarkCompanyUpdateManyWithoutCreateByFKeyInput
   }
 
   export type ZarkUserUncheckedUpdateWithoutAuthTokenInput = {
@@ -5010,6 +5222,95 @@ export namespace Prisma {
     timezone?: StringFieldUpdateOperationsInput | string
     language?: EnumLANGUAGEFieldUpdateOperationsInput | LANGUAGE
     isActive?: BoolFieldUpdateOperationsInput | boolean
+    ZarkCompany?: ZarkCompanyUncheckedUpdateManyWithoutCreateByFKeyInput
+  }
+
+  export type ZarkUserCreateWithoutZarkCompanyInput = {
+    firstname: string
+    lastname: string
+    email?: string | null
+    mobile_number?: string | null
+    createAt?: Date | string
+    updatedAt?: Date | string
+    isEmailValid?: boolean
+    isMobileValid?: boolean
+    password?: string | null
+    loginType?: LOGIN_TYPE
+    otherLoginDetails?: InputJsonValue | null
+    country: string
+    timezone: string
+    language?: LANGUAGE
+    isActive?: boolean
+    authToken?: AuthtokenCreateNestedManyWithoutAuthUserKeyInput
+  }
+
+  export type ZarkUserUncheckedCreateWithoutZarkCompanyInput = {
+    zkuid?: number
+    firstname: string
+    lastname: string
+    email?: string | null
+    mobile_number?: string | null
+    createAt?: Date | string
+    updatedAt?: Date | string
+    isEmailValid?: boolean
+    isMobileValid?: boolean
+    password?: string | null
+    loginType?: LOGIN_TYPE
+    otherLoginDetails?: InputJsonValue | null
+    country: string
+    timezone: string
+    language?: LANGUAGE
+    isActive?: boolean
+    authToken?: AuthtokenUncheckedCreateNestedManyWithoutAuthUserKeyInput
+  }
+
+  export type ZarkUserCreateOrConnectWithoutZarkCompanyInput = {
+    where: ZarkUserWhereUniqueInput
+    create: XOR<ZarkUserCreateWithoutZarkCompanyInput, ZarkUserUncheckedCreateWithoutZarkCompanyInput>
+  }
+
+  export type ZarkUserUpsertWithoutZarkCompanyInput = {
+    update: XOR<ZarkUserUpdateWithoutZarkCompanyInput, ZarkUserUncheckedUpdateWithoutZarkCompanyInput>
+    create: XOR<ZarkUserCreateWithoutZarkCompanyInput, ZarkUserUncheckedCreateWithoutZarkCompanyInput>
+  }
+
+  export type ZarkUserUpdateWithoutZarkCompanyInput = {
+    firstname?: StringFieldUpdateOperationsInput | string
+    lastname?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    mobile_number?: NullableStringFieldUpdateOperationsInput | string | null
+    createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isEmailValid?: BoolFieldUpdateOperationsInput | boolean
+    isMobileValid?: BoolFieldUpdateOperationsInput | boolean
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    loginType?: EnumLOGIN_TYPEFieldUpdateOperationsInput | LOGIN_TYPE
+    otherLoginDetails?: InputJsonValue | null
+    country?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    language?: EnumLANGUAGEFieldUpdateOperationsInput | LANGUAGE
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    authToken?: AuthtokenUpdateManyWithoutAuthUserKeyInput
+  }
+
+  export type ZarkUserUncheckedUpdateWithoutZarkCompanyInput = {
+    zkuid?: IntFieldUpdateOperationsInput | number
+    firstname?: StringFieldUpdateOperationsInput | string
+    lastname?: StringFieldUpdateOperationsInput | string
+    email?: NullableStringFieldUpdateOperationsInput | string | null
+    mobile_number?: NullableStringFieldUpdateOperationsInput | string | null
+    createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    isEmailValid?: BoolFieldUpdateOperationsInput | boolean
+    isMobileValid?: BoolFieldUpdateOperationsInput | boolean
+    password?: NullableStringFieldUpdateOperationsInput | string | null
+    loginType?: EnumLOGIN_TYPEFieldUpdateOperationsInput | LOGIN_TYPE
+    otherLoginDetails?: InputJsonValue | null
+    country?: StringFieldUpdateOperationsInput | string
+    timezone?: StringFieldUpdateOperationsInput | string
+    language?: EnumLANGUAGEFieldUpdateOperationsInput | LANGUAGE
+    isActive?: BoolFieldUpdateOperationsInput | boolean
+    authToken?: AuthtokenUncheckedUpdateManyWithoutAuthUserKeyInput
   }
 
   export type AuthtokenCreateManyAuthUserKeyInput = {
@@ -5020,6 +5321,16 @@ export namespace Prisma {
     loginInfo: InputJsonValue
     authToken: string
     accessToken?: string | null
+  }
+
+  export type ZarkCompanyCreateManyCreateByFKeyInput = {
+    zkcid?: number
+    companyName: string
+    companyAddress?: string | null
+    country?: string | null
+    taxNumber?: string | null
+    createAt?: Date | string
+    updatedAt?: Date | string
   }
 
   export type AuthtokenUpdateWithoutAuthUserKeyInput = {
@@ -5049,6 +5360,35 @@ export namespace Prisma {
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
     accessToken?: NullableStringFieldUpdateOperationsInput | string | null
+  }
+
+  export type ZarkCompanyUpdateWithoutCreateByFKeyInput = {
+    companyName?: StringFieldUpdateOperationsInput | string
+    companyAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    taxNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ZarkCompanyUncheckedUpdateWithoutCreateByFKeyInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    companyName?: StringFieldUpdateOperationsInput | string
+    companyAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    taxNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+  }
+
+  export type ZarkCompanyUncheckedUpdateManyWithoutZarkCompanyInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    companyName?: StringFieldUpdateOperationsInput | string
+    companyAddress?: NullableStringFieldUpdateOperationsInput | string | null
+    country?: NullableStringFieldUpdateOperationsInput | string | null
+    taxNumber?: NullableStringFieldUpdateOperationsInput | string | null
+    createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
   }
 
 

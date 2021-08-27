@@ -1,0 +1,4 @@
+-- AlterTable
+ALTER TABLE "ZarkCompany" ALTER COLUMN "companyAddress" DROP NOT NULL,
+ALTER COLUMN "country" DROP NOT NULL,
+ALTER COLUMN "taxNumber" DROP NOT NULL;

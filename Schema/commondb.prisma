@@ -28,6 +28,7 @@ model ZarkUser {
     isActive          Boolean     @default(true)
 
     @@unique([email, mobile_number])
+    ZarkCompany ZarkCompany[]
 }
 
 model Authtoken {
@@ -37,7 +38,7 @@ model Authtoken {
     expiration  Int
     loginInfo   Json
     authToken   String   @db.VarChar(255)
-    accessToken String?   @db.VarChar(255)
+    accessToken String?  @db.VarChar(255)
     authUserKey ZarkUser @relation(fields: [authUserId], references: [zkuid])
     authUserId  Int
 
@@ -46,12 +47,13 @@ model Authtoken {
 model ZarkCompany {
     zkcid          Int      @id @default(autoincrement())
     companyName    String   @db.VarChar(150)
-    companyAddress String   @db.Text
-    country        String   @db.VarChar(6)
-    taxNumber      String   @db.VarChar(25)
+    companyAddress String?  @db.Text
+    country        String?  @db.VarChar(6)
+    taxNumber      String?  @db.VarChar(25)
     createAt       DateTime @default(now()) @db.Timestamptz
     updatedAt      DateTime @updatedAt
-
+    createByFKey   ZarkUser @relation(fields: [createdBy], references: [zkuid])
+    createdBy      Int
 }
 
 enum LOGIN_TYPE {
