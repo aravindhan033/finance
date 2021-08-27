@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fastify_plugin_1 = __importDefault(require("fastify-plugin"));
+const Auth_1 = __importDefault(require("../../../Library/Middleware/Auth"));
 const UserProcessor_1 = require("../../../Processor/User/Processor/UserProcessor");
 const UserSchema_1 = require("../Schema/UserSchema");
 const userRoutes = (server, options) => __awaiter(void 0, void 0, void 0, function* () {
@@ -20,9 +21,19 @@ const userRoutes = (server, options) => __awaiter(void 0, void 0, void 0, functi
         let zkUser = req.body;
         const userProcessor = new UserProcessor_1.UserProcessor();
         userProcessor.createUser(zkUser).then((res) => {
-            reply.send(res);
+            if (res == null) {
+                reply.redirect(307, '/signin');
+            }
+            else {
+                reply.send(res);
+            }
         });
     });
+    server.get("/checkuser", { schema: UserSchema_1.checkUser }, (req, reply) => __awaiter(void 0, void 0, void 0, function* () {
+        let zkUser = req.query;
+        const userProcessor = new UserProcessor_1.UserProcessor();
+        reply.send({ result: yield userProcessor.checkIsExistingUser(zkUser) });
+    }));
     server.post("/userlogin", { schema: UserSchema_1.userlogin }, (req, reply) => {
         let zkUser = req.body;
         let loginInfo = {};
@@ -40,6 +51,28 @@ const userRoutes = (server, options) => __awaiter(void 0, void 0, void 0, functi
             reply.send({});
         });
     });
+    server.post("/updateuser", { schema: UserSchema_1.userupdate, preValidation: Auth_1.default }, (req, reply) => {
+        let zkUser = req.body;
+        const userProcessor = new UserProcessor_1.UserProcessor();
+        userProcessor.updateUser(zkUser).then((res) => {
+            if (res != null) {
+                reply.send(res);
+            }
+            else {
+                reply.status(404);
+                reply.send({});
+            }
+        });
+    });
+    server.post("/logout", { schema: UserSchema_1.logout, preValidation: Auth_1.default }, (req, reply) => __awaiter(void 0, void 0, void 0, function* () {
+        let zkUser = req.body;
+        zkUser.authToken = {};
+        zkUser.authToken.accessToken = req.headers["x-access-token"].toString();
+        const userProcessor = new UserProcessor_1.UserProcessor();
+        reply.headers({ "x-access-token": null });
+        reply.headers({ "x-zkuid": null });
+        reply.send(yield userProcessor.logOut(zkUser));
+    }));
 });
-exports.default = fastify_plugin_1.default(userRoutes);
+exports.default = (0, fastify_plugin_1.default)(userRoutes);
 //# sourceMappingURL=UserRoute.js.map

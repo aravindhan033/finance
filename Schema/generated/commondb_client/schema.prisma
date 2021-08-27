@@ -37,6 +37,7 @@ model Authtoken {
     expiration  Int
     loginInfo   Json
     authToken   String   @db.VarChar(255)
+    accessToken String?   @db.VarChar(255)
     authUserKey ZarkUser @relation(fields: [authUserId], references: [zkuid])
     authUserId  Int
 

@@ -13,8 +13,11 @@ const AuthtokenValidation = async (request: FastifyRequest, reply: FastifyReply,
                 if ("TokenExpiredError" == err.name) {
                     const decodedToken = jwt.decode(accessToken, config.accessTokenSecret);
                     const userProcessor: UserProcessor = new UserProcessor();
-                    accessToken = await (await userProcessor.getAccessToken(decodedToken.data.refreshToken, decodedToken.data.zkuid)).authToken;
-                    if (accessToken != null) {
+                    accessToken = await (await userProcessor.getAccessToken(null,accessToken, decodedToken.data.zkuid)).authToken;
+                    if (accessToken == null) {
+                        reply.redirect(307, '/signin')
+                    }
+                    else{
                         reply.headers({ "x-access-token": accessToken });
                         isValid = true;
                     }
@@ -27,8 +30,8 @@ const AuthtokenValidation = async (request: FastifyRequest, reply: FastifyReply,
         });
     }
     if (!isValid) {
-        //throw new Boom();
         reply.status(403);
+        reply.send({});
     }
     done();
 

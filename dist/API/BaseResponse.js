@@ -28,5 +28,5 @@ const responseHooks = (server, options) => __awaiter(void 0, void 0, void 0, fun
         done();
     });
 });
-exports.default = fastify_plugin_1.default(responseHooks);
+exports.default = (0, fastify_plugin_1.default)(responseHooks);
 //# sourceMappingURL=BaseResponse.js.map

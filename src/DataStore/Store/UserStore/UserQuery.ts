@@ -1,6 +1,7 @@
 import { commonClientPersistence } from "../../Configuration/CommonClientPerisistence";
 import { BaseStore } from "../BaseStore";
 import { ZKUser } from "../../../Processor/User/Model/User";
+import { Authtoken } from "../../../Processor/User/Model/Authtoken";
 
 export class UserQuery<ZKUser> extends BaseStore<ZKUser> {
     public async getUser(zkuser: ZKUser): Promise<ZKUser> {
@@ -41,5 +42,55 @@ export class UserQuery<ZKUser> extends BaseStore<ZKUser> {
         }
         return rawJson;
 
+    }
+    async getUserAuthToken(zkuid: number): Promise<any> {
+        let refreshTokenArr: Authtoken = null;
+        const persistence = new commonClientPersistence();
+
+        try {
+            let authToken = await persistence.db.authtoken.findMany({
+                where: {
+                    authUserId: {
+                        equals: zkuid
+                    }
+                }
+            }).catch((err) => {
+                throw (err)
+            }).finally(async () => {
+                persistence.db.$disconnect();
+            }); refreshTokenArr = JSON.parse(JSON.stringify(authToken));
+        }
+        catch (erro) {
+            console.log(erro);
+        } finally {
+            persistence.db.$disconnect();
+        }
+
+        return refreshTokenArr;
+    }
+    async getUserAuthTokenByAuthId(authId: number): Promise<any> {
+        let refreshTokenArr: Authtoken = null;
+        const persistence = new commonClientPersistence();
+
+        try {
+            let authToken = await persistence.db.authtoken.findFirst({
+                where: {
+                    authId: {
+                        equals: authId
+                    }
+                }
+            }).catch((err) => {
+                throw (err)
+            }).finally(async () => {
+                persistence.db.$disconnect();
+            }); refreshTokenArr = JSON.parse(JSON.stringify(authToken));
+        }
+        catch (erro) {
+            console.log(erro);
+        } finally {
+            persistence.db.$disconnect();
+        }
+
+        return refreshTokenArr;
     }
 }

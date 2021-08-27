@@ -12,11 +12,11 @@ exports.Prisma = Prisma
 
 /**
  * Prisma Client JS version: 2.29.1
- * Query Engine version: 1be4cd60b89afa04b192acb1ef47758a39810f3a
+ * Query Engine version: 60b19f4a1de4fe95741da371b4c44a92f4d1adcb
  */
 Prisma.prismaVersion = {
   client: "2.29.1",
-  engine: "1be4cd60b89afa04b192acb1ef47758a39810f3a"
+  engine: "60b19f4a1de4fe95741da371b4c44a92f4d1adcb"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -96,6 +96,7 @@ exports.Prisma.AuthtokenScalarFieldEnum = makeEnum({
   expiration: 'expiration',
   loginInfo: 'loginInfo',
   authToken: 'authToken',
+  accessToken: 'accessToken',
   authUserId: 'authUserId'
 });
 

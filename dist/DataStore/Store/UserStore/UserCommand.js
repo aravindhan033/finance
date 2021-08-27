@@ -31,7 +31,7 @@ class UserCommand extends BaseStore_1.BaseStore {
                 rawJson = _super.plainToEntityType.call(this, newZkuser);
             }
             catch (error) {
-                console.log(error);
+                console.log(error.message);
             }
             finally {
                 persistence.db.$disconnect();
@@ -40,24 +40,50 @@ class UserCommand extends BaseStore_1.BaseStore {
         });
     }
     updateUser(zkuser) {
-        throw new Error("Method not implemented.");
-    }
-    deleteUser(zkuser) {
-        throw new Error("Method not implemented.");
-    }
-    addAuthToken(zkuser) {
+        const _super = Object.create(null, {
+            plainToEntityType: { get: () => super.plainToEntityType }
+        });
         return __awaiter(this, void 0, void 0, function* () {
+            let rawJson = null;
             const persistence = new CommonClientPerisistence_1.commonClientPersistence();
             try {
-                const authtoken = zkuser.authToken;
-                let newToken = yield persistence.db.authtoken.create({
-                    data: JSON.parse(JSON.stringify(authtoken))
+                const newZkuser = yield persistence.db.zarkUser.update({
+                    where: {
+                        zkuid: zkuser.zkuid
+                    },
+                    data: JSON.parse(JSON.stringify(zkuser))
                 }).catch((err) => {
                     throw (err);
                 }).finally(() => __awaiter(this, void 0, void 0, function* () {
                     persistence.db.$disconnect();
                 }));
-                zkuser.authToken = JSON.parse(JSON.stringify(newToken));
+                rawJson = _super.plainToEntityType.call(this, newZkuser);
+            }
+            catch (error) {
+                console.log(error.message);
+            }
+            finally {
+                persistence.db.$disconnect();
+            }
+            return rawJson;
+        });
+    }
+    deleteUser(zkuser) {
+        throw new Error("Method not implemented.");
+    }
+    addAuthToken(authToken) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const persistence = new CommonClientPerisistence_1.commonClientPersistence();
+            let newAuthToken = {};
+            try {
+                let newToken = yield persistence.db.authtoken.create({
+                    data: JSON.parse(JSON.stringify(authToken))
+                }).catch((err) => {
+                    throw (err);
+                }).finally(() => __awaiter(this, void 0, void 0, function* () {
+                    persistence.db.$disconnect();
+                }));
+                newAuthToken = JSON.parse(JSON.stringify(newToken));
             }
             catch (error) {
                 console.log(error);
@@ -65,34 +91,58 @@ class UserCommand extends BaseStore_1.BaseStore {
             finally {
                 persistence.db.$disconnect();
             }
-            return zkuser;
+            return newAuthToken;
         });
     }
-    getUserAuthToken(zkuid) {
+    updateUserAccessToken(authToken) {
         return __awaiter(this, void 0, void 0, function* () {
-            let refreshTokenArr = null;
             const persistence = new CommonClientPerisistence_1.commonClientPersistence();
+            let newAuthToken = {};
             try {
-                let authToken = yield persistence.db.authtoken.findMany({
+                let newToken = yield persistence.db.authtoken.update({
                     where: {
-                        authUserId: {
-                            equals: zkuid
-                        }
-                    }
+                        authId: authToken.authId
+                    },
+                    data: { accessToken: authToken.accessToken }
                 }).catch((err) => {
                     throw (err);
                 }).finally(() => __awaiter(this, void 0, void 0, function* () {
                     persistence.db.$disconnect();
                 }));
-                refreshTokenArr = JSON.parse(JSON.stringify(authToken));
+                newAuthToken = JSON.parse(JSON.stringify(newToken));
             }
-            catch (erro) {
-                console.log(erro);
+            catch (error) {
+                console.log(error);
             }
             finally {
                 persistence.db.$disconnect();
             }
-            return refreshTokenArr;
+            return newAuthToken;
+        });
+    }
+    deleteAuthToken(authToken) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const persistence = new CommonClientPerisistence_1.commonClientPersistence();
+            let newAuthToken = {};
+            try {
+                let newToken = yield persistence.db.authtoken.delete({
+                    where: {
+                        authId: authToken.authId
+                    },
+                }).catch((err) => {
+                    throw (err);
+                }).finally(() => __awaiter(this, void 0, void 0, function* () {
+                    persistence.db.$disconnect();
+                }));
+                newAuthToken = JSON.parse(JSON.stringify(newToken));
+            }
+            catch (error) {
+                console.log(error);
+            }
+            finally {
+                persistence.db.$disconnect();
+            }
+            return newAuthToken;
         });
     }
 }

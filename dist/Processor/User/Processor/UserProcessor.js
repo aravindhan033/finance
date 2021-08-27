@@ -21,9 +21,14 @@ var bcrypt = require('bcrypt');
 class UserProcessor {
     createUser(zkuser) {
         return __awaiter(this, void 0, void 0, function* () {
-            const cmd = new UserCommand_1.UserCommand();
-            zkuser = yield this.convertPasswordToHash(zkuser);
-            return yield cmd.createUser(zkuser);
+            if (!this.checkIsExistingUser(zkuser)) {
+                const userCommand = new UserCommand_1.UserCommand();
+                zkuser = yield this.convertPasswordToHash(zkuser);
+                return yield userCommand.createUser(zkuser);
+            }
+            else {
+                return null;
+            }
         });
     }
     convertPasswordToHash(zkuser) {
@@ -36,15 +41,15 @@ class UserProcessor {
     }
     userLogin(zkuser, loginInfo) {
         return __awaiter(this, void 0, void 0, function* () {
-            const cmd = new UserQuery_1.UserQuery();
-            const dbUser = yield cmd.getUser(zkuser);
+            const userCommand = new UserQuery_1.UserQuery();
+            const dbUser = yield userCommand.getUser(zkuser);
             let resultObject = {};
             if (dbUser != null && dbUser.password != null && (yield bcrypt.compare(zkuser.password, dbUser.password))) {
                 zkuser.authToken = {};
                 zkuser.authToken.loginInfo = loginInfo;
                 zkuser.zkuid = dbUser.zkuid;
                 zkuser = yield this.createAndSaveRefreshToken(zkuser);
-                let accessToken = yield this.getAccessToken(zkuser.authToken.authToken, zkuser.zkuid);
+                let accessToken = yield this.getAccessToken(zkuser.authToken.authId, zkuser.authToken.authToken, zkuser.zkuid);
                 resultObject["accessToken"] = accessToken.authToken;
                 resultObject["zkuid"] = zkuser.zkuid;
             }
@@ -62,41 +67,93 @@ class UserProcessor {
                 data: { zkuid: zkuser.zkuid }
             }, config_1.default.refreshTokenSecret);
             refreshToken.authUserId = zkuser.zkuid;
-            const cmd = new UserCommand_1.UserCommand();
-            zkuser = yield cmd.addAuthToken(zkuser);
+            const userCommand = new UserCommand_1.UserCommand();
+            zkuser.authToken = yield userCommand.addAuthToken(zkuser.authToken);
             return zkuser;
         });
     }
-    getAccessToken(refreshToken, zkuid) {
+    getAccessToken(authId, expiredAccessToken, zkuid) {
         return __awaiter(this, void 0, void 0, function* () {
             let accessToken = {};
-            yield jwt.verify(refreshToken, config_1.default.refreshTokenSecret, (err, res) => __awaiter(this, void 0, void 0, function* () {
-                if (err) {
-                    return null;
+            try {
+                const userQuery = new UserQuery_1.UserQuery();
+                let isRefreshTokenValid = false;
+                if (authId == null) {
+                    let authTokenObj = yield this.getAuthId(zkuid, expiredAccessToken);
+                    if (authTokenObj != null && authTokenObj.authId != null) {
+                        accessToken.authId = authTokenObj.authId;
+                        accessToken.authToken = authTokenObj.authToken;
+                    }
                 }
                 else {
-                    const cmd = new UserCommand_1.UserCommand();
-                    let refreshTokenArr = yield cmd.getUserAuthToken(zkuid);
-                    let isRefreshTokenValid = false;
-                    if (refreshTokenArr != null && refreshTokenArr.length > 0) {
-                        for (let i = 0; i < refreshTokenArr.length; i++) {
-                            if (refreshToken == refreshTokenArr[i]["authToken"]) {
-                                isRefreshTokenValid = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (!isRefreshTokenValid) {
-                        return null;
-                    }
-                    accessToken.expiration = Math.floor(Date.now() / 1000) + (config_1.default.accessTokenExpire);
-                    accessToken.authToken = yield jwt.sign({
-                        exp: accessToken.expiration,
-                        data: { "authid": refreshToken, "zkuid": zkuid }
-                    }, config_1.default.accessTokenSecret);
+                    let refreshTokenObj = yield userQuery.getUserAuthTokenByAuthId(authId);
+                    accessToken.authId = refreshTokenObj["authId"];
+                    accessToken.authToken = refreshTokenObj["authToken"];
                 }
-            }));
+                if (accessToken.authToken != null) {
+                    yield jwt.verify(accessToken.authToken, config_1.default.refreshTokenSecret, (err, res) => __awaiter(this, void 0, void 0, function* () {
+                        if (err == null) {
+                            isRefreshTokenValid = true;
+                        }
+                    }));
+                }
+                if (isRefreshTokenValid) {
+                    const userCommand = new UserCommand_1.UserCommand();
+                    accessToken.expiration = Math.floor(Date.now() / 1000) + (config_1.default.accessTokenExpire);
+                    accessToken.accessToken = yield jwt.sign({
+                        exp: accessToken.expiration,
+                        data: { "zkuid": zkuid }
+                    }, config_1.default.accessTokenSecret);
+                    accessToken = yield userCommand.updateUserAccessToken(accessToken);
+                }
+            }
+            catch (err) {
+                console.log(err);
+            }
             return accessToken;
+        });
+    }
+    checkIsExistingUser(zkuser) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userQuery = new UserQuery_1.UserQuery();
+            const dbUser = yield userQuery.getUser(zkuser);
+            return dbUser != null;
+        });
+    }
+    updateUser(zkuser) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userCommand = new UserCommand_1.UserCommand();
+            let updateZkuser = yield userCommand.updateUser(zkuser);
+            return updateZkuser;
+        });
+    }
+    getAuthId(zkuid, accessToken) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userQuery = new UserQuery_1.UserQuery();
+            let authToken = {};
+            let refreshTokenArr = yield userQuery.getUserAuthToken(zkuid);
+            if (refreshTokenArr != null && refreshTokenArr.length > 0) {
+                for (let i = 0; i < refreshTokenArr.length; i++) {
+                    if (accessToken == refreshTokenArr[i]["accessToken"]) {
+                        authToken = refreshTokenArr[i];
+                        break;
+                    }
+                }
+            }
+            return authToken;
+        });
+    }
+    logOut(zkuser) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const userCommand = new UserCommand_1.UserCommand();
+            let authTokenObj = yield this.getAuthId(zkuser.zkuid, zkuser.authToken.accessToken);
+            if (authTokenObj != null && authTokenObj.authId != null) {
+                yield userCommand.deleteAuthToken(authTokenObj);
+                return true;
+            }
+            else {
+                return false;
+            }
         });
     }
 }

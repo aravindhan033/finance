@@ -24,8 +24,11 @@ const AuthtokenValidation = (request, reply, done) => __awaiter(void 0, void 0, 
                 if ("TokenExpiredError" == err.name) {
                     const decodedToken = jwt.decode(accessToken, config_1.default.accessTokenSecret);
                     const userProcessor = new UserProcessor_1.UserProcessor();
-                    accessToken = yield (yield userProcessor.getAccessToken(decodedToken.data.refreshToken, decodedToken.data.zkuid)).authToken;
-                    if (accessToken != null) {
+                    accessToken = yield (yield userProcessor.getAccessToken(null, accessToken, decodedToken.data.zkuid)).authToken;
+                    if (accessToken == null) {
+                        reply.redirect(307, '/signin');
+                    }
+                    else {
                         reply.headers({ "x-access-token": accessToken });
                         isValid = true;
                     }
@@ -37,8 +40,8 @@ const AuthtokenValidation = (request, reply, done) => __awaiter(void 0, void 0, 
         }));
     }
     if (!isValid) {
-        //throw new Boom();
         reply.status(403);
+        reply.send({});
     }
     done();
 });

@@ -56,6 +56,60 @@ class UserQuery extends BaseStore_1.BaseStore {
             return rawJson;
         });
     }
+    getUserAuthToken(zkuid) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let refreshTokenArr = null;
+            const persistence = new CommonClientPerisistence_1.commonClientPersistence();
+            try {
+                let authToken = yield persistence.db.authtoken.findMany({
+                    where: {
+                        authUserId: {
+                            equals: zkuid
+                        }
+                    }
+                }).catch((err) => {
+                    throw (err);
+                }).finally(() => __awaiter(this, void 0, void 0, function* () {
+                    persistence.db.$disconnect();
+                }));
+                refreshTokenArr = JSON.parse(JSON.stringify(authToken));
+            }
+            catch (erro) {
+                console.log(erro);
+            }
+            finally {
+                persistence.db.$disconnect();
+            }
+            return refreshTokenArr;
+        });
+    }
+    getUserAuthTokenByAuthId(authId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let refreshTokenArr = null;
+            const persistence = new CommonClientPerisistence_1.commonClientPersistence();
+            try {
+                let authToken = yield persistence.db.authtoken.findFirst({
+                    where: {
+                        authId: {
+                            equals: authId
+                        }
+                    }
+                }).catch((err) => {
+                    throw (err);
+                }).finally(() => __awaiter(this, void 0, void 0, function* () {
+                    persistence.db.$disconnect();
+                }));
+                refreshTokenArr = JSON.parse(JSON.stringify(authToken));
+            }
+            catch (erro) {
+                console.log(erro);
+            }
+            finally {
+                persistence.db.$disconnect();
+            }
+            return refreshTokenArr;
+        });
+    }
 }
 exports.UserQuery = UserQuery;
 //# sourceMappingURL=UserQuery.js.map

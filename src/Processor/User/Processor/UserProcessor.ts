@@ -9,9 +9,15 @@ var bcrypt = require('bcrypt');
 
 export class UserProcessor implements IUserProcessor {
     public async createUser(zkuser: ZKUser): Promise<ZKUser> {
-        const cmd = new UserCommand();
-        zkuser = await this.convertPasswordToHash(zkuser);
-        return await cmd.createUser(zkuser);
+        if (!this.checkIsExistingUser(zkuser)) {
+            const userCommand = new UserCommand();
+            zkuser = await this.convertPasswordToHash(zkuser);
+            return await userCommand.createUser(zkuser);
+        }
+        else {
+            return null;
+        }
+
     }
     async convertPasswordToHash(zkuser: ZKUser): Promise<ZKUser> {
         let plainPassword = zkuser.password;
@@ -21,15 +27,15 @@ export class UserProcessor implements IUserProcessor {
     }
 
     async userLogin(zkuser: ZKUser, loginInfo: JSON): Promise<JSON> {
-        const cmd = new UserQuery();
-        const dbUser: ZKUser = await cmd.getUser(zkuser) as ZKUser;
+        const userCommand = new UserQuery();
+        const dbUser: ZKUser = await userCommand.getUser(zkuser) as ZKUser;
         let resultObject = {} as JSON;
         if (dbUser != null && dbUser.password != null && await bcrypt.compare(zkuser.password, dbUser.password)) {
             zkuser.authToken = {} as Authtoken;
             zkuser.authToken.loginInfo = loginInfo;
             zkuser.zkuid = dbUser.zkuid;
             zkuser = await this.createAndSaveRefreshToken(zkuser);
-            let accessToken: Authtoken = await this.getAccessToken(zkuser.authToken.authToken, zkuser.zkuid);
+            let accessToken: Authtoken = await this.getAccessToken(zkuser.authToken.authId, zkuser.authToken.authToken, zkuser.zkuid);
             resultObject["accessToken"] = accessToken.authToken;
             resultObject["zkuid"] = zkuser.zkuid;
         }
@@ -47,44 +53,90 @@ export class UserProcessor implements IUserProcessor {
             data: { zkuid: zkuser.zkuid }
         }, config.refreshTokenSecret);
         refreshToken.authUserId = zkuser.zkuid;
-        const cmd = new UserCommand();
-
-        zkuser = await cmd.addAuthToken(zkuser);
-
+        const userCommand = new UserCommand();
+        zkuser.authToken = await userCommand.addAuthToken(zkuser.authToken);
         return zkuser;
     }
-    async getAccessToken(refreshToken: String, zkuid: number): Promise<Authtoken> {
+    async getAccessToken(authId: number, expiredAccessToken: string, zkuid: number): Promise<Authtoken> {
         let accessToken = {} as Authtoken;
+        try {
+            const userQuery = new UserQuery();
+            let isRefreshTokenValid = false;
 
-        await jwt.verify(refreshToken, config.refreshTokenSecret, async (err, res) => {
-            if (err) {
-                return null;
+            if (authId == null) {
+                let authTokenObj=await this.getAuthId(zkuid,expiredAccessToken);
+                if(authTokenObj!=null && authTokenObj.authId!=null ){
+                    accessToken.authId = authTokenObj.authId
+                    accessToken.authToken = authTokenObj.authToken;
+                }
             }
             else {
-                const cmd = new UserCommand();
-                let refreshTokenArr = await cmd.getUserAuthToken(zkuid);
-                let isRefreshTokenValid = false;
-                if (refreshTokenArr != null && refreshTokenArr.length > 0) {
-                    for (let i = 0; i < refreshTokenArr.length; i++) {
-                        if (refreshToken == refreshTokenArr[i]["authToken"]) {
-                            isRefreshTokenValid = true;
-                            break;
-                        }
-                    }
-                }
-                if (!isRefreshTokenValid) {
-                    return null;
-                }
-                accessToken.expiration = Math.floor(Date.now() / 1000) + (config.accessTokenExpire);
-                accessToken.authToken = await jwt.sign({
-                    exp: accessToken.expiration,
-                    data: { "authid": refreshToken, "zkuid": zkuid }
-                }, config.accessTokenSecret);
-
+                let refreshTokenObj = await userQuery.getUserAuthTokenByAuthId(authId);
+                accessToken.authId = refreshTokenObj["authId"];
+                accessToken.authToken = refreshTokenObj["authToken"];
             }
-        });
+            if (accessToken.authToken != null) {
+                await jwt.verify(accessToken.authToken, config.refreshTokenSecret, async (err, res) => {
+                    if (err == null) {
+                        isRefreshTokenValid = true;
+                    }
+                });
+            }
+
+
+            if (isRefreshTokenValid) {
+                const userCommand = new UserCommand();
+                accessToken.expiration = Math.floor(Date.now() / 1000) + (config.accessTokenExpire);
+                accessToken.accessToken = await jwt.sign({
+                    exp: accessToken.expiration,
+                    data: { "zkuid": zkuid }
+                }, config.accessTokenSecret);
+                accessToken = await userCommand.updateUserAccessToken(accessToken);
+            }
+        }
+        catch (err) {
+            console.log(err);
+        }
         return accessToken;
 
     }
+    async checkIsExistingUser(zkuser: ZKUser): Promise<Boolean> {
+        const userQuery = new UserQuery();
+        const dbUser: ZKUser = await userQuery.getUser(zkuser) as ZKUser;
+        return dbUser != null;
+    }
 
+    async updateUser(zkuser: ZKUser): Promise<ZKUser> {
+        const userCommand = new UserCommand();
+        let updateZkuser = await userCommand.updateUser(zkuser);
+        return updateZkuser
+    }
+
+    async getAuthId(zkuid: number, accessToken: string): Promise<Authtoken> {
+        const userQuery = new UserQuery();
+        let authToken: Authtoken = {} as Authtoken;
+        let refreshTokenArr = await userQuery.getUserAuthToken(zkuid);
+        if (refreshTokenArr != null && refreshTokenArr.length > 0) {
+            for (let i = 0; i < refreshTokenArr.length; i++) {
+                if (accessToken == refreshTokenArr[i]["accessToken"]) {
+                    authToken = refreshTokenArr[i];
+                    break;
+                }
+            }
+        }
+        return authToken;
+    }
+    async logOut(zkuser: ZKUser): Promise<Boolean> {        
+        const userCommand = new UserCommand();
+        let authTokenObj=await this.getAuthId(zkuser.zkuid,zkuser.authToken.accessToken);
+        if(authTokenObj!=null && authTokenObj.authId!=null){
+            await userCommand.deleteAuthToken(authTokenObj);        
+            return true;
+        }
+        else{
+            return false
+        }
+
+        
+    }
 }

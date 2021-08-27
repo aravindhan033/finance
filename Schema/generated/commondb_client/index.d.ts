@@ -46,6 +46,7 @@ export type Authtoken = {
   expiration: number
   loginInfo: Prisma.JsonValue
   authToken: string
+  accessToken: string | null
   authUserId: number
 }
 
@@ -269,7 +270,7 @@ export namespace Prisma {
 
   /**
    * Prisma Client JS version: 2.29.1
-   * Query Engine version: 1be4cd60b89afa04b192acb1ef47758a39810f3a
+   * Query Engine version: 60b19f4a1de4fe95741da371b4c44a92f4d1adcb
    */
   export type PrismaVersion = {
     client: string
@@ -1801,6 +1802,7 @@ export namespace Prisma {
     updatedAt: Date | null
     expiration: number | null
     authToken: string | null
+    accessToken: string | null
     authUserId: number | null
   }
 
@@ -1810,6 +1812,7 @@ export namespace Prisma {
     updatedAt: Date | null
     expiration: number | null
     authToken: string | null
+    accessToken: string | null
     authUserId: number | null
   }
 
@@ -1820,6 +1823,7 @@ export namespace Prisma {
     expiration: number
     loginInfo: number
     authToken: number
+    accessToken: number
     authUserId: number
     _all: number
   }
@@ -1843,6 +1847,7 @@ export namespace Prisma {
     updatedAt?: true
     expiration?: true
     authToken?: true
+    accessToken?: true
     authUserId?: true
   }
 
@@ -1852,6 +1857,7 @@ export namespace Prisma {
     updatedAt?: true
     expiration?: true
     authToken?: true
+    accessToken?: true
     authUserId?: true
   }
 
@@ -1862,6 +1868,7 @@ export namespace Prisma {
     expiration?: true
     loginInfo?: true
     authToken?: true
+    accessToken?: true
     authUserId?: true
     _all?: true
   }
@@ -1985,6 +1992,7 @@ export namespace Prisma {
     expiration: number
     loginInfo: JsonValue
     authToken: string
+    accessToken: string | null
     authUserId: number
     _count: AuthtokenCountAggregateOutputType | null
     _avg: AuthtokenAvgAggregateOutputType | null
@@ -2014,6 +2022,7 @@ export namespace Prisma {
     expiration?: boolean
     loginInfo?: boolean
     authToken?: boolean
+    accessToken?: boolean
     authUserKey?: boolean | ZarkUserArgs
     authUserId?: boolean
   }
@@ -3606,6 +3615,7 @@ export namespace Prisma {
     expiration: 'expiration',
     loginInfo: 'loginInfo',
     authToken: 'authToken',
+    accessToken: 'accessToken',
     authUserId: 'authUserId'
   };
 
@@ -3727,6 +3737,7 @@ export namespace Prisma {
     expiration?: IntFilter | number
     loginInfo?: JsonFilter
     authToken?: StringFilter | string
+    accessToken?: StringNullableFilter | string | null
     authUserKey?: XOR<ZarkUserRelationFilter, ZarkUserWhereInput>
     authUserId?: IntFilter | number
   }
@@ -3738,6 +3749,7 @@ export namespace Prisma {
     expiration?: SortOrder
     loginInfo?: SortOrder
     authToken?: SortOrder
+    accessToken?: SortOrder
     authUserId?: SortOrder
   }
 
@@ -3755,6 +3767,7 @@ export namespace Prisma {
     expiration?: IntWithAggregatesFilter | number
     loginInfo?: JsonWithAggregatesFilter
     authToken?: StringWithAggregatesFilter | string
+    accessToken?: StringNullableWithAggregatesFilter | string | null
     authUserId?: IntWithAggregatesFilter | number
   }
 
@@ -3938,6 +3951,7 @@ export namespace Prisma {
     expiration: number
     loginInfo: InputJsonValue
     authToken: string
+    accessToken?: string | null
     authUserKey: ZarkUserCreateNestedOneWithoutAuthTokenInput
   }
 
@@ -3948,6 +3962,7 @@ export namespace Prisma {
     expiration: number
     loginInfo: InputJsonValue
     authToken: string
+    accessToken?: string | null
     authUserId: number
   }
 
@@ -3957,6 +3972,7 @@ export namespace Prisma {
     expiration?: IntFieldUpdateOperationsInput | number
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
     authUserKey?: ZarkUserUpdateOneRequiredWithoutAuthTokenInput
   }
 
@@ -3967,6 +3983,7 @@ export namespace Prisma {
     expiration?: IntFieldUpdateOperationsInput | number
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
     authUserId?: IntFieldUpdateOperationsInput | number
   }
 
@@ -3977,6 +3994,7 @@ export namespace Prisma {
     expiration: number
     loginInfo: InputJsonValue
     authToken: string
+    accessToken?: string | null
     authUserId: number
   }
 
@@ -3986,6 +4004,7 @@ export namespace Prisma {
     expiration?: IntFieldUpdateOperationsInput | number
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AuthtokenUncheckedUpdateManyInput = {
@@ -3995,6 +4014,7 @@ export namespace Prisma {
     expiration?: IntFieldUpdateOperationsInput | number
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
     authUserId?: IntFieldUpdateOperationsInput | number
   }
 
@@ -4855,6 +4875,7 @@ export namespace Prisma {
     expiration: number
     loginInfo: InputJsonValue
     authToken: string
+    accessToken?: string | null
   }
 
   export type AuthtokenUncheckedCreateWithoutAuthUserKeyInput = {
@@ -4864,6 +4885,7 @@ export namespace Prisma {
     expiration: number
     loginInfo: InputJsonValue
     authToken: string
+    accessToken?: string | null
   }
 
   export type AuthtokenCreateOrConnectWithoutAuthUserKeyInput = {
@@ -4902,6 +4924,7 @@ export namespace Prisma {
     expiration?: IntFilter | number
     loginInfo?: JsonFilter
     authToken?: StringFilter | string
+    accessToken?: StringNullableFilter | string | null
     authUserId?: IntFilter | number
   }
 
@@ -4996,6 +5019,7 @@ export namespace Prisma {
     expiration: number
     loginInfo: InputJsonValue
     authToken: string
+    accessToken?: string | null
   }
 
   export type AuthtokenUpdateWithoutAuthUserKeyInput = {
@@ -5004,6 +5028,7 @@ export namespace Prisma {
     expiration?: IntFieldUpdateOperationsInput | number
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AuthtokenUncheckedUpdateWithoutAuthUserKeyInput = {
@@ -5013,6 +5038,7 @@ export namespace Prisma {
     expiration?: IntFieldUpdateOperationsInput | number
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
   export type AuthtokenUncheckedUpdateManyWithoutAuthTokenInput = {
@@ -5022,6 +5048,7 @@ export namespace Prisma {
     expiration?: IntFieldUpdateOperationsInput | number
     loginInfo?: InputJsonValue
     authToken?: StringFieldUpdateOperationsInput | string
+    accessToken?: NullableStringFieldUpdateOperationsInput | string | null
   }
 
 

@@ -5,7 +5,4 @@ export class commonClientPersistence {
         console.log("db connected")
         this.db = new commonClient();
     }
-
-
-
 }
