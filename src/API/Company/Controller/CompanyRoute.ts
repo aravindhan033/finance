@@ -15,7 +15,6 @@ const companyRoutes: FastifyPluginAsync = async (server: FastifyInstance, option
                     companyName: { type: "string" },
                     companyAddress: { type: "string" },
                     country: { type: "string" },
-                    taxNumber: { type: "string" },
                 },
                 required: ["companyName"]
             }
@@ -42,7 +41,6 @@ const companyRoutes: FastifyPluginAsync = async (server: FastifyInstance, option
                     companyName: { type: "string" },
                     companyAddress: { type: "string" },
                     country: { type: "string" },
-                    taxNumber: { type: "string" },
                 },
                 required: ["companyName"]
             }
