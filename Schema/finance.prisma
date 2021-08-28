@@ -18,6 +18,11 @@ model ZKUserCompanyMapping {
     @@unique([zkuid, zkcid])
 }
 
+model ZKProduct{
+    zkpid BigInt @id @default(autoincrement())
+         
+}
+
 enum USER_PROFILE {
     PORTAL_OWNER
     ADMIN
