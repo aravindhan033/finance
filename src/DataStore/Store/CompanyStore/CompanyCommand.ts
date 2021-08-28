@@ -1,5 +1,5 @@
 import { createUser } from "../../../API/User/Schema/UserSchema";
-import { ICompanyCommand } from "../../../Processor/User/Interface/ICompanyComman";
+import { ICompanyCommand } from "../../../Processor/User/Interface/Company/ICompanyCommand";
 import { ZarkCompany } from "../../../Processor/User/Model/Company";
 import { commonClientPersistence } from "../../Configuration/CommonClientPerisistence";
 

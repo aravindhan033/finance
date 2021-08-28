@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.logout = exports.userupdate = exports.checkUser = exports.userlogin = exports.createUser = void 0;
+exports.userupdate = exports.checkUser = exports.userlogin = exports.createUser = void 0;
 const createUser = {
     body: {
         type: "object",
@@ -13,7 +13,7 @@ const createUser = {
             country: { type: "string" },
             timezone: { type: "string" },
         },
-        required: ["firstname", "password"]
+        required: ["password", "firstname", "lastname"]
     }
 };
 exports.createUser = createUser;
@@ -43,31 +43,22 @@ const checkUser = {
 };
 exports.checkUser = checkUser;
 const userupdate = {
-    body: {
+    params: {
         type: "object",
         properties: {
             zkuid: { type: "number" },
+        }
+    },
+    body: {
+        type: "object",
+        properties: {
             firstname: { type: "string" },
             lastname: { type: "string" },
-            email: { type: "string" },
-            mobile_number: { type: "string" },
-            password: { type: "string" },
             country: { type: "string" },
             timezone: { type: "string" },
             language: { type: "string" },
         },
-        required: ["zkuid"]
     }
 };
 exports.userupdate = userupdate;
-const logout = {
-    body: {
-        type: "object",
-        properties: {
-            zkuid: { type: "number" }
-        },
-        required: ["zkuid"]
-    }
-};
-exports.logout = logout;
 //# sourceMappingURL=UserSchema.js.map

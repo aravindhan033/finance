@@ -1,9 +1,8 @@
-import { PrismaClient as commonClient } from '../../../Schema/generated/commondb_client';
-
-export class commonDBPersistence {
-    public db: commonClient;
+import { PrismaClient as financeClient } from '../../../Schema/generated/financedb_client';
+export class financeClientPersistence {
+    public db: financeClient;
     constructor() {
-        this.db = new commonClient();
+        console.log("fin db connected")
+        this.db = new financeClient();
     }
-
 }

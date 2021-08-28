@@ -13,11 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fastify_plugin_1 = __importDefault(require("fastify-plugin"));
+const CommonUtils_1 = require("../../../Library/CommonUtils");
 const Auth_1 = __importDefault(require("../../../Library/Middleware/Auth"));
 const UserProcessor_1 = require("../../../Processor/User/Processor/UserProcessor");
 const UserSchema_1 = require("../Schema/UserSchema");
+var jwt = require('jsonwebtoken');
 const userRoutes = (server, options) => __awaiter(void 0, void 0, void 0, function* () {
-    server.post("/createuser", { schema: UserSchema_1.createUser }, (req, reply) => {
+    server.post("/user/create", { schema: UserSchema_1.createUser }, (req, reply) => {
         let zkUser = req.body;
         const userProcessor = new UserProcessor_1.UserProcessor();
         userProcessor.createUser(zkUser).then((res) => {
@@ -29,12 +31,12 @@ const userRoutes = (server, options) => __awaiter(void 0, void 0, void 0, functi
             }
         });
     });
-    server.get("/checkuser", { schema: UserSchema_1.checkUser }, (req, reply) => __awaiter(void 0, void 0, void 0, function* () {
+    server.get("/user/isexisting", { schema: UserSchema_1.checkUser }, (req, reply) => __awaiter(void 0, void 0, void 0, function* () {
         let zkUser = req.query;
         const userProcessor = new UserProcessor_1.UserProcessor();
         reply.send({ result: yield userProcessor.checkIsExistingUser(zkUser) });
     }));
-    server.put("/userlogin", { schema: UserSchema_1.userlogin }, (req, reply) => {
+    server.put("/user/login", { schema: UserSchema_1.userlogin }, (req, reply) => {
         let zkUser = req.body;
         let loginInfo = {};
         loginInfo["device"] = req.body["device"];
@@ -51,8 +53,9 @@ const userRoutes = (server, options) => __awaiter(void 0, void 0, void 0, functi
             reply.send({});
         });
     });
-    server.put("/updateuser", { schema: UserSchema_1.userupdate, preValidation: Auth_1.default }, (req, reply) => {
+    server.put("/user/update/:zkuid", { schema: UserSchema_1.userupdate, preValidation: Auth_1.default }, (req, reply) => {
         let zkUser = req.body;
+        zkUser.zkuid = Number(req.params["zkuid"]);
         const userProcessor = new UserProcessor_1.UserProcessor();
         userProcessor.updateUser(zkUser).then((res) => {
             if (res != null) {
@@ -64,14 +67,29 @@ const userRoutes = (server, options) => __awaiter(void 0, void 0, void 0, functi
             }
         });
     });
-    server.post("/logout", { schema: UserSchema_1.logout, preValidation: Auth_1.default }, (req, reply) => __awaiter(void 0, void 0, void 0, function* () {
-        let zkUser = req.body;
+    server.post("/user/logout", { preValidation: Auth_1.default }, (req, reply) => __awaiter(void 0, void 0, void 0, function* () {
+        let zkUser = {};
         zkUser.authToken = {};
         zkUser.authToken.accessToken = req.headers["x-access-token"].toString();
         const userProcessor = new UserProcessor_1.UserProcessor();
         reply.headers({ "x-access-token": null });
         reply.headers({ "x-zkuid": null });
-        reply.send(yield userProcessor.logOut(zkUser));
+        zkUser.zkuid = CommonUtils_1.CommonUtils.getZkuid(req);
+        let isTerminated = false;
+        isTerminated = yield userProcessor.terminateSession(zkUser, false);
+        reply.send(isTerminated);
+    }));
+    server.post("/user/terminatesession", { preValidation: Auth_1.default }, (req, reply) => __awaiter(void 0, void 0, void 0, function* () {
+        let zkUser = {};
+        zkUser.authToken = {};
+        zkUser.authToken.accessToken = req.headers["x-access-token"].toString();
+        const userProcessor = new UserProcessor_1.UserProcessor();
+        reply.headers({ "x-access-token": null });
+        reply.headers({ "x-zkuid": null });
+        zkUser.zkuid = CommonUtils_1.CommonUtils.getZkuid(req);
+        let isTerminated = false;
+        isTerminated = yield userProcessor.terminateSession(zkUser, true);
+        reply.send(isTerminated);
     }));
 });
 exports.default = (0, fastify_plugin_1.default)(userRoutes);

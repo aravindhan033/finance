@@ -6,11 +6,16 @@ import CompanyRoute from './API/Company/Controller/CompanyRoute';
 
 const server = fastify({ logger: true });
 server.register(responseHooks);
+server.register(require('fastify-swagger'), {
+    exposeRoute: true,
+    routePrefix: '/documentation',
+    swagger: {
+      info: { title: 'finance-api' },      
+    },
+  })
 server.register(UserRoute);
 server.register(CompanyRoute);
 server.register(require('fastify-boom'))
-
-
 
 server.get("/ping", (req, reply) => {    
     reply.send(req.headers);

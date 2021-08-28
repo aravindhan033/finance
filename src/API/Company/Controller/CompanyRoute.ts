@@ -1,32 +1,60 @@
 import { FastifyInstance, FastifyPluginAsync, FastifyPluginOptions } from "fastify";
 import fp from "fastify-plugin";
-import { REPL_MODE_SLOPPY } from "repl";
+import { CommonUtils } from "../../../Library/CommonUtils";
 import AuthtokenValidation from "../../../Library/Middleware/Auth";
 import { ZarkCompany } from "../../../Processor/User/Model/Company";
 import { CompanyProcessor } from "../../../Processor/User/Processor/CompanyProcessor";
 
 const companyRoutes: FastifyPluginAsync = async (server: FastifyInstance, options: FastifyPluginOptions) => {
 
-    server.post("/createcompany",{preValidation:AuthtokenValidation},(req,reply)=>{
+    server.post("/company/create", {
+        schema: {
+            body: {
+                type: "object",
+                properties: {
+                    companyName: { type: "string" },
+                    companyAddress: { type: "string" },
+                    country: { type: "string" },
+                    taxNumber: { type: "string" },
+                },
+                required: ["companyName"]
+            }
+        }, preValidation: AuthtokenValidation
+    }, (req, reply) => {
         const zkcompany = req.body as ZarkCompany;
-        const companyPrc= new CompanyProcessor();
-        companyPrc.createCompany(zkcompany).then((res)=>{
-            if(res!=null){
+        zkcompany.createdBy=CommonUtils.getZkuid(req);
+        const companyPrc = new CompanyProcessor();
+        companyPrc.createCompany(zkcompany).then((res) => {
+            if (res != null) {
                 reply.send(res);
             }
-            else{
+            else {
+                reply.status(500);
                 reply.send({});
             }
         })
-    });
-    server.put("/updatecompanydetails",{preValidation:AuthtokenValidation},(req,reply)=>{
+    });    
+    server.put("/company/update", {
+        schema: {
+            body: {
+                type: "object",
+                properties: {
+                    companyName: { type: "string" },
+                    companyAddress: { type: "string" },
+                    country: { type: "string" },
+                    taxNumber: { type: "string" },
+                },
+                required: ["companyName"]
+            }
+        }, preValidation: AuthtokenValidation
+    }, (req, reply) => {
         const zkcompany = req.body as ZarkCompany;
-        const companyPrc= new CompanyProcessor();
-        companyPrc.updateCompanyDetails(zkcompany).then((res)=>{
-            if(res!=null){
+        const companyPrc = new CompanyProcessor();
+        companyPrc.updateCompanyDetails(zkcompany).then((res) => {
+            if (res != null) {
                 reply.send(res);
             }
-            else{
+            else {
                 reply.send({});
             }
         })

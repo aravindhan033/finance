@@ -1,5 +1,5 @@
 import { PrismaClient } from "@prisma/client";
-import { IUserCommand } from "../../../Processor/User/Interface/IUserCommand";
+import { IUserCommand } from "../../../Processor/User/Interface/User/IUserCommand";
 import { Authtoken } from "../../../Processor/User/Model/Authtoken";
 import { ZKUser } from "../../../Processor/User/Model/User";
 import { commonClientPersistence } from "../../Configuration/CommonClientPerisistence";
@@ -107,6 +107,30 @@ export class UserCommand extends BaseStore<ZKUser> implements IUserCommand {
             let newToken = await persistence.db.authtoken.delete({
                 where:{
                     authId:authToken.authId
+                },                
+            }).catch((err) => {
+                throw (err)
+            }).finally(async () => {
+                persistence.db.$disconnect();
+            });
+            newAuthToken= JSON.parse(JSON.stringify(newToken));
+        }
+        catch (error) {
+            console.log(error);
+        }
+        finally {
+            persistence.db.$disconnect();
+        }
+        return newAuthToken;
+    }
+
+    async deleteUserAllAuthToken(authToken:Authtoken):Promise<any>{
+        const persistence = new commonClientPersistence();
+        let newAuthToken={} as Authtoken;
+        try {                        
+            let newToken = await persistence.db.authtoken.deleteMany({
+                where:{
+                    authUserId :authToken.authUserId
                 },                
             }).catch((err) => {
                 throw (err)

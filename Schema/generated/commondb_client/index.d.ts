@@ -3873,6 +3873,7 @@ export namespace Prisma {
 
   export type ZarkCompanyWhereUniqueInput = {
     zkcid?: number
+    companyName?: string
   }
 
   export type ZarkCompanyScalarWhereWithAggregatesInput = {
@@ -3901,8 +3902,8 @@ export namespace Prisma {
     password?: string | null
     loginType?: LOGIN_TYPE
     otherLoginDetails?: InputJsonValue | null
-    country: string
-    timezone: string
+    country?: string
+    timezone?: string
     language?: LANGUAGE
     isActive?: boolean
     authToken?: AuthtokenCreateNestedManyWithoutAuthUserKeyInput
@@ -3922,8 +3923,8 @@ export namespace Prisma {
     password?: string | null
     loginType?: LOGIN_TYPE
     otherLoginDetails?: InputJsonValue | null
-    country: string
-    timezone: string
+    country?: string
+    timezone?: string
     language?: LANGUAGE
     isActive?: boolean
     authToken?: AuthtokenUncheckedCreateNestedManyWithoutAuthUserKeyInput
@@ -3984,8 +3985,8 @@ export namespace Prisma {
     password?: string | null
     loginType?: LOGIN_TYPE
     otherLoginDetails?: InputJsonValue | null
-    country: string
-    timezone: string
+    country?: string
+    timezone?: string
     language?: LANGUAGE
     isActive?: boolean
   }
@@ -5149,8 +5150,8 @@ export namespace Prisma {
     password?: string | null
     loginType?: LOGIN_TYPE
     otherLoginDetails?: InputJsonValue | null
-    country: string
-    timezone: string
+    country?: string
+    timezone?: string
     language?: LANGUAGE
     isActive?: boolean
     ZarkCompany?: ZarkCompanyCreateNestedManyWithoutCreateByFKeyInput
@@ -5169,8 +5170,8 @@ export namespace Prisma {
     password?: string | null
     loginType?: LOGIN_TYPE
     otherLoginDetails?: InputJsonValue | null
-    country: string
-    timezone: string
+    country?: string
+    timezone?: string
     language?: LANGUAGE
     isActive?: boolean
     ZarkCompany?: ZarkCompanyUncheckedCreateNestedManyWithoutCreateByFKeyInput
@@ -5237,8 +5238,8 @@ export namespace Prisma {
     password?: string | null
     loginType?: LOGIN_TYPE
     otherLoginDetails?: InputJsonValue | null
-    country: string
-    timezone: string
+    country?: string
+    timezone?: string
     language?: LANGUAGE
     isActive?: boolean
     authToken?: AuthtokenCreateNestedManyWithoutAuthUserKeyInput
@@ -5257,8 +5258,8 @@ export namespace Prisma {
     password?: string | null
     loginType?: LOGIN_TYPE
     otherLoginDetails?: InputJsonValue | null
-    country: string
-    timezone: string
+    country?: string
+    timezone?: string
     language?: LANGUAGE
     isActive?: boolean
     authToken?: AuthtokenUncheckedCreateNestedManyWithoutAuthUserKeyInput

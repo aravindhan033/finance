@@ -1,5 +1,5 @@
 import { UserCommand } from "../../../DataStore/Store/UserStore/UserCommand";
-import { IUserProcessor } from "../Interface/IUserProcessor";
+import { IUserProcessor } from "../Interface/User/IUserProcessor";
 import { ZKUser } from "../Model/User";
 import { UserQuery } from "../../../DataStore/Store/UserStore/UserQuery";
 import config from "../../../config";
@@ -9,7 +9,8 @@ var bcrypt = require('bcrypt');
 
 export class UserProcessor implements IUserProcessor {
     public async createUser(zkuser: ZKUser): Promise<ZKUser> {
-        if (!this.checkIsExistingUser(zkuser)) {
+        let isExistingUser=await this.checkIsExistingUser(zkuser);
+        if (!isExistingUser) {
             const userCommand = new UserCommand();
             zkuser = await this.convertPasswordToHash(zkuser);
             return await userCommand.createUser(zkuser);
@@ -36,7 +37,7 @@ export class UserProcessor implements IUserProcessor {
             zkuser.zkuid = dbUser.zkuid;
             zkuser = await this.createAndSaveRefreshToken(zkuser);
             let accessToken: Authtoken = await this.getAccessToken(zkuser.authToken.authId, zkuser.authToken.authToken, zkuser.zkuid);
-            resultObject["accessToken"] = accessToken.authToken;
+            resultObject["accessToken"] = accessToken.accessToken;
             resultObject["zkuid"] = zkuser.zkuid;
         }
         else {
@@ -107,9 +108,15 @@ export class UserProcessor implements IUserProcessor {
     }
 
     async updateUser(zkuser: ZKUser): Promise<ZKUser> {
-        const userCommand = new UserCommand();
-        let updateZkuser = await userCommand.updateUser(zkuser);
-        return updateZkuser
+        if(zkuser.zkuid!=null){
+            const userCommand = new UserCommand();
+            let updateZkuser = await userCommand.updateUser(zkuser);
+            return updateZkuser
+        }
+        else{
+            return null;
+        }
+
     }
 
     async getAuthId(zkuid: number, accessToken: string): Promise<Authtoken> {
@@ -126,17 +133,27 @@ export class UserProcessor implements IUserProcessor {
         }
         return authToken;
     }
-    async logOut(zkuser: ZKUser): Promise<Boolean> {        
+    async terminateSession(zkuser: ZKUser,allSession:Boolean): Promise<Boolean> {        
+        if(zkuser.zkuid==null){
+            return false;
+        }
         const userCommand = new UserCommand();
-        let authTokenObj=await this.getAuthId(zkuser.zkuid,zkuser.authToken.accessToken);
-        if(authTokenObj!=null && authTokenObj.authId!=null){
-            await userCommand.deleteAuthToken(authTokenObj);        
-            return true;
+        if(allSession){
+            let sessionToken={} as Authtoken;
+            sessionToken.authUserId=zkuser.zkuid;
+            
+            if( sessionToken!=null && sessionToken.authUserId!=null){
+                await userCommand.deleteUserAllAuthToken(sessionToken);        
+                return true;
+            }            
         }
         else{
-            return false
+            let authTokenObj=await this.getAuthId(zkuser.zkuid,zkuser.authToken.accessToken);
+            if( authTokenObj!=null && authTokenObj.authId!=null){
+                await userCommand.deleteAuthToken(authTokenObj);        
+                return true;
+            }            
         }
-
-        
-    }
+        return false;
+    }    
 }

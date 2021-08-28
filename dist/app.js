@@ -10,6 +10,13 @@ const Auth_1 = __importDefault(require("./Library/Middleware/Auth"));
 const CompanyRoute_1 = __importDefault(require("./API/Company/Controller/CompanyRoute"));
 const server = (0, fastify_1.default)({ logger: true });
 server.register(BaseResponse_1.default);
+server.register(require('fastify-swagger'), {
+    exposeRoute: true,
+    routePrefix: '/documentation',
+    swagger: {
+        info: { title: 'finance-api' },
+    },
+});
 server.register(UserRoute_1.default);
 server.register(CompanyRoute_1.default);
 server.register(require('fastify-boom'));

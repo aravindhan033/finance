@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "ZarkUser" ALTER COLUMN "country" SET DEFAULT E'IN',
+ALTER COLUMN "timezone" SET DEFAULT E'GMT+5';

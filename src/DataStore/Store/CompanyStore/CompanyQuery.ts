@@ -1,4 +1,4 @@
-import { ICompanyQuery } from "../../../Processor/User/Interface/ICompanyQuery";
+import { ICompanyQuery } from "../../../Processor/User/Interface/Company/ICompanyQuery";
 import { ZarkCompany } from "../../../Processor/User/Model/Company";
 import { commonClientPersistence } from "../../Configuration/CommonClientPerisistence";
 

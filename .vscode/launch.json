@@ -12,6 +12,8 @@
                 "<node_internals>/**"
             ],
             "program": "${workspaceFolder}\\dist\\app.js",
+            "envFile": "finance/.env",
+
             "preLaunchTask": "tsc",
             "outFiles": [
                 "${workspaceFolder}/dist/**/*.js"

@@ -3,6 +3,6 @@ export interface Authtoken {
     expiration: Number,
     loginInfo: JSON,
     accessToken:string,
-    authUserId: Number,
+    authUserId: number,
     authToken: string
 }

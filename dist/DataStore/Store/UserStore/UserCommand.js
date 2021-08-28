@@ -145,6 +145,31 @@ class UserCommand extends BaseStore_1.BaseStore {
             return newAuthToken;
         });
     }
+    deleteUserAllAuthToken(authToken) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const persistence = new CommonClientPerisistence_1.commonClientPersistence();
+            let newAuthToken = {};
+            try {
+                let newToken = yield persistence.db.authtoken.deleteMany({
+                    where: {
+                        authUserId: authToken.authUserId
+                    },
+                }).catch((err) => {
+                    throw (err);
+                }).finally(() => __awaiter(this, void 0, void 0, function* () {
+                    persistence.db.$disconnect();
+                }));
+                newAuthToken = JSON.parse(JSON.stringify(newToken));
+            }
+            catch (error) {
+                console.log(error);
+            }
+            finally {
+                persistence.db.$disconnect();
+            }
+            return newAuthToken;
+        });
+    }
 }
 exports.UserCommand = UserCommand;
 //# sourceMappingURL=UserCommand.js.map

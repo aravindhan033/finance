@@ -1,0 +1,29 @@
+datasource db {
+    provider = "postgres"
+    url      = env("PRIMSA_FINANCE_DB_SQL_URL")
+}
+
+generator client {
+    provider = "prisma-client-js"
+    output   = "./generated/financedb_client"
+}
+
+model ZKUserCompanyMapping {
+    zkucid       Int          @id @default(autoincrement())
+    zkuid        Int
+    zkcid        Int
+    user_profile USER_PROFILE @default(EMPLOYEE)
+    createAt    DateTime @default(now()) @db.Timestamptz
+    updatedAt   DateTime @updatedAt @db.Timestamptz
+    @@unique([zkuid, zkcid])
+}
+
+enum USER_PROFILE {
+    PORTAL_OWNER
+    ADMIN
+    MANAGER
+    EMPLOYEE
+    CLIENT
+    CONTRACTOR
+    CUSTOMER    
+}

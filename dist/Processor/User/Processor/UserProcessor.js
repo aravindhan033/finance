@@ -21,7 +21,8 @@ var bcrypt = require('bcrypt');
 class UserProcessor {
     createUser(zkuser) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!this.checkIsExistingUser(zkuser)) {
+            let isExistingUser = yield this.checkIsExistingUser(zkuser);
+            if (!isExistingUser) {
                 const userCommand = new UserCommand_1.UserCommand();
                 zkuser = yield this.convertPasswordToHash(zkuser);
                 return yield userCommand.createUser(zkuser);
@@ -50,7 +51,7 @@ class UserProcessor {
                 zkuser.zkuid = dbUser.zkuid;
                 zkuser = yield this.createAndSaveRefreshToken(zkuser);
                 let accessToken = yield this.getAccessToken(zkuser.authToken.authId, zkuser.authToken.authToken, zkuser.zkuid);
-                resultObject["accessToken"] = accessToken.authToken;
+                resultObject["accessToken"] = accessToken.accessToken;
                 resultObject["zkuid"] = zkuser.zkuid;
             }
             else {
@@ -122,9 +123,14 @@ class UserProcessor {
     }
     updateUser(zkuser) {
         return __awaiter(this, void 0, void 0, function* () {
-            const userCommand = new UserCommand_1.UserCommand();
-            let updateZkuser = yield userCommand.updateUser(zkuser);
-            return updateZkuser;
+            if (zkuser.zkuid != null) {
+                const userCommand = new UserCommand_1.UserCommand();
+                let updateZkuser = yield userCommand.updateUser(zkuser);
+                return updateZkuser;
+            }
+            else {
+                return null;
+            }
         });
     }
     getAuthId(zkuid, accessToken) {
@@ -143,17 +149,28 @@ class UserProcessor {
             return authToken;
         });
     }
-    logOut(zkuser) {
+    terminateSession(zkuser, allSession) {
         return __awaiter(this, void 0, void 0, function* () {
-            const userCommand = new UserCommand_1.UserCommand();
-            let authTokenObj = yield this.getAuthId(zkuser.zkuid, zkuser.authToken.accessToken);
-            if (authTokenObj != null && authTokenObj.authId != null) {
-                yield userCommand.deleteAuthToken(authTokenObj);
-                return true;
-            }
-            else {
+            if (zkuser.zkuid == null) {
                 return false;
             }
+            const userCommand = new UserCommand_1.UserCommand();
+            if (allSession) {
+                let sessionToken = {};
+                sessionToken.authUserId = zkuser.zkuid;
+                if (sessionToken != null && sessionToken.authUserId != null) {
+                    yield userCommand.deleteUserAllAuthToken(sessionToken);
+                    return true;
+                }
+            }
+            else {
+                let authTokenObj = yield this.getAuthId(zkuser.zkuid, zkuser.authToken.accessToken);
+                if (authTokenObj != null && authTokenObj.authId != null) {
+                    yield userCommand.deleteAuthToken(authTokenObj);
+                    return true;
+                }
+            }
+            return false;
         });
     }
 }

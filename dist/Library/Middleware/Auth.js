@@ -22,9 +22,9 @@ const AuthtokenValidation = (request, reply, done) => __awaiter(void 0, void 0, 
         yield jwt.verify(accessToken, config_1.default.accessTokenSecret, (err, res) => __awaiter(void 0, void 0, void 0, function* () {
             if (err != null) {
                 if ("TokenExpiredError" == err.name) {
-                    const decodedToken = jwt.decode(accessToken, config_1.default.accessTokenSecret);
+                    const decodedToken = yield jwt.decode(accessToken, config_1.default.accessTokenSecret);
                     const userProcessor = new UserProcessor_1.UserProcessor();
-                    accessToken = yield (yield userProcessor.getAccessToken(null, accessToken, decodedToken.data.zkuid)).authToken;
+                    accessToken = (yield userProcessor.getAccessToken(null, accessToken, decodedToken.data.zkuid)).accessToken;
                     if (accessToken == null) {
                         reply.redirect(307, '/signin');
                     }
