@@ -35,4 +35,7 @@ const AuthtokenValidation = async (request: FastifyRequest, reply: FastifyReply,
 
 };
 
+
+
+
 export default AuthtokenValidation;

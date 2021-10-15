@@ -17,7 +17,6 @@ const CommonUtils_1 = require("../../../Library/CommonUtils");
 const Auth_1 = __importDefault(require("../../../Library/Middleware/Auth"));
 const UserProcessor_1 = require("../../../Processor/User/Processor/UserProcessor");
 const UserSchema_1 = require("../Schema/UserSchema");
-var jwt = require('jsonwebtoken');
 const userRoutes = (server, options) => __awaiter(void 0, void 0, void 0, function* () {
     server.post("/user/create", { schema: UserSchema_1.createUser }, (req, reply) => {
         let zkUser = req.body;

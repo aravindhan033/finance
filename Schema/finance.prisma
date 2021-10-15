@@ -44,7 +44,7 @@ model ZK_Tax {
     zkcid       Int
     zk_tax_id   BigInt @id @default(autoincrement())
     zk_tax_name String @db.VarChar(100)
-
+    zk_tax_percentage Decimal      @default(0.000) @db.Decimal(17, 3)
     ZK_Product_Tax_Mapping ZK_Product_Tax_Mapping[]
     @@unique([zkcid, zk_tax_name])
 }

@@ -3,22 +3,15 @@ import fp from "fastify-plugin";
 import { CommonUtils } from "../../../Library/CommonUtils";
 import AuthtokenValidation from "../../../Library/Middleware/Auth";
 import { ZarkCompany } from "../../../Processor/User/Model/Company";
+import { ZKUserCompanyMapping } from "../../../Processor/User/Model/UserCompanyMapping";
 import { CompanyProcessor } from "../../../Processor/User/Processor/CompanyProcessor";
+import { UserCompanyProcessor } from "../../../Processor/User/Processor/UserCompanyProcessor";
+import { addUserToCompany, createCompany, updateCompany } from "../Schema/CompanySchema";
 
 const companyRoutes: FastifyPluginAsync = async (server: FastifyInstance, options: FastifyPluginOptions) => {
 
     server.post("/company/create", {
-        schema: {
-            body: {
-                type: "object",
-                properties: {
-                    companyName: { type: "string" },
-                    companyAddress: { type: "string" },
-                    country: { type: "string" },
-                },
-                required: ["companyName"]
-            }
-        }, preValidation: AuthtokenValidation
+        schema: createCompany, preValidation: AuthtokenValidation
     }, (req, reply) => {
         const zkcompany = req.body as ZarkCompany;
         zkcompany.createdBy=CommonUtils.getZkuid(req);
@@ -34,17 +27,7 @@ const companyRoutes: FastifyPluginAsync = async (server: FastifyInstance, option
         })
     });    
     server.put("/company/update", {
-        schema: {
-            body: {
-                type: "object",
-                properties: {
-                    companyName: { type: "string" },
-                    companyAddress: { type: "string" },
-                    country: { type: "string" },
-                },
-                required: ["companyName"]
-            }
-        }, preValidation: AuthtokenValidation
+        schema:updateCompany , preValidation: AuthtokenValidation
     }, (req, reply) => {
         const zkcompany = req.body as ZarkCompany;
         const companyPrc = new CompanyProcessor();
@@ -57,6 +40,21 @@ const companyRoutes: FastifyPluginAsync = async (server: FastifyInstance, option
             }
         })
     });
+    server.post("/company/adduser", {
+        schema:addUserToCompany , preValidation: AuthtokenValidation
+    }, (req, reply) => {
+        const userMap = req.body as ZKUserCompanyMapping;
+        const userCompanyPrc = new UserCompanyProcessor();
+        userCompanyPrc.addUserToCompany(userMap.zkuid,userMap.zkcid,userMap.user_profile).then((res) => {
+            if (res != null) {
+                reply.send(res);
+            }
+            else {
+                reply.send({});
+            }
+        })
+    });
+
 };
 
 export default fp(companyRoutes);

@@ -1,8 +1,7 @@
 import { USER_PROFILE } from "../../../../Schema/generated/financedb_client";
 
 export interface  ZKUserCompanyMapping{
-    zkucid :number,
-    zkid :number,
-    zkuid :number,
+    zkcid :number,
+    zkuid :number,    
     user_profile:USER_PROFILE
 }

@@ -16,20 +16,11 @@ const fastify_plugin_1 = __importDefault(require("fastify-plugin"));
 const CommonUtils_1 = require("../../../Library/CommonUtils");
 const Auth_1 = __importDefault(require("../../../Library/Middleware/Auth"));
 const CompanyProcessor_1 = require("../../../Processor/User/Processor/CompanyProcessor");
+const UserCompanyProcessor_1 = require("../../../Processor/User/Processor/UserCompanyProcessor");
+const CompanySchema_1 = require("../Schema/CompanySchema");
 const companyRoutes = (server, options) => __awaiter(void 0, void 0, void 0, function* () {
     server.post("/company/create", {
-        schema: {
-            body: {
-                type: "object",
-                properties: {
-                    companyName: { type: "string" },
-                    companyAddress: { type: "string" },
-                    country: { type: "string" },
-                    taxNumber: { type: "string" },
-                },
-                required: ["companyName"]
-            }
-        }, preValidation: Auth_1.default
+        schema: CompanySchema_1.createCompany, preValidation: Auth_1.default
     }, (req, reply) => {
         const zkcompany = req.body;
         zkcompany.createdBy = CommonUtils_1.CommonUtils.getZkuid(req);
@@ -45,22 +36,25 @@ const companyRoutes = (server, options) => __awaiter(void 0, void 0, void 0, fun
         });
     });
     server.put("/company/update", {
-        schema: {
-            body: {
-                type: "object",
-                properties: {
-                    companyName: { type: "string" },
-                    companyAddress: { type: "string" },
-                    country: { type: "string" },
-                    taxNumber: { type: "string" },
-                },
-                required: ["companyName"]
-            }
-        }, preValidation: Auth_1.default
+        schema: CompanySchema_1.updateCompany, preValidation: Auth_1.default
     }, (req, reply) => {
         const zkcompany = req.body;
         const companyPrc = new CompanyProcessor_1.CompanyProcessor();
         companyPrc.updateCompanyDetails(zkcompany).then((res) => {
+            if (res != null) {
+                reply.send(res);
+            }
+            else {
+                reply.send({});
+            }
+        });
+    });
+    server.post("/company/adduser", {
+        schema: CompanySchema_1.addUserToCompany, preValidation: Auth_1.default
+    }, (req, reply) => {
+        const userMap = req.body;
+        const userCompanyPrc = new UserCompanyProcessor_1.UserCompanyProcessor();
+        userCompanyPrc.addUserToCompany(userMap.zkuid, userMap.zkcid, userMap.user_profile).then((res) => {
             if (res != null) {
                 reply.send(res);
             }

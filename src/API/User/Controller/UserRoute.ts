@@ -1,13 +1,11 @@
 import { FastifyInstance, FastifyPluginAsync, FastifyPluginOptions, FastifyReply, FastifyRequest } from "fastify";
 import fp from 'fastify-plugin';
-import config from "../../../config";
 import { CommonUtils } from "../../../Library/CommonUtils";
 import AuthtokenValidation from "../../../Library/Middleware/Auth";
 import { Authtoken } from "../../../Processor/User/Model/Authtoken";
 import { ZKUser } from "../../../Processor/User/Model/User";
 import { UserProcessor } from "../../../Processor/User/Processor/UserProcessor";
 import { createUser, userlogin ,checkUser,userupdate} from "../Schema/UserSchema";
-var jwt = require('jsonwebtoken');
 
 const userRoutes: FastifyPluginAsync = async (server: FastifyInstance, options: FastifyPluginOptions) => {
     
