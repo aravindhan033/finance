@@ -25,4 +25,7 @@ export class CompanyProcessor implements ICompanyProcessor{
         let updatedCompany=await companyCommand.update(zkcompany);
         return updatedCompany;
     }    
+
+
+    
 }
