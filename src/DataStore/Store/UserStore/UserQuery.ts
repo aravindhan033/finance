@@ -1,7 +1,7 @@
 import { commonClientPersistence } from "../../Configuration/CommonClientPerisistence";
 import { BaseStore } from "../BaseStore";
-import { ZKUser } from "../../../Processor/User/Model/User";
-import { Authtoken } from "../../../Processor/User/Model/Authtoken";
+import { ZKUser } from "../../../Processor/Model/User";
+import { Authtoken } from "../../../Processor/Model/Authtoken";
 
 export class UserQuery<ZKUser> extends BaseStore<ZKUser> {
     public async getUser(zkuser: ZKUser): Promise<ZKUser> {

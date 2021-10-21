@@ -1,6 +1,6 @@
 import { createUser } from "../../../API/User/Schema/UserSchema";
-import { ICompanyCommand } from "../../../Processor/User/Interface/Company/ICompanyCommand";
-import { ZarkCompany } from "../../../Processor/User/Model/Company";
+import { ICompanyCommand } from "../../../Processor/Interface/Company/ICompanyCommand";
+import { ZarkCompany } from "../../../Processor/Model/Company";
 import { commonClientPersistence } from "../../Configuration/CommonClientPerisistence";
 
 export  class CompanyCommand implements ICompanyCommand {

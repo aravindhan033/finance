@@ -1,5 +1,5 @@
-import { ICompanyQuery } from "../../../Processor/User/Interface/Company/ICompanyQuery";
-import { ZarkCompany } from "../../../Processor/User/Model/Company";
+import { ICompanyQuery } from "../../../Processor/Interface/Company/ICompanyQuery";
+import { ZarkCompany } from "../../../Processor/Model/Company";
 import { commonClientPersistence } from "../../Configuration/CommonClientPerisistence";
 
 export class CompanyQuery implements ICompanyQuery{

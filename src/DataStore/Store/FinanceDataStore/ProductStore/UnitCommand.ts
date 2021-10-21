@@ -1,5 +1,5 @@
-import { IUnitCommand } from "../../../../Processor/User/Interface/Product/IUnitCommand";
-import { ZKUnit } from "../../../../Processor/User/Model/ProductModel";
+import { IUnitCommand } from "../../../../Processor/Interface/Product/IUnitCommand";
+import { ZKUnit } from "../../../../Processor/Model/ProductModel";
 import { financeClientPersistence } from "../../../Configuration/FinanceClientPersistence";
 
 export class UnitCommand implements IUnitCommand{

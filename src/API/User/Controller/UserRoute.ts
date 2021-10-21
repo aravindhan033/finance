@@ -2,9 +2,9 @@ import { FastifyInstance, FastifyPluginAsync, FastifyPluginOptions, FastifyReply
 import fp from 'fastify-plugin';
 import { CommonUtils } from "../../../Library/CommonUtils";
 import AuthtokenValidation from "../../../Library/Middleware/Auth";
-import { Authtoken } from "../../../Processor/User/Model/Authtoken";
-import { ZKUser } from "../../../Processor/User/Model/User";
-import { UserProcessor } from "../../../Processor/User/Processor/UserProcessor";
+import { Authtoken } from "../../../Processor/Model/Authtoken";
+import { ZKUser } from "../../../Processor/Model/User";
+import { UserProcessor } from "../../../Processor/Processor/UserProcessor";
 import { createUser, userlogin ,checkUser,userupdate} from "../Schema/UserSchema";
 
 const userRoutes: FastifyPluginAsync = async (server: FastifyInstance, options: FastifyPluginOptions) => {

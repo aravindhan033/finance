@@ -1,5 +1,5 @@
-import { ITaxQuery } from "../../../../Processor/User/Interface/Tax/ITaxQuery";
-import { ZKUnit } from "../../../../Processor/User/Model/ProductModel";
+import { ITaxQuery } from "../../../../Processor/Interface/Tax/ITaxQuery";
+import { ZKUnit } from "../../../../Processor/Model/ProductModel";
 import { FinanceStoreQuery } from "../FinanceStoreQuery";
 
 export class TaxQuery extends FinanceStoreQuery implements ITaxQuery{

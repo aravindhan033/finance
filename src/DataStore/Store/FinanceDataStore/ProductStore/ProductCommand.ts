@@ -1,6 +1,6 @@
 
-import { IProductCommand } from "../../../../Processor/User/Interface/Product/IProductCommand";
-import { ZKProduct } from "../../../../Processor/User/Model/ProductModel";
+import { IProductCommand } from "../../../../Processor/Interface/Product/IProductCommand";
+import { ZKProduct } from "../../../../Processor/Model/ProductModel";
 import { FinanceStoreCommand } from "../FinanceStoreCommand";
 
 export class ProductCommand extends FinanceStoreCommand implements IProductCommand {

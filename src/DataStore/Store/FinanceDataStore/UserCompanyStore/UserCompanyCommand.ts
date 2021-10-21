@@ -1,5 +1,5 @@
 import { USER_PROFILE } from "../../../../../Schema/generated/financedb_client";
-import { IUserCompanyCommand } from "../../../../Processor/User/Interface/UserCompany/IUserCompanyCommand";
+import { IUserCompanyCommand } from "../../../../Processor/Interface/UserCompany/IUserCompanyCommand";
 import { financeClientPersistence } from "../../../Configuration/FinanceClientPersistence";
 
 export class UserCompanyCommand  implements IUserCompanyCommand {

@@ -1,5 +1,5 @@
-import { IUnitQuery } from "../../../../Processor/User/Interface/Product/IUnitQuery";
-import { ZKUnit } from "../../../../Processor/User/Model/ProductModel";
+import { IUnitQuery } from "../../../../Processor/Interface/Product/IUnitQuery";
+import { ZKUnit } from "../../../../Processor/Model/ProductModel";
 import { FinanceStoreQuery } from "../FinanceStoreQuery";
 
 export class UnitQuery extends FinanceStoreQuery implements IUnitQuery{

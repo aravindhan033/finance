@@ -1,6 +1,6 @@
 import { FastifyRequest, FastifyReply, FastifyInstance } from "fastify";
 import config from "../../config";
-import { UserProcessor } from "../../Processor/User/Processor/UserProcessor";
+import { UserProcessor } from "../../Processor/Processor/UserProcessor";
 var jwt = require('jsonwebtoken');
 
 const AuthtokenValidation = async (request: FastifyRequest, reply: FastifyReply, done) => {    

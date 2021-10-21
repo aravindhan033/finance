@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { IUserCommand } from "../../../Processor/User/Interface/User/IUserCommand";
-import { Authtoken } from "../../../Processor/User/Model/Authtoken";
-import { ZKUser } from "../../../Processor/User/Model/User";
+import { IUserCommand } from "../../../Processor/Interface/User/IUserCommand";
+import { Authtoken } from "../../../Processor/Model/Authtoken";
+import { ZKUser } from "../../../Processor/Model/User";
 import { commonClientPersistence } from "../../Configuration/CommonClientPerisistence";
 import { BaseStore } from "../BaseStore";
 

@@ -1,7 +1,7 @@
 import { FastifyInstance, FastifyPluginAsync, FastifyPluginOptions } from "fastify";
 import fp from "fastify-plugin";
-import { ZKProduct } from "../../../Processor/User/Model/ProductModel";
-import { ProductProcessor } from "../../../Processor/User/Processor/ProductProcessor";
+import { ZKProduct } from "../../../Processor/Model/ProductModel";
+import { ProductProcessor } from "../../../Processor/Processor/ProductProcessor";
 import {addProduct } from "../Schema/ProductSchema";
 
 const productRoutes: FastifyPluginAsync = async (server: FastifyInstance, options: FastifyPluginOptions) => {

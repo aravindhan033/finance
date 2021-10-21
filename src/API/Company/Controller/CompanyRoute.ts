@@ -2,10 +2,10 @@ import { FastifyInstance, FastifyPluginAsync, FastifyPluginOptions } from "fasti
 import fp from "fastify-plugin";
 import { CommonUtils } from "../../../Library/CommonUtils";
 import AuthtokenValidation from "../../../Library/Middleware/Auth";
-import { ZarkCompany } from "../../../Processor/User/Model/Company";
-import { ZKUserCompanyMapping } from "../../../Processor/User/Model/UserCompanyMapping";
-import { CompanyProcessor } from "../../../Processor/User/Processor/CompanyProcessor";
-import { UserCompanyProcessor } from "../../../Processor/User/Processor/UserCompanyProcessor";
+import { ZarkCompany } from "../../../Processor/Model/Company";
+import { ZKUserCompanyMapping } from "../../../Processor/Model/UserCompanyMapping";
+import { CompanyProcessor } from "../../../Processor/Processor/CompanyProcessor";
+import { UserCompanyProcessor } from "../../../Processor/Processor/UserCompanyProcessor";
 import { addUserToCompany, createCompany, updateCompany } from "../Schema/CompanySchema";
 
 const companyRoutes: FastifyPluginAsync = async (server: FastifyInstance, options: FastifyPluginOptions) => {

@@ -1,5 +1,5 @@
-import { ITaxCommand } from "../../../../Processor/User/Interface/Tax/ITaxCommand";
-import { ZKTax } from "../../../../Processor/User/Model/ProductModel";
+import { ITaxCommand } from "../../../../Processor/Interface/Tax/ITaxCommand";
+import { ZKTax } from "../../../../Processor/Model/ProductModel";
 import { financeClientPersistence } from "../../../Configuration/FinanceClientPersistence";
 
 export class TaxCommand  implements ITaxCommand {
