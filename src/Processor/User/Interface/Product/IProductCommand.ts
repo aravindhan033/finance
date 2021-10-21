@@ -1,7 +1,7 @@
 import { ZKProduct } from "../../Model/ProductModel";
 
 export interface IProductCommand{
-    create(zkcompany: ZKProduct): Promise<ZKProduct>;
-    update(zkcompany: ZKProduct): Promise<ZKProduct>;
-    delete(zkcompany: ZKProduct): Promise<void>;
+    create(zkproduct: ZKProduct): Promise<ZKProduct>;
+    update(zkproduct: ZKProduct): Promise<ZKProduct>;
+    delete(zkproduct: ZKProduct): Promise<boolean>;
 }

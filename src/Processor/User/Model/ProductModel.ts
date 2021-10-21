@@ -5,19 +5,19 @@ export interface ZKProduct {
     zkcid: number,
     zkpid: number,
     zkp_type: PRODUCT_TYPE,
-    zkp_code: String,
-    zkp_name: String,
-    zkp_description: String,
+    zkp_code: string,
+    zkp_name: string,
+    zkp_description: string,
     zkp_unit: number,
-    zkp_unit_name:String,
+    zkp_unit_name:string,
     zkp_tax:ZKTax[],
     zkp_unit_selling_price: number,
     zkp_unit_cost_price: number,
-    zkp_char1: String,
-    zkp_char2: String,
-    zkp_char3: String,
-    zkp_char4: String,
-    zkp_char5: String,
+    zkp_char1: string,
+    zkp_char2: string,
+    zkp_char3: string,
+    zkp_char4: string,
+    zkp_char5: string,
     zkp_number1: number,
     zkp_number2: number,
     zkp_number3: number,    
@@ -26,12 +26,12 @@ export interface ZKProduct {
 export interface ZKUnit{
     zkcid  :      number
     zk_unit_id:   number,
-    zk_unit_name: String,
+    zk_unit_name: string,
 }
 
 export interface ZKTax{
     zkcid       :number,
     zk_tax_id   :number 
-    zk_tax_name :String,
+    zk_tax_name :string,
     zk_tax_percentage: number
 }

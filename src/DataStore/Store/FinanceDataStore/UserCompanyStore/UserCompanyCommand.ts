@@ -28,11 +28,58 @@ export class UserCompanyCommand  implements IUserCompanyCommand {
         }
         return rawJson;
     }
-    updateUserProfile(zkuid: number, zkcid: number, user_profile: USER_PROFILE): Promise<Boolean> {
-        throw new Error("Method not implemented.");
+    async updateUserProfile(zkuid: number, zkcid: number, user_profile: USER_PROFILE): Promise<Boolean> {
+        let result = false;
+        const persistence = new financeClientPersistence();
+        try {
+            const updatedzkcompany = await persistence.db.zKUserCompanyMapping.update({
+                where:{  
+                    zkuid_zkcid:{
+                        zkcid:zkcid,
+                        zkuid:zkuid
+                    }                                     
+                },
+                data: {user_profile:user_profile}
+            }).catch((err) => {
+                throw (err)
+            }).finally(async () => {
+                persistence.db.$disconnect();
+            });
+            result = true;
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+        finally {
+            persistence.db.$disconnect();
+        }
+        return result ;
     }
-    deleteUserFromCompany(zkuid: number, zkcid: number): Promise<Boolean> {
-        throw new Error("Method not implemented.");
+    async deleteUserFromCompany(zkuid: number, zkcid: number): Promise<Boolean> {
+        let result = false;
+        const persistence = new financeClientPersistence();
+        try {
+            const updatedzkcompany = await persistence.db.zKUserCompanyMapping.delete({
+                where:{  
+                    zkuid_zkcid:{
+                        zkcid:zkcid,
+                        zkuid:zkuid
+                    }                                     
+                },                
+            }).catch((err) => {
+                throw (err)
+            }).finally(async () => {
+                persistence.db.$disconnect();
+            });
+            result = true;
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+        finally {
+            persistence.db.$disconnect();
+        }
+        return result ;
     }
 
 } 

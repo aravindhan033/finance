@@ -15,7 +15,7 @@ model ZKUserCompanyMapping {
     createAt     DateTime     @default(now()) @db.Timestamptz
     updatedAt    DateTime     @updatedAt @db.Timestamptz
 
-    @@unique([zkuid, zkcid])
+    @@unique(fields:[zkuid, zkcid],name:"zkuid_zkcid")
 }
 
 model ZKProduct {
