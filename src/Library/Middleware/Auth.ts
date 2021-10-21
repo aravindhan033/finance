@@ -31,7 +31,7 @@ const AuthtokenValidation = async (request: FastifyRequest, reply: FastifyReply,
         reply.status(403);
         reply.send({});
     }
-    done();
+    //done();
 
 };
 

@@ -8,19 +8,69 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const userRoutes = (server, options) => __awaiter(void 0, void 0, void 0, function* () {
-    server.post("/product/add", { schema: addProduct }, (req, reply) => {
-        let zkUser = req.body;
-        const userProcessor = new UserProcessor();
-        userProcessor.createUser(zkUser).then((res) => {
-            if (res == null) {
-                reply.redirect(307, '/signin');
+const fastify_plugin_1 = __importDefault(require("fastify-plugin"));
+const Auth_1 = __importDefault(require("../../../Library/Middleware/Auth"));
+const ProductProcessor_1 = require("../../../Processor/Processor/ProductProcessor");
+const UnitProcessor_1 = require("../../../Processor/Processor/UnitProcessor");
+const TaxProcessor_1 = require("../../../Processor/Processor/TaxProcessor");
+const ProductSchema_1 = require("../Schema/ProductSchema");
+const productRoutes = (server, options) => __awaiter(void 0, void 0, void 0, function* () {
+    server.post("/product/add", { schema: ProductSchema_1.addProduct, preValidation: Auth_1.default }, (req, reply) => {
+        let zkproduct = req.body;
+        const productProcessor = new ProductProcessor_1.ProductProcessor();
+        productProcessor.addProduct(zkproduct).then((res) => {
+            if (res != null) {
+                reply.send(res);
             }
             else {
-                reply.send(res);
+                reply.send({});
             }
         });
     });
+    server.get("/product/get", { schema: ProductSchema_1.addProduct, preValidation: Auth_1.default }, (req, reply) => {
+        let zkproduct = req.body;
+        const productProcessor = new ProductProcessor_1.ProductProcessor();
+        productProcessor.addProduct(zkproduct).then((res) => {
+            if (res != null) {
+                reply.send(res);
+            }
+            else {
+                reply.send({});
+            }
+        });
+    });
+    server.post("/unit/add", { schema: ProductSchema_1.addProduct, preValidation: Auth_1.default }, (req, reply) => {
+        let zkunit = req.body;
+        const unitProcessor = new UnitProcessor_1.UnitProcessor();
+        unitProcessor.findOrAddUnit(zkunit.zk_unit_name, zkunit.zkcid).then((res) => {
+            if (res != null) {
+                reply.send(res);
+            }
+            else {
+                reply.send({});
+            }
+        });
+    });
+    server.post("/tax/add", { schema: ProductSchema_1.addProduct, preValidation: Auth_1.default }, (req, reply) => {
+        let zktax = req.body;
+        const taxProcessor = new TaxProcessor_1.TaxProcessor();
+        taxProcessor.addTax(zktax).then((res) => {
+            if (res != null) {
+                reply.send(res);
+            }
+            else {
+                reply.send({});
+            }
+        });
+    });
+    server.get("/tax/getAll", { schema: ProductSchema_1.addProduct, preValidation: Auth_1.default }, (req, reply) => {
+        let zktax = req.body;
+        const taxProcessor = new TaxProcessor_1.TaxProcessor();
+    });
 });
+exports.default = (0, fastify_plugin_1.default)(productRoutes);
 //# sourceMappingURL=ProductRoute.js.map

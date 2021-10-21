@@ -15,8 +15,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fastify_plugin_1 = __importDefault(require("fastify-plugin"));
 const CommonUtils_1 = require("../../../Library/CommonUtils");
 const Auth_1 = __importDefault(require("../../../Library/Middleware/Auth"));
-const CompanyProcessor_1 = require("../../../Processor/User/Processor/CompanyProcessor");
-const UserCompanyProcessor_1 = require("../../../Processor/User/Processor/UserCompanyProcessor");
+const CompanyProcessor_1 = require("../../../Processor/Processor/CompanyProcessor");
+const UserCompanyProcessor_1 = require("../../../Processor/Processor/UserCompanyProcessor");
 const CompanySchema_1 = require("../Schema/CompanySchema");
 const companyRoutes = (server, options) => __awaiter(void 0, void 0, void 0, function* () {
     server.post("/company/create", {

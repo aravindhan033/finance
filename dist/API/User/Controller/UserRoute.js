@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const fastify_plugin_1 = __importDefault(require("fastify-plugin"));
 const CommonUtils_1 = require("../../../Library/CommonUtils");
 const Auth_1 = __importDefault(require("../../../Library/Middleware/Auth"));
-const UserProcessor_1 = require("../../../Processor/User/Processor/UserProcessor");
+const UserProcessor_1 = require("../../../Processor/Processor/UserProcessor");
 const UserSchema_1 = require("../Schema/UserSchema");
 const userRoutes = (server, options) => __awaiter(void 0, void 0, void 0, function* () {
     server.post("/user/create", { schema: UserSchema_1.createUser }, (req, reply) => {

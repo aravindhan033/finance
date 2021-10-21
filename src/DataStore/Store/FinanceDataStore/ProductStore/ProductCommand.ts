@@ -4,16 +4,25 @@ import { ZKProduct } from "../../../../Processor/Model/ProductModel";
 import { FinanceStoreCommand } from "../FinanceStoreCommand";
 
 export class ProductCommand extends FinanceStoreCommand implements IProductCommand {
+    async addProductTax(zkproduct: ZKProduct,zktaxid:number[]): Promise<boolean> {
+        let result= await super.create("zK_Product_Tax_Mapping",{zk_tax_id:zktaxid,zkpid:zkproduct.zkpid,zkcid:zkproduct.zkcid}) ;
+        return result!=null? true:false;       
+    }
+    async deleteProductTax(zkproduct: ZKProduct,zktaxid:number[]): Promise<boolean> {
+        let result= await super.delete("zK_Product_Tax_Mapping",{zk_tax_id:zktaxid,zkpid:zkproduct.zkpid,zkcid:zkproduct.zkcid}) ;
+        return result!=null? JSON.parse(JSON.stringify(result)):result;       
+    }
     async create(zkproduct: ZKProduct): Promise<ZKProduct> {
-        let result= super.create("zKProduct",JSON.parse(JSON.stringify(zkproduct))) ;
+        delete zkproduct.zkp_unit_name;
+        let result= await super.create("zKProduct",JSON.parse(JSON.stringify(zkproduct))) ;
         return result!=null? JSON.parse(JSON.stringify(result)):result;       
     }
     async update(zkproduct: ZKProduct): Promise<ZKProduct> {
-        let result= super.update("zKProduct",{where:{zkpid:zkproduct.zkpid}},JSON.parse(JSON.stringify(zkproduct))) ;
+        let result=await super.update("zKProduct",{zkpid:zkproduct.zkpid},JSON.parse(JSON.stringify(zkproduct))) ;
         return result!=null? JSON.parse(JSON.stringify(result)):result;               
     }
     async delete(zkproduct: ZKProduct): Promise<boolean> {
-        let result= super.delete("zKProduct",{where:{zkpid:zkproduct.zkpid}}) ;
+        let result=await super.delete("zKProduct",{zkpid:zkproduct.zkpid}) ;
         return result!=null? JSON.parse(JSON.stringify(result)):result;               
     }
     

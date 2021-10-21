@@ -1,31 +1,32 @@
+import { CommonUtils } from "../../../../Library/CommonUtils";
 import { ITaxQuery } from "../../../../Processor/Interface/Tax/ITaxQuery";
-import { ZKUnit } from "../../../../Processor/Model/ProductModel";
+import { ZKTax, ZKUnit } from "../../../../Processor/Model/ProductModel";
 import { FinanceStoreQuery } from "../FinanceStoreQuery";
 
 export class TaxQuery extends FinanceStoreQuery implements ITaxQuery{
-    get(zktaxid: number): Promise<ZKUnit> {
-        let result = super.fetch("zK_Tax",{where:{
+    get(zktaxid: number): Promise<ZKTax> {
+        let result = super.fetch("zK_Tax",{
             zk_tax_id:{
-                equals:zktaxid
+                equals:CommonUtils.convertNullToUndefined(zktaxid)
             }
-        }})
+        })
         return result;
     }
-    getAll(zktaxid: number[], zkcid: number): Promise<ZKUnit[]> {
-        let result = super.fetchAll("zK_Tax",{where:{
+    getAll(zktaxid: number[], zkcid: number): Promise<ZKTax[]> {
+        let result = super.fetchAll("zK_Tax",{
             OR:[{
                 zk_tax_id:{
-                    in:zktaxid
+                    in:CommonUtils.convertNullToUndefined(zktaxid)
                 }
             },
             {
                 zkcid:{
-                    equals:zkcid
+                    equals:CommonUtils.convertNullToUndefined(zkcid)
                 }
             }
         ]
             
-        }})
+        })
         return result;
     }
     

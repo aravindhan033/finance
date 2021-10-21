@@ -17,6 +17,15 @@ class CommonUtils {
             return Number(decodedToken.data.zkuid);
         }
     }
+    static getZkcid(request) {
+        if (request.headers["x-zkcid"] != null) {
+            return Number(request.headers["x-zkcid"]);
+        }
+        return null;
+    }
+    static convertNullToUndefined(value) {
+        return value == null ? undefined : value;
+    }
 }
 exports.CommonUtils = CommonUtils;
 //# sourceMappingURL=CommonUtils.js.map

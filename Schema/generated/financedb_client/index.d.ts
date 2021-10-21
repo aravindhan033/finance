@@ -8459,7 +8459,7 @@ export namespace Prisma {
   }
 
   export type ZKUserCompanyMappingWhereUniqueInput = {
-    zkuid_zkcid?: ZKUserCompanyMappingZkuidZkcidCompoundUniqueInput
+    zkuid_zkcid?: ZKUserCompanyMappingZkuid_zkcidCompoundUniqueInput
   }
 
   export type ZKUserCompanyMappingScalarWhereWithAggregatesInput = {
@@ -8519,6 +8519,7 @@ export namespace Prisma {
 
   export type ZKProductWhereUniqueInput = {
     zkpid?: bigint | number
+    zkcid_zkp_name?: ZKProductZkcid_zkp_nameCompoundUniqueInput
   }
 
   export type ZKProductScalarWhereWithAggregatesInput = {
@@ -9380,7 +9381,7 @@ export namespace Prisma {
     not?: NestedDateTimeFilter | Date | string
   }
 
-  export type ZKUserCompanyMappingZkuidZkcidCompoundUniqueInput = {
+  export type ZKUserCompanyMappingZkuid_zkcidCompoundUniqueInput = {
     zkuid: number
     zkcid: number
   }
@@ -9554,6 +9555,11 @@ export namespace Prisma {
     every?: ZK_Product_Tax_MappingWhereInput
     some?: ZK_Product_Tax_MappingWhereInput
     none?: ZK_Product_Tax_MappingWhereInput
+  }
+
+  export type ZKProductZkcid_zkp_nameCompoundUniqueInput = {
+    zkcid: number
+    zkp_name: string
   }
 
   export type BigIntWithAggregatesFilter = {

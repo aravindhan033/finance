@@ -15,7 +15,7 @@ model ZKUserCompanyMapping {
     createAt     DateTime     @default(now()) @db.Timestamptz
     updatedAt    DateTime     @updatedAt @db.Timestamptz
 
-    @@unique([zkuid, zkcid])
+    @@unique(fields:[zkuid, zkcid],name:"zkuid_zkcid")
 }
 
 model ZKProduct {
@@ -37,6 +37,7 @@ model ZKProduct {
     zkp_number2            BigInt?
     zkp_number3            BigInt?
 
+    @@unique(fields:[zkcid,zkp_name],name:"zkcid_zkp_name")
     ZK_Product_Tax_Mapping ZK_Product_Tax_Mapping[]
 }
 

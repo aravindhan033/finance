@@ -13,7 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const config_1 = __importDefault(require("../../config"));
-const UserProcessor_1 = require("../../Processor/User/Processor/UserProcessor");
+const UserProcessor_1 = require("../../Processor/Processor/UserProcessor");
 var jwt = require('jsonwebtoken');
 const AuthtokenValidation = (request, reply, done) => __awaiter(void 0, void 0, void 0, function* () {
     let accessToken = request.headers["x-access-token"];
@@ -43,7 +43,7 @@ const AuthtokenValidation = (request, reply, done) => __awaiter(void 0, void 0, 
         reply.status(403);
         reply.send({});
     }
-    done();
+    //done();
 });
 exports.default = AuthtokenValidation;
 //# sourceMappingURL=Auth.js.map

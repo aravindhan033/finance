@@ -14,4 +14,15 @@ export class CommonUtils{
             return Number(decodedToken.data.zkuid);
         }
     }
+
+    static  getZkcid(request:FastifyRequest):number{
+        if(request.headers["x-zkcid"]!=null ){            
+            return Number(request.headers["x-zkcid"]);
+        }
+        return null;
+    }
+
+    static convertNullToUndefined(value:any){
+        return value==null?undefined:value;
+    }
 }

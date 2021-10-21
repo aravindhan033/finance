@@ -40,10 +40,61 @@ class UserCompanyCommand {
         });
     }
     updateUserProfile(zkuid, zkcid, user_profile) {
-        throw new Error("Method not implemented.");
+        return __awaiter(this, void 0, void 0, function* () {
+            let result = false;
+            const persistence = new FinanceClientPersistence_1.financeClientPersistence();
+            try {
+                const updatedzkcompany = yield persistence.db.zKUserCompanyMapping.update({
+                    where: {
+                        zkuid_zkcid: {
+                            zkcid: zkcid,
+                            zkuid: zkuid
+                        }
+                    },
+                    data: { user_profile: user_profile }
+                }).catch((err) => {
+                    throw (err);
+                }).finally(() => __awaiter(this, void 0, void 0, function* () {
+                    persistence.db.$disconnect();
+                }));
+                result = true;
+            }
+            catch (error) {
+                console.log(error.message);
+            }
+            finally {
+                persistence.db.$disconnect();
+            }
+            return result;
+        });
     }
     deleteUserFromCompany(zkuid, zkcid) {
-        throw new Error("Method not implemented.");
+        return __awaiter(this, void 0, void 0, function* () {
+            let result = false;
+            const persistence = new FinanceClientPersistence_1.financeClientPersistence();
+            try {
+                const updatedzkcompany = yield persistence.db.zKUserCompanyMapping.delete({
+                    where: {
+                        zkuid_zkcid: {
+                            zkcid: zkcid,
+                            zkuid: zkuid
+                        }
+                    },
+                }).catch((err) => {
+                    throw (err);
+                }).finally(() => __awaiter(this, void 0, void 0, function* () {
+                    persistence.db.$disconnect();
+                }));
+                result = true;
+            }
+            catch (error) {
+                console.log(error.message);
+            }
+            finally {
+                persistence.db.$disconnect();
+            }
+            return result;
+        });
     }
 }
 exports.UserCompanyCommand = UserCompanyCommand;

@@ -2,6 +2,7 @@
   "name": "t",
   "version": "1.0.0",
   "main": "dist/app.js",
+  
   "scripts": {
     "start": "tsc && nodemon -L dist/index.js",
     "debug": "tsc && nodemon --inspect dist/index.js",
