@@ -1,5 +1,5 @@
 import { ZKProduct } from "../../Model/ProductModel";
 
 export interface IProductProcessor{
-     addProduct(zkproduct:ZKProduct):Promise<ZKProduct> ;    
+     addProduct(zkproduct:ZKProduct,taxArray:number[]):Promise<ZKProduct> ;    
 }

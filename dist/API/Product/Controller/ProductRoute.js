@@ -18,6 +18,7 @@ const ProductProcessor_1 = require("../../../Processor/Processor/ProductProcesso
 const UnitProcessor_1 = require("../../../Processor/Processor/UnitProcessor");
 const TaxProcessor_1 = require("../../../Processor/Processor/TaxProcessor");
 const ProductSchema_1 = require("../Schema/ProductSchema");
+const CommonUtils_1 = require("../../../Library/CommonUtils");
 const productRoutes = (server, options) => __awaiter(void 0, void 0, void 0, function* () {
     server.post("/product/add", { schema: ProductSchema_1.addProduct, preValidation: Auth_1.default }, (req, reply) => {
         let zkproduct = req.body;
@@ -55,8 +56,9 @@ const productRoutes = (server, options) => __awaiter(void 0, void 0, void 0, fun
             }
         });
     });
-    server.post("/tax/add", { schema: ProductSchema_1.addProduct, preValidation: Auth_1.default }, (req, reply) => {
+    server.post("/tax/add", { schema: ProductSchema_1.addtax, preValidation: Auth_1.default }, (req, reply) => {
         let zktax = req.body;
+        zktax.zkcid = CommonUtils_1.CommonUtils.getZkcid(req);
         const taxProcessor = new TaxProcessor_1.TaxProcessor();
         taxProcessor.addTax(zktax).then((res) => {
             if (res != null) {

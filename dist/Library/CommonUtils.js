@@ -8,14 +8,9 @@ const config_1 = __importDefault(require("../config"));
 var jwt = require('jsonwebtoken');
 class CommonUtils {
     static getZkuid(request) {
-        if (request.headers["x-zkuid"] != null) {
-            return Number(request.headers["x-zkuid"]);
-        }
-        else {
-            let accessToken = request.headers["x-access-token"];
-            const decodedToken = jwt.decode(accessToken, config_1.default.accessTokenSecret);
-            return Number(decodedToken.data.zkuid);
-        }
+        let accessToken = request.headers["x-access-token"];
+        const decodedToken = jwt.decode(accessToken, config_1.default.accessTokenSecret);
+        return Number(decodedToken.data.zkuid);
     }
     static getZkcid(request) {
         if (request.headers["x-zkcid"] != null) {

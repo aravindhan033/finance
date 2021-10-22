@@ -22,7 +22,7 @@ const AuthtokenValidation = async (request: FastifyRequest, reply: FastifyReply,
                     }
                 }
             }
-            else {
+            else {           
                 isValid = true;                                
             }            
         });

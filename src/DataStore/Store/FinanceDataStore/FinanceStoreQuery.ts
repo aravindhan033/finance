@@ -2,6 +2,25 @@ import { financeClientPersistence } from "../../Configuration/FinanceClientPersi
 
 export class FinanceStoreQuery{
 
+    async fetchWithConditionAndJoin(tablename:any, queryOption:any):Promise<any>{
+        const persistence = new financeClientPersistence();
+        let rawJson: any=null;
+        try {
+            const data = await persistence.db[tablename].findMany(queryOption).catch((err) => {
+                throw (err)
+            }).finally(async () => {
+                persistence.db.$disconnect();
+            });
+            rawJson = data
+        }
+        catch (err) {
+            console.log(err)
+        }
+        finally {
+            persistence.db.$disconnect();
+        }
+        return rawJson;
+    }
     async fetch(tablename:any,whereCondition:any):Promise<any>{
         const persistence = new financeClientPersistence();
         let rawJson: any=null;

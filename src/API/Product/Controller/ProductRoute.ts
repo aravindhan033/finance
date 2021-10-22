@@ -6,34 +6,41 @@ import { ProductProcessor } from "../../../Processor/Processor/ProductProcessor"
 import { UnitProcessor } from "../../../Processor/Processor/UnitProcessor";
 
 import { TaxProcessor } from "../../../Processor/Processor/TaxProcessor";
-import {addProduct } from "../Schema/ProductSchema";
+import {addProduct ,addtax} from "../Schema/ProductSchema";
+import { CommonUtils } from "../../../Library/CommonUtils";
 
 const productRoutes: FastifyPluginAsync = async (server: FastifyInstance, options: FastifyPluginOptions) => {
     
     server.post("/product/add", { schema: addProduct ,preValidation: AuthtokenValidation} ,  (req, reply) => {
-        let zkproduct: ZKProduct = req.body as ZKProduct;
+        let zkproduct: ZKProduct = req.body["product"] as ZKProduct;
+        zkproduct.zkcid=CommonUtils.getZkcid(req);
+        let taxArr: number[] = req.body["tax"] ;
         const productProcessor: ProductProcessor = new ProductProcessor();
-        productProcessor.addProduct(zkproduct).then((res) => {           
+        productProcessor.addProduct(zkproduct,taxArr).then((res) => {           
             if (res != null) {
                 reply.send(res);
             }
             else {
                 reply.send({});
             } 
-        });
+        }).catch(()=>{
+            reply.status(500);
+            reply.send({});
+        })
     });
     
-    server.get("/product/get", { schema: addProduct ,preValidation: AuthtokenValidation} ,  (req, reply) => {
-        let zkproduct: ZKProduct = req.body as ZKProduct;
+    server.get("/product/get/:zkpid", { preValidation: AuthtokenValidation} ,  (req, reply) => {
+        let zkpid:number = req.params["zkpid"]         
         const productProcessor: ProductProcessor = new ProductProcessor();
-        productProcessor.addProduct(zkproduct).then((res) => {           
+        productProcessor.getProduct(zkpid).then((res)=>{
             if (res != null) {
                 reply.send(res);
             }
             else {
                 reply.send({});
             } 
-        });
+        })
+        
     });
 
     server.post("/unit/add", { schema: addProduct ,preValidation: AuthtokenValidation} ,  (req, reply) => {
@@ -48,8 +55,9 @@ const productRoutes: FastifyPluginAsync = async (server: FastifyInstance, option
             } 
         });
     });
-    server.post("/tax/add", { schema: addProduct ,preValidation: AuthtokenValidation} ,  (req, reply) => {
+    server.post("/tax/add", { schema: addtax ,preValidation: AuthtokenValidation} ,  (req, reply) => {
         let zktax: ZKTax = req.body as ZKTax;
+        zktax.zkcid=CommonUtils.getZkcid(req)
         const taxProcessor: TaxProcessor = new TaxProcessor();
         taxProcessor.addTax(zktax).then((res) => {           
             if (res != null) {

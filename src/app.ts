@@ -11,7 +11,7 @@ server.register(require('fastify-swagger'), {
     exposeRoute: true,
     routePrefix: '/documentation',
     swagger: {
-      info: { title: 'finance-api' },      
+      info: { title: 'f     inance-api' },      
     },
   })
 server.register(UserRoute);

@@ -5,11 +5,15 @@ import { FinanceStoreCommand } from "../FinanceStoreCommand";
 
 export class ProductCommand extends FinanceStoreCommand implements IProductCommand {
     async addProductTax(zkproduct: ZKProduct,zktaxid:number[]): Promise<boolean> {
-        let result= await super.create("zK_Product_Tax_Mapping",{zk_tax_id:zktaxid,zkpid:zkproduct.zkpid,zkcid:zkproduct.zkcid}) ;
+        let insertData=[];
+        for(let i=0;i<zktaxid.length;i++){
+            insertData.push({zk_tax_id:zktaxid[i],zkpid:zkproduct.zkpid,zkcid:zkproduct.zkcid})
+        }
+        let result= await super.createMany("zK_Product_Tax_Mapping",insertData) ;
         return result!=null? true:false;       
     }
     async deleteProductTax(zkproduct: ZKProduct,zktaxid:number[]): Promise<boolean> {
-        let result= await super.delete("zK_Product_Tax_Mapping",{zk_tax_id:zktaxid,zkpid:zkproduct.zkpid,zkcid:zkproduct.zkcid}) ;
+        let result= await super.delete("zK_Product_Tax_Mapping",{zk_tax_id:{in:[zktaxid]},zkpid:zkproduct.zkpid,zkcid:zkproduct.zkcid}) ;
         return result!=null? JSON.parse(JSON.stringify(result)):result;       
     }
     async create(zkproduct: ZKProduct): Promise<ZKProduct> {

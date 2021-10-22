@@ -35,9 +35,10 @@ export type ZKProduct = {
   zkp_code: string | null
   zkp_name: string
   zkp_description: string | null
-  zkp_unit: number
+  zkp_unit: bigint
   zkp_unit_selling_price: Prisma.Decimal
   zkp_unit_cost_price: Prisma.Decimal
+  zkp_product_img: string | null
   zkp_char1: string | null
   zkp_char2: string | null
   zkp_char3: string | null
@@ -1787,7 +1788,7 @@ export namespace Prisma {
   export type ZKProductSumAggregateOutputType = {
     zkcid: number | null
     zkpid: bigint | null
-    zkp_unit: number | null
+    zkp_unit: bigint | null
     zkp_unit_selling_price: Decimal | null
     zkp_unit_cost_price: Decimal | null
     zkp_number1: bigint | null
@@ -1802,9 +1803,10 @@ export namespace Prisma {
     zkp_code: string | null
     zkp_name: string | null
     zkp_description: string | null
-    zkp_unit: number | null
+    zkp_unit: bigint | null
     zkp_unit_selling_price: Decimal | null
     zkp_unit_cost_price: Decimal | null
+    zkp_product_img: string | null
     zkp_char1: string | null
     zkp_char2: string | null
     zkp_char3: string | null
@@ -1822,9 +1824,10 @@ export namespace Prisma {
     zkp_code: string | null
     zkp_name: string | null
     zkp_description: string | null
-    zkp_unit: number | null
+    zkp_unit: bigint | null
     zkp_unit_selling_price: Decimal | null
     zkp_unit_cost_price: Decimal | null
+    zkp_product_img: string | null
     zkp_char1: string | null
     zkp_char2: string | null
     zkp_char3: string | null
@@ -1845,6 +1848,7 @@ export namespace Prisma {
     zkp_unit: number
     zkp_unit_selling_price: number
     zkp_unit_cost_price: number
+    zkp_product_img: number
     zkp_char1: number
     zkp_char2: number
     zkp_char3: number
@@ -1889,6 +1893,7 @@ export namespace Prisma {
     zkp_unit?: true
     zkp_unit_selling_price?: true
     zkp_unit_cost_price?: true
+    zkp_product_img?: true
     zkp_char1?: true
     zkp_char2?: true
     zkp_char3?: true
@@ -1909,6 +1914,7 @@ export namespace Prisma {
     zkp_unit?: true
     zkp_unit_selling_price?: true
     zkp_unit_cost_price?: true
+    zkp_product_img?: true
     zkp_char1?: true
     zkp_char2?: true
     zkp_char3?: true
@@ -1929,6 +1935,7 @@ export namespace Prisma {
     zkp_unit?: true
     zkp_unit_selling_price?: true
     zkp_unit_cost_price?: true
+    zkp_product_img?: true
     zkp_char1?: true
     zkp_char2?: true
     zkp_char3?: true
@@ -2059,9 +2066,10 @@ export namespace Prisma {
     zkp_code: string | null
     zkp_name: string
     zkp_description: string | null
-    zkp_unit: number
+    zkp_unit: bigint
     zkp_unit_selling_price: Decimal
     zkp_unit_cost_price: Decimal
+    zkp_product_img: string | null
     zkp_char1: string | null
     zkp_char2: string | null
     zkp_char3: string | null
@@ -2101,6 +2109,7 @@ export namespace Prisma {
     zkp_unit?: boolean
     zkp_unit_selling_price?: boolean
     zkp_unit_cost_price?: boolean
+    zkp_product_img?: boolean
     zkp_char1?: boolean
     zkp_char2?: boolean
     zkp_char3?: boolean
@@ -2109,11 +2118,13 @@ export namespace Prisma {
     zkp_number1?: boolean
     zkp_number2?: boolean
     zkp_number3?: boolean
-    ZK_Product_Tax_Mapping?: boolean | ZK_Product_Tax_MappingFindManyArgs
+    ZK_Taxes?: boolean | ZK_Product_Tax_MappingFindManyArgs
+    ZK_Unit?: boolean | ZK_UnitArgs
   }
 
   export type ZKProductInclude = {
-    ZK_Product_Tax_Mapping?: boolean | ZK_Product_Tax_MappingFindManyArgs
+    ZK_Taxes?: boolean | ZK_Product_Tax_MappingFindManyArgs
+    ZK_Unit?: boolean | ZK_UnitArgs
   }
 
   export type ZKProductGetPayload<
@@ -2127,15 +2138,19 @@ export namespace Prisma {
     ?'include' extends U
     ? ZKProduct  & {
     [P in TrueKeys<S['include']>]: 
-          P extends 'ZK_Product_Tax_Mapping'
-        ? Array < ZK_Product_Tax_MappingGetPayload<S['include'][P]>>  : never
+          P extends 'ZK_Taxes'
+        ? Array < ZK_Product_Tax_MappingGetPayload<S['include'][P]>>  :
+        P extends 'ZK_Unit'
+        ? ZK_UnitGetPayload<S['include'][P]> : never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof ZKProduct ?ZKProduct [P]
   : 
-          P extends 'ZK_Product_Tax_Mapping'
-        ? Array < ZK_Product_Tax_MappingGetPayload<S['select'][P]>>  : never
+          P extends 'ZK_Taxes'
+        ? Array < ZK_Product_Tax_MappingGetPayload<S['select'][P]>>  :
+        P extends 'ZK_Unit'
+        ? ZK_UnitGetPayload<S['select'][P]> : never
   } 
     : ZKProduct
   : ZKProduct
@@ -2475,7 +2490,9 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    ZK_Product_Tax_Mapping<T extends ZK_Product_Tax_MappingFindManyArgs = {}>(args?: Subset<T, ZK_Product_Tax_MappingFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ZK_Product_Tax_Mapping>>, PrismaPromise<Array<ZK_Product_Tax_MappingGetPayload<T>>>>;
+    ZK_Taxes<T extends ZK_Product_Tax_MappingFindManyArgs = {}>(args?: Subset<T, ZK_Product_Tax_MappingFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ZK_Product_Tax_Mapping>>, PrismaPromise<Array<ZK_Product_Tax_MappingGetPayload<T>>>>;
+
+    ZK_Unit<T extends ZK_UnitArgs = {}>(args?: Subset<T, ZK_UnitArgs>): CheckSelect<T, Prisma__ZK_UnitClient<ZK_Unit | null >, Prisma__ZK_UnitClient<ZK_UnitGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -3019,11 +3036,11 @@ export namespace Prisma {
     zk_tax_id?: boolean
     zk_tax_name?: boolean
     zk_tax_percentage?: boolean
-    ZK_Product_Tax_Mapping?: boolean | ZK_Product_Tax_MappingFindManyArgs
+    ZK_Products?: boolean | ZK_Product_Tax_MappingFindManyArgs
   }
 
   export type ZK_TaxInclude = {
-    ZK_Product_Tax_Mapping?: boolean | ZK_Product_Tax_MappingFindManyArgs
+    ZK_Products?: boolean | ZK_Product_Tax_MappingFindManyArgs
   }
 
   export type ZK_TaxGetPayload<
@@ -3037,14 +3054,14 @@ export namespace Prisma {
     ?'include' extends U
     ? ZK_Tax  & {
     [P in TrueKeys<S['include']>]: 
-          P extends 'ZK_Product_Tax_Mapping'
+          P extends 'ZK_Products'
         ? Array < ZK_Product_Tax_MappingGetPayload<S['include'][P]>>  : never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof ZK_Tax ?ZK_Tax [P]
   : 
-          P extends 'ZK_Product_Tax_Mapping'
+          P extends 'ZK_Products'
         ? Array < ZK_Product_Tax_MappingGetPayload<S['select'][P]>>  : never
   } 
     : ZK_Tax
@@ -3385,7 +3402,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
-    ZK_Product_Tax_Mapping<T extends ZK_Product_Tax_MappingFindManyArgs = {}>(args?: Subset<T, ZK_Product_Tax_MappingFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ZK_Product_Tax_Mapping>>, PrismaPromise<Array<ZK_Product_Tax_MappingGetPayload<T>>>>;
+    ZK_Products<T extends ZK_Product_Tax_MappingFindManyArgs = {}>(args?: Subset<T, ZK_Product_Tax_MappingFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ZK_Product_Tax_Mapping>>, PrismaPromise<Array<ZK_Product_Tax_MappingGetPayload<T>>>>;
 
     private get _document();
     /**
@@ -3917,6 +3934,11 @@ export namespace Prisma {
     zkcid?: boolean
     zk_unit_id?: boolean
     zk_unit_name?: boolean
+    ZK_Product?: boolean | ZKProductArgs
+  }
+
+  export type ZK_UnitInclude = {
+    ZK_Product?: boolean | ZKProductArgs
   }
 
   export type ZK_UnitGetPayload<
@@ -3928,12 +3950,17 @@ export namespace Prisma {
     ? never
     : S extends ZK_UnitArgs | ZK_UnitFindManyArgs
     ?'include' extends U
-    ? ZK_Unit 
+    ? ZK_Unit  & {
+    [P in TrueKeys<S['include']>]: 
+          P extends 'ZK_Product'
+        ? ZKProductGetPayload<S['include'][P]> | null : never
+  } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof ZK_Unit ?ZK_Unit [P]
   : 
-     never
+          P extends 'ZK_Product'
+        ? ZKProductGetPayload<S['select'][P]> | null : never
   } 
     : ZK_Unit
   : ZK_Unit
@@ -4273,6 +4300,7 @@ export namespace Prisma {
     constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
     readonly [Symbol.toStringTag]: 'PrismaClientPromise';
 
+    ZK_Product<T extends ZKProductArgs = {}>(args?: Subset<T, ZKProductArgs>): CheckSelect<T, Prisma__ZKProductClient<ZKProduct | null >, Prisma__ZKProductClient<ZKProductGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -4309,6 +4337,11 @@ export namespace Prisma {
     **/
     select?: ZK_UnitSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_UnitInclude | null
+    /**
      * Throw an Error if a ZK_Unit can't be found
      * 
     **/
@@ -4330,6 +4363,11 @@ export namespace Prisma {
      * 
     **/
     select?: ZK_UnitSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_UnitInclude | null
     /**
      * Throw an Error if a ZK_Unit can't be found
      * 
@@ -4388,6 +4426,11 @@ export namespace Prisma {
     **/
     select?: ZK_UnitSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_UnitInclude | null
+    /**
      * Filter, which ZK_Units to fetch.
      * 
     **/
@@ -4434,6 +4477,11 @@ export namespace Prisma {
     **/
     select?: ZK_UnitSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_UnitInclude | null
+    /**
      * The data needed to create a ZK_Unit.
      * 
     **/
@@ -4459,6 +4507,11 @@ export namespace Prisma {
      * 
     **/
     select?: ZK_UnitSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_UnitInclude | null
     /**
      * The data needed to update a ZK_Unit.
      * 
@@ -4491,6 +4544,11 @@ export namespace Prisma {
     **/
     select?: ZK_UnitSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_UnitInclude | null
+    /**
      * The filter to search for the ZK_Unit to update in case it exists.
      * 
     **/
@@ -4518,6 +4576,11 @@ export namespace Prisma {
     **/
     select?: ZK_UnitSelect | null
     /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_UnitInclude | null
+    /**
      * Filter which ZK_Unit to delete.
      * 
     **/
@@ -4542,6 +4605,11 @@ export namespace Prisma {
      * 
     **/
     select?: ZK_UnitSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_UnitInclude | null
   }
 
 
@@ -7615,11 +7683,11 @@ export namespace Prisma {
 
 
   export type ZK_Product_Tax_MappingSelect = {
+    zk_product_tax_mapping_product_fkey?: boolean | ZKProductArgs
     zkpid?: boolean
+    zk_product_tax_mapping_tax_fkey?: boolean | ZK_TaxArgs
     zk_tax_id?: boolean
     zkcid?: boolean
-    zk_product_tax_mapping_product_fkey?: boolean | ZKProductArgs
-    zk_product_tax_mapping_tax_fkey?: boolean | ZK_TaxArgs
   }
 
   export type ZK_Product_Tax_MappingInclude = {
@@ -8334,6 +8402,7 @@ export namespace Prisma {
     zkp_unit: 'zkp_unit',
     zkp_unit_selling_price: 'zkp_unit_selling_price',
     zkp_unit_cost_price: 'zkp_unit_cost_price',
+    zkp_product_img: 'zkp_product_img',
     zkp_char1: 'zkp_char1',
     zkp_char2: 'zkp_char2',
     zkp_char3: 'zkp_char3',
@@ -8483,9 +8552,10 @@ export namespace Prisma {
     zkp_code?: StringNullableFilter | string | null
     zkp_name?: StringFilter | string
     zkp_description?: StringNullableFilter | string | null
-    zkp_unit?: IntFilter | number
+    zkp_unit?: BigIntFilter | bigint | number
     zkp_unit_selling_price?: DecimalFilter | Decimal | number | string
     zkp_unit_cost_price?: DecimalFilter | Decimal | number | string
+    zkp_product_img?: StringNullableFilter | string | null
     zkp_char1?: StringNullableFilter | string | null
     zkp_char2?: StringNullableFilter | string | null
     zkp_char3?: StringNullableFilter | string | null
@@ -8494,7 +8564,8 @@ export namespace Prisma {
     zkp_number1?: BigIntNullableFilter | bigint | number | null
     zkp_number2?: BigIntNullableFilter | bigint | number | null
     zkp_number3?: BigIntNullableFilter | bigint | number | null
-    ZK_Product_Tax_Mapping?: ZK_Product_Tax_MappingListRelationFilter
+    ZK_Taxes?: ZK_Product_Tax_MappingListRelationFilter
+    ZK_Unit?: XOR<ZK_UnitRelationFilter, ZK_UnitWhereInput>
   }
 
   export type ZKProductOrderByInput = {
@@ -8507,6 +8578,7 @@ export namespace Prisma {
     zkp_unit?: SortOrder
     zkp_unit_selling_price?: SortOrder
     zkp_unit_cost_price?: SortOrder
+    zkp_product_img?: SortOrder
     zkp_char1?: SortOrder
     zkp_char2?: SortOrder
     zkp_char3?: SortOrder
@@ -8532,9 +8604,10 @@ export namespace Prisma {
     zkp_code?: StringNullableWithAggregatesFilter | string | null
     zkp_name?: StringWithAggregatesFilter | string
     zkp_description?: StringNullableWithAggregatesFilter | string | null
-    zkp_unit?: IntWithAggregatesFilter | number
+    zkp_unit?: BigIntWithAggregatesFilter | bigint | number
     zkp_unit_selling_price?: DecimalWithAggregatesFilter | Decimal | number | string
     zkp_unit_cost_price?: DecimalWithAggregatesFilter | Decimal | number | string
+    zkp_product_img?: StringNullableWithAggregatesFilter | string | null
     zkp_char1?: StringNullableWithAggregatesFilter | string | null
     zkp_char2?: StringNullableWithAggregatesFilter | string | null
     zkp_char3?: StringNullableWithAggregatesFilter | string | null
@@ -8553,7 +8626,7 @@ export namespace Prisma {
     zk_tax_id?: BigIntFilter | bigint | number
     zk_tax_name?: StringFilter | string
     zk_tax_percentage?: DecimalFilter | Decimal | number | string
-    ZK_Product_Tax_Mapping?: ZK_Product_Tax_MappingListRelationFilter
+    ZK_Products?: ZK_Product_Tax_MappingListRelationFilter
   }
 
   export type ZK_TaxOrderByInput = {
@@ -8585,6 +8658,7 @@ export namespace Prisma {
     zkcid?: IntFilter | number
     zk_unit_id?: BigIntFilter | bigint | number
     zk_unit_name?: StringFilter | string
+    ZK_Product?: XOR<ZKProductRelationFilter, ZKProductWhereInput> | null
   }
 
   export type ZK_UnitOrderByInput = {
@@ -8747,11 +8821,11 @@ export namespace Prisma {
     AND?: Enumerable<ZK_Product_Tax_MappingWhereInput>
     OR?: Enumerable<ZK_Product_Tax_MappingWhereInput>
     NOT?: Enumerable<ZK_Product_Tax_MappingWhereInput>
+    zk_product_tax_mapping_product_fkey?: XOR<ZKProductRelationFilter, ZKProductWhereInput>
     zkpid?: BigIntFilter | bigint | number
+    zk_product_tax_mapping_tax_fkey?: XOR<ZK_TaxRelationFilter, ZK_TaxWhereInput>
     zk_tax_id?: BigIntFilter | bigint | number
     zkcid?: IntFilter | number
-    zk_product_tax_mapping_product_fkey?: XOR<ZKProductRelationFilter, ZKProductWhereInput>
-    zk_product_tax_mapping_tax_fkey?: XOR<ZK_TaxRelationFilter, ZK_TaxWhereInput>
   }
 
   export type ZK_Product_Tax_MappingOrderByInput = {
@@ -8836,9 +8910,9 @@ export namespace Prisma {
     zkp_code?: string | null
     zkp_name: string
     zkp_description?: string | null
-    zkp_unit: number
     zkp_unit_selling_price?: Decimal | number | string
     zkp_unit_cost_price?: Decimal | number | string
+    zkp_product_img?: string | null
     zkp_char1?: string | null
     zkp_char2?: string | null
     zkp_char3?: string | null
@@ -8847,7 +8921,8 @@ export namespace Prisma {
     zkp_number1?: bigint | number | null
     zkp_number2?: bigint | number | null
     zkp_number3?: bigint | number | null
-    ZK_Product_Tax_Mapping?: ZK_Product_Tax_MappingCreateNestedManyWithoutZk_product_tax_mapping_product_fkeyInput
+    ZK_Taxes?: ZK_Product_Tax_MappingCreateNestedManyWithoutZk_product_tax_mapping_product_fkeyInput
+    ZK_Unit: ZK_UnitCreateNestedOneWithoutZK_ProductInput
   }
 
   export type ZKProductUncheckedCreateInput = {
@@ -8857,9 +8932,10 @@ export namespace Prisma {
     zkp_code?: string | null
     zkp_name: string
     zkp_description?: string | null
-    zkp_unit: number
+    zkp_unit: bigint | number
     zkp_unit_selling_price?: Decimal | number | string
     zkp_unit_cost_price?: Decimal | number | string
+    zkp_product_img?: string | null
     zkp_char1?: string | null
     zkp_char2?: string | null
     zkp_char3?: string | null
@@ -8868,7 +8944,7 @@ export namespace Prisma {
     zkp_number1?: bigint | number | null
     zkp_number2?: bigint | number | null
     zkp_number3?: bigint | number | null
-    ZK_Product_Tax_Mapping?: ZK_Product_Tax_MappingUncheckedCreateNestedManyWithoutZk_product_tax_mapping_product_fkeyInput
+    ZK_Taxes?: ZK_Product_Tax_MappingUncheckedCreateNestedManyWithoutZk_product_tax_mapping_product_fkeyInput
   }
 
   export type ZKProductUpdateInput = {
@@ -8878,9 +8954,9 @@ export namespace Prisma {
     zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_name?: StringFieldUpdateOperationsInput | string
     zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
-    zkp_unit?: IntFieldUpdateOperationsInput | number
     zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_product_img?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char1?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char2?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char3?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8889,7 +8965,8 @@ export namespace Prisma {
     zkp_number1?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     zkp_number2?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     zkp_number3?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    ZK_Product_Tax_Mapping?: ZK_Product_Tax_MappingUpdateManyWithoutZk_product_tax_mapping_product_fkeyInput
+    ZK_Taxes?: ZK_Product_Tax_MappingUpdateManyWithoutZk_product_tax_mapping_product_fkeyInput
+    ZK_Unit?: ZK_UnitUpdateOneRequiredWithoutZK_ProductInput
   }
 
   export type ZKProductUncheckedUpdateInput = {
@@ -8899,9 +8976,10 @@ export namespace Prisma {
     zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_name?: StringFieldUpdateOperationsInput | string
     zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
-    zkp_unit?: IntFieldUpdateOperationsInput | number
+    zkp_unit?: BigIntFieldUpdateOperationsInput | bigint | number
     zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_product_img?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char1?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char2?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char3?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8910,7 +8988,7 @@ export namespace Prisma {
     zkp_number1?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     zkp_number2?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     zkp_number3?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    ZK_Product_Tax_Mapping?: ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZk_product_tax_mapping_product_fkeyInput
+    ZK_Taxes?: ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZk_product_tax_mapping_product_fkeyInput
   }
 
   export type ZKProductCreateManyInput = {
@@ -8920,9 +8998,10 @@ export namespace Prisma {
     zkp_code?: string | null
     zkp_name: string
     zkp_description?: string | null
-    zkp_unit: number
+    zkp_unit: bigint | number
     zkp_unit_selling_price?: Decimal | number | string
     zkp_unit_cost_price?: Decimal | number | string
+    zkp_product_img?: string | null
     zkp_char1?: string | null
     zkp_char2?: string | null
     zkp_char3?: string | null
@@ -8940,9 +9019,9 @@ export namespace Prisma {
     zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_name?: StringFieldUpdateOperationsInput | string
     zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
-    zkp_unit?: IntFieldUpdateOperationsInput | number
     zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_product_img?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char1?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char2?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char3?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8960,9 +9039,10 @@ export namespace Prisma {
     zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_name?: StringFieldUpdateOperationsInput | string
     zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
-    zkp_unit?: IntFieldUpdateOperationsInput | number
+    zkp_unit?: BigIntFieldUpdateOperationsInput | bigint | number
     zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_product_img?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char1?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char2?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char3?: NullableStringFieldUpdateOperationsInput | string | null
@@ -8978,7 +9058,7 @@ export namespace Prisma {
     zk_tax_id?: bigint | number
     zk_tax_name: string
     zk_tax_percentage?: Decimal | number | string
-    ZK_Product_Tax_Mapping?: ZK_Product_Tax_MappingCreateNestedManyWithoutZk_product_tax_mapping_tax_fkeyInput
+    ZK_Products?: ZK_Product_Tax_MappingCreateNestedManyWithoutZk_product_tax_mapping_tax_fkeyInput
   }
 
   export type ZK_TaxUncheckedCreateInput = {
@@ -8986,7 +9066,7 @@ export namespace Prisma {
     zk_tax_id?: bigint | number
     zk_tax_name: string
     zk_tax_percentage?: Decimal | number | string
-    ZK_Product_Tax_Mapping?: ZK_Product_Tax_MappingUncheckedCreateNestedManyWithoutZk_product_tax_mapping_tax_fkeyInput
+    ZK_Products?: ZK_Product_Tax_MappingUncheckedCreateNestedManyWithoutZk_product_tax_mapping_tax_fkeyInput
   }
 
   export type ZK_TaxUpdateInput = {
@@ -8994,7 +9074,7 @@ export namespace Prisma {
     zk_tax_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_tax_name?: StringFieldUpdateOperationsInput | string
     zk_tax_percentage?: DecimalFieldUpdateOperationsInput | Decimal | number | string
-    ZK_Product_Tax_Mapping?: ZK_Product_Tax_MappingUpdateManyWithoutZk_product_tax_mapping_tax_fkeyInput
+    ZK_Products?: ZK_Product_Tax_MappingUpdateManyWithoutZk_product_tax_mapping_tax_fkeyInput
   }
 
   export type ZK_TaxUncheckedUpdateInput = {
@@ -9002,7 +9082,7 @@ export namespace Prisma {
     zk_tax_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_tax_name?: StringFieldUpdateOperationsInput | string
     zk_tax_percentage?: DecimalFieldUpdateOperationsInput | Decimal | number | string
-    ZK_Product_Tax_Mapping?: ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZk_product_tax_mapping_tax_fkeyInput
+    ZK_Products?: ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZk_product_tax_mapping_tax_fkeyInput
   }
 
   export type ZK_TaxCreateManyInput = {
@@ -9030,24 +9110,28 @@ export namespace Prisma {
     zkcid: number
     zk_unit_id?: bigint | number
     zk_unit_name: string
+    ZK_Product?: ZKProductCreateNestedOneWithoutZK_UnitInput
   }
 
   export type ZK_UnitUncheckedCreateInput = {
     zkcid: number
     zk_unit_id?: bigint | number
     zk_unit_name: string
+    ZK_Product?: ZKProductUncheckedCreateNestedOneWithoutZK_UnitInput
   }
 
   export type ZK_UnitUpdateInput = {
     zkcid?: IntFieldUpdateOperationsInput | number
     zk_unit_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_unit_name?: StringFieldUpdateOperationsInput | string
+    ZK_Product?: ZKProductUpdateOneWithoutZK_UnitInput
   }
 
   export type ZK_UnitUncheckedUpdateInput = {
     zkcid?: IntFieldUpdateOperationsInput | number
     zk_unit_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_unit_name?: StringFieldUpdateOperationsInput | string
+    ZK_Product?: ZKProductUncheckedUpdateOneWithoutZK_UnitInput
   }
 
   export type ZK_UnitCreateManyInput = {
@@ -9314,8 +9398,8 @@ export namespace Prisma {
 
   export type ZK_Product_Tax_MappingCreateInput = {
     zkcid: number
-    zk_product_tax_mapping_product_fkey: ZKProductCreateNestedOneWithoutZK_Product_Tax_MappingInput
-    zk_product_tax_mapping_tax_fkey: ZK_TaxCreateNestedOneWithoutZK_Product_Tax_MappingInput
+    zk_product_tax_mapping_product_fkey: ZKProductCreateNestedOneWithoutZK_TaxesInput
+    zk_product_tax_mapping_tax_fkey: ZK_TaxCreateNestedOneWithoutZK_ProductsInput
   }
 
   export type ZK_Product_Tax_MappingUncheckedCreateInput = {
@@ -9326,8 +9410,8 @@ export namespace Prisma {
 
   export type ZK_Product_Tax_MappingUpdateInput = {
     zkcid?: IntFieldUpdateOperationsInput | number
-    zk_product_tax_mapping_product_fkey?: ZKProductUpdateOneRequiredWithoutZK_Product_Tax_MappingInput
-    zk_product_tax_mapping_tax_fkey?: ZK_TaxUpdateOneRequiredWithoutZK_Product_Tax_MappingInput
+    zk_product_tax_mapping_product_fkey?: ZKProductUpdateOneRequiredWithoutZK_TaxesInput
+    zk_product_tax_mapping_tax_fkey?: ZK_TaxUpdateOneRequiredWithoutZK_ProductsInput
   }
 
   export type ZK_Product_Tax_MappingUncheckedUpdateInput = {
@@ -9557,6 +9641,11 @@ export namespace Prisma {
     none?: ZK_Product_Tax_MappingWhereInput
   }
 
+  export type ZK_UnitRelationFilter = {
+    is?: ZK_UnitWhereInput
+    isNot?: ZK_UnitWhereInput
+  }
+
   export type ZKProductZkcid_zkp_nameCompoundUniqueInput = {
     zkcid: number
     zkp_name: string
@@ -9781,6 +9870,11 @@ export namespace Prisma {
     zk_tax_name: string
   }
 
+  export type ZKProductRelationFilter = {
+    is?: ZKProductWhereInput | null
+    isNot?: ZKProductWhereInput | null
+  }
+
   export type ZK_UnitZkcidZk_unit_nameCompoundUniqueInput = {
     zkcid: number
     zk_unit_name: string
@@ -9848,11 +9942,6 @@ export namespace Prisma {
     isNot?: ZK_OrderWhereInput
   }
 
-  export type ZKProductRelationFilter = {
-    is?: ZKProductWhereInput
-    isNot?: ZKProductWhereInput
-  }
-
   export type ZK_TaxRelationFilter = {
     is?: ZK_TaxWhereInput
     isNot?: ZK_TaxWhereInput
@@ -9884,6 +9973,12 @@ export namespace Prisma {
     connectOrCreate?: Enumerable<ZK_Product_Tax_MappingCreateOrConnectWithoutZk_product_tax_mapping_product_fkeyInput>
     createMany?: ZK_Product_Tax_MappingCreateManyZk_product_tax_mapping_product_fkeyInputEnvelope
     connect?: Enumerable<ZK_Product_Tax_MappingWhereUniqueInput>
+  }
+
+  export type ZK_UnitCreateNestedOneWithoutZK_ProductInput = {
+    create?: XOR<ZK_UnitCreateWithoutZK_ProductInput, ZK_UnitUncheckedCreateWithoutZK_ProductInput>
+    connectOrCreate?: ZK_UnitCreateOrConnectWithoutZK_ProductInput
+    connect?: ZK_UnitWhereUniqueInput
   }
 
   export type ZK_Product_Tax_MappingUncheckedCreateNestedManyWithoutZk_product_tax_mapping_product_fkeyInput = {
@@ -9943,6 +10038,14 @@ export namespace Prisma {
     deleteMany?: Enumerable<ZK_Product_Tax_MappingScalarWhereInput>
   }
 
+  export type ZK_UnitUpdateOneRequiredWithoutZK_ProductInput = {
+    create?: XOR<ZK_UnitCreateWithoutZK_ProductInput, ZK_UnitUncheckedCreateWithoutZK_ProductInput>
+    connectOrCreate?: ZK_UnitCreateOrConnectWithoutZK_ProductInput
+    upsert?: ZK_UnitUpsertWithoutZK_ProductInput
+    connect?: ZK_UnitWhereUniqueInput
+    update?: XOR<ZK_UnitUpdateWithoutZK_ProductInput, ZK_UnitUncheckedUpdateWithoutZK_ProductInput>
+  }
+
   export type ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZk_product_tax_mapping_product_fkeyInput = {
     create?: XOR<Enumerable<ZK_Product_Tax_MappingCreateWithoutZk_product_tax_mapping_product_fkeyInput>, Enumerable<ZK_Product_Tax_MappingUncheckedCreateWithoutZk_product_tax_mapping_product_fkeyInput>>
     connectOrCreate?: Enumerable<ZK_Product_Tax_MappingCreateOrConnectWithoutZk_product_tax_mapping_product_fkeyInput>
@@ -9997,6 +10100,38 @@ export namespace Prisma {
     update?: Enumerable<ZK_Product_Tax_MappingUpdateWithWhereUniqueWithoutZk_product_tax_mapping_tax_fkeyInput>
     updateMany?: Enumerable<ZK_Product_Tax_MappingUpdateManyWithWhereWithoutZk_product_tax_mapping_tax_fkeyInput>
     deleteMany?: Enumerable<ZK_Product_Tax_MappingScalarWhereInput>
+  }
+
+  export type ZKProductCreateNestedOneWithoutZK_UnitInput = {
+    create?: XOR<ZKProductCreateWithoutZK_UnitInput, ZKProductUncheckedCreateWithoutZK_UnitInput>
+    connectOrCreate?: ZKProductCreateOrConnectWithoutZK_UnitInput
+    connect?: ZKProductWhereUniqueInput
+  }
+
+  export type ZKProductUncheckedCreateNestedOneWithoutZK_UnitInput = {
+    create?: XOR<ZKProductCreateWithoutZK_UnitInput, ZKProductUncheckedCreateWithoutZK_UnitInput>
+    connectOrCreate?: ZKProductCreateOrConnectWithoutZK_UnitInput
+    connect?: ZKProductWhereUniqueInput
+  }
+
+  export type ZKProductUpdateOneWithoutZK_UnitInput = {
+    create?: XOR<ZKProductCreateWithoutZK_UnitInput, ZKProductUncheckedCreateWithoutZK_UnitInput>
+    connectOrCreate?: ZKProductCreateOrConnectWithoutZK_UnitInput
+    upsert?: ZKProductUpsertWithoutZK_UnitInput
+    connect?: ZKProductWhereUniqueInput
+    disconnect?: boolean
+    delete?: boolean
+    update?: XOR<ZKProductUpdateWithoutZK_UnitInput, ZKProductUncheckedUpdateWithoutZK_UnitInput>
+  }
+
+  export type ZKProductUncheckedUpdateOneWithoutZK_UnitInput = {
+    create?: XOR<ZKProductCreateWithoutZK_UnitInput, ZKProductUncheckedCreateWithoutZK_UnitInput>
+    connectOrCreate?: ZKProductCreateOrConnectWithoutZK_UnitInput
+    upsert?: ZKProductUpsertWithoutZK_UnitInput
+    connect?: ZKProductWhereUniqueInput
+    disconnect?: boolean
+    delete?: boolean
+    update?: XOR<ZKProductUpdateWithoutZK_UnitInput, ZKProductUncheckedUpdateWithoutZK_UnitInput>
   }
 
   export type ZK_OrderCreateNestedManyWithoutZk_order_customer_id_fkeyInput = {
@@ -10113,32 +10248,32 @@ export namespace Prisma {
     update?: XOR<ZK_OrderUpdateWithoutZK_Order_MappingInput, ZK_OrderUncheckedUpdateWithoutZK_Order_MappingInput>
   }
 
-  export type ZKProductCreateNestedOneWithoutZK_Product_Tax_MappingInput = {
-    create?: XOR<ZKProductCreateWithoutZK_Product_Tax_MappingInput, ZKProductUncheckedCreateWithoutZK_Product_Tax_MappingInput>
-    connectOrCreate?: ZKProductCreateOrConnectWithoutZK_Product_Tax_MappingInput
+  export type ZKProductCreateNestedOneWithoutZK_TaxesInput = {
+    create?: XOR<ZKProductCreateWithoutZK_TaxesInput, ZKProductUncheckedCreateWithoutZK_TaxesInput>
+    connectOrCreate?: ZKProductCreateOrConnectWithoutZK_TaxesInput
     connect?: ZKProductWhereUniqueInput
   }
 
-  export type ZK_TaxCreateNestedOneWithoutZK_Product_Tax_MappingInput = {
-    create?: XOR<ZK_TaxCreateWithoutZK_Product_Tax_MappingInput, ZK_TaxUncheckedCreateWithoutZK_Product_Tax_MappingInput>
-    connectOrCreate?: ZK_TaxCreateOrConnectWithoutZK_Product_Tax_MappingInput
+  export type ZK_TaxCreateNestedOneWithoutZK_ProductsInput = {
+    create?: XOR<ZK_TaxCreateWithoutZK_ProductsInput, ZK_TaxUncheckedCreateWithoutZK_ProductsInput>
+    connectOrCreate?: ZK_TaxCreateOrConnectWithoutZK_ProductsInput
     connect?: ZK_TaxWhereUniqueInput
   }
 
-  export type ZKProductUpdateOneRequiredWithoutZK_Product_Tax_MappingInput = {
-    create?: XOR<ZKProductCreateWithoutZK_Product_Tax_MappingInput, ZKProductUncheckedCreateWithoutZK_Product_Tax_MappingInput>
-    connectOrCreate?: ZKProductCreateOrConnectWithoutZK_Product_Tax_MappingInput
-    upsert?: ZKProductUpsertWithoutZK_Product_Tax_MappingInput
+  export type ZKProductUpdateOneRequiredWithoutZK_TaxesInput = {
+    create?: XOR<ZKProductCreateWithoutZK_TaxesInput, ZKProductUncheckedCreateWithoutZK_TaxesInput>
+    connectOrCreate?: ZKProductCreateOrConnectWithoutZK_TaxesInput
+    upsert?: ZKProductUpsertWithoutZK_TaxesInput
     connect?: ZKProductWhereUniqueInput
-    update?: XOR<ZKProductUpdateWithoutZK_Product_Tax_MappingInput, ZKProductUncheckedUpdateWithoutZK_Product_Tax_MappingInput>
+    update?: XOR<ZKProductUpdateWithoutZK_TaxesInput, ZKProductUncheckedUpdateWithoutZK_TaxesInput>
   }
 
-  export type ZK_TaxUpdateOneRequiredWithoutZK_Product_Tax_MappingInput = {
-    create?: XOR<ZK_TaxCreateWithoutZK_Product_Tax_MappingInput, ZK_TaxUncheckedCreateWithoutZK_Product_Tax_MappingInput>
-    connectOrCreate?: ZK_TaxCreateOrConnectWithoutZK_Product_Tax_MappingInput
-    upsert?: ZK_TaxUpsertWithoutZK_Product_Tax_MappingInput
+  export type ZK_TaxUpdateOneRequiredWithoutZK_ProductsInput = {
+    create?: XOR<ZK_TaxCreateWithoutZK_ProductsInput, ZK_TaxUncheckedCreateWithoutZK_ProductsInput>
+    connectOrCreate?: ZK_TaxCreateOrConnectWithoutZK_ProductsInput
+    upsert?: ZK_TaxUpsertWithoutZK_ProductsInput
     connect?: ZK_TaxWhereUniqueInput
-    update?: XOR<ZK_TaxUpdateWithoutZK_Product_Tax_MappingInput, ZK_TaxUncheckedUpdateWithoutZK_Product_Tax_MappingInput>
+    update?: XOR<ZK_TaxUpdateWithoutZK_ProductsInput, ZK_TaxUncheckedUpdateWithoutZK_ProductsInput>
   }
 
   export type NestedIntFilter = {
@@ -10591,7 +10726,7 @@ export namespace Prisma {
 
   export type ZK_Product_Tax_MappingCreateWithoutZk_product_tax_mapping_product_fkeyInput = {
     zkcid: number
-    zk_product_tax_mapping_tax_fkey: ZK_TaxCreateNestedOneWithoutZK_Product_Tax_MappingInput
+    zk_product_tax_mapping_tax_fkey: ZK_TaxCreateNestedOneWithoutZK_ProductsInput
   }
 
   export type ZK_Product_Tax_MappingUncheckedCreateWithoutZk_product_tax_mapping_product_fkeyInput = {
@@ -10609,6 +10744,23 @@ export namespace Prisma {
     skipDuplicates?: boolean
   }
 
+  export type ZK_UnitCreateWithoutZK_ProductInput = {
+    zkcid: number
+    zk_unit_id?: bigint | number
+    zk_unit_name: string
+  }
+
+  export type ZK_UnitUncheckedCreateWithoutZK_ProductInput = {
+    zkcid: number
+    zk_unit_id?: bigint | number
+    zk_unit_name: string
+  }
+
+  export type ZK_UnitCreateOrConnectWithoutZK_ProductInput = {
+    where: ZK_UnitWhereUniqueInput
+    create: XOR<ZK_UnitCreateWithoutZK_ProductInput, ZK_UnitUncheckedCreateWithoutZK_ProductInput>
+  }
+
   export type ZK_Product_Tax_MappingUpsertWithWhereUniqueWithoutZk_product_tax_mapping_product_fkeyInput = {
     where: ZK_Product_Tax_MappingWhereUniqueInput
     update: XOR<ZK_Product_Tax_MappingUpdateWithoutZk_product_tax_mapping_product_fkeyInput, ZK_Product_Tax_MappingUncheckedUpdateWithoutZk_product_tax_mapping_product_fkeyInput>
@@ -10622,7 +10774,7 @@ export namespace Prisma {
 
   export type ZK_Product_Tax_MappingUpdateManyWithWhereWithoutZk_product_tax_mapping_product_fkeyInput = {
     where: ZK_Product_Tax_MappingScalarWhereInput
-    data: XOR<ZK_Product_Tax_MappingUpdateManyMutationInput, ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZK_Product_Tax_MappingInput>
+    data: XOR<ZK_Product_Tax_MappingUpdateManyMutationInput, ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZK_TaxesInput>
   }
 
   export type ZK_Product_Tax_MappingScalarWhereInput = {
@@ -10634,9 +10786,26 @@ export namespace Prisma {
     zkcid?: IntFilter | number
   }
 
+  export type ZK_UnitUpsertWithoutZK_ProductInput = {
+    update: XOR<ZK_UnitUpdateWithoutZK_ProductInput, ZK_UnitUncheckedUpdateWithoutZK_ProductInput>
+    create: XOR<ZK_UnitCreateWithoutZK_ProductInput, ZK_UnitUncheckedCreateWithoutZK_ProductInput>
+  }
+
+  export type ZK_UnitUpdateWithoutZK_ProductInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_unit_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_unit_name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ZK_UnitUncheckedUpdateWithoutZK_ProductInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_unit_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_unit_name?: StringFieldUpdateOperationsInput | string
+  }
+
   export type ZK_Product_Tax_MappingCreateWithoutZk_product_tax_mapping_tax_fkeyInput = {
     zkcid: number
-    zk_product_tax_mapping_product_fkey: ZKProductCreateNestedOneWithoutZK_Product_Tax_MappingInput
+    zk_product_tax_mapping_product_fkey: ZKProductCreateNestedOneWithoutZK_TaxesInput
   }
 
   export type ZK_Product_Tax_MappingUncheckedCreateWithoutZk_product_tax_mapping_tax_fkeyInput = {
@@ -10667,7 +10836,101 @@ export namespace Prisma {
 
   export type ZK_Product_Tax_MappingUpdateManyWithWhereWithoutZk_product_tax_mapping_tax_fkeyInput = {
     where: ZK_Product_Tax_MappingScalarWhereInput
-    data: XOR<ZK_Product_Tax_MappingUpdateManyMutationInput, ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZK_Product_Tax_MappingInput>
+    data: XOR<ZK_Product_Tax_MappingUpdateManyMutationInput, ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZK_ProductsInput>
+  }
+
+  export type ZKProductCreateWithoutZK_UnitInput = {
+    zkcid: number
+    zkpid?: bigint | number
+    zkp_type?: PRODUCT_TYPE
+    zkp_code?: string | null
+    zkp_name: string
+    zkp_description?: string | null
+    zkp_unit_selling_price?: Decimal | number | string
+    zkp_unit_cost_price?: Decimal | number | string
+    zkp_product_img?: string | null
+    zkp_char1?: string | null
+    zkp_char2?: string | null
+    zkp_char3?: string | null
+    zkp_char4?: string | null
+    zkp_char5?: string | null
+    zkp_number1?: bigint | number | null
+    zkp_number2?: bigint | number | null
+    zkp_number3?: bigint | number | null
+    ZK_Taxes?: ZK_Product_Tax_MappingCreateNestedManyWithoutZk_product_tax_mapping_product_fkeyInput
+  }
+
+  export type ZKProductUncheckedCreateWithoutZK_UnitInput = {
+    zkcid: number
+    zkpid?: bigint | number
+    zkp_type?: PRODUCT_TYPE
+    zkp_code?: string | null
+    zkp_name: string
+    zkp_description?: string | null
+    zkp_unit_selling_price?: Decimal | number | string
+    zkp_unit_cost_price?: Decimal | number | string
+    zkp_product_img?: string | null
+    zkp_char1?: string | null
+    zkp_char2?: string | null
+    zkp_char3?: string | null
+    zkp_char4?: string | null
+    zkp_char5?: string | null
+    zkp_number1?: bigint | number | null
+    zkp_number2?: bigint | number | null
+    zkp_number3?: bigint | number | null
+    ZK_Taxes?: ZK_Product_Tax_MappingUncheckedCreateNestedManyWithoutZk_product_tax_mapping_product_fkeyInput
+  }
+
+  export type ZKProductCreateOrConnectWithoutZK_UnitInput = {
+    where: ZKProductWhereUniqueInput
+    create: XOR<ZKProductCreateWithoutZK_UnitInput, ZKProductUncheckedCreateWithoutZK_UnitInput>
+  }
+
+  export type ZKProductUpsertWithoutZK_UnitInput = {
+    update: XOR<ZKProductUpdateWithoutZK_UnitInput, ZKProductUncheckedUpdateWithoutZK_UnitInput>
+    create: XOR<ZKProductCreateWithoutZK_UnitInput, ZKProductUncheckedCreateWithoutZK_UnitInput>
+  }
+
+  export type ZKProductUpdateWithoutZK_UnitInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zkpid?: BigIntFieldUpdateOperationsInput | bigint | number
+    zkp_type?: EnumPRODUCT_TYPEFieldUpdateOperationsInput | PRODUCT_TYPE
+    zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_name?: StringFieldUpdateOperationsInput | string
+    zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_product_img?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char1?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char2?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char3?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char4?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char5?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_number1?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    zkp_number2?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    zkp_number3?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ZK_Taxes?: ZK_Product_Tax_MappingUpdateManyWithoutZk_product_tax_mapping_product_fkeyInput
+  }
+
+  export type ZKProductUncheckedUpdateWithoutZK_UnitInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zkpid?: BigIntFieldUpdateOperationsInput | bigint | number
+    zkp_type?: EnumPRODUCT_TYPEFieldUpdateOperationsInput | PRODUCT_TYPE
+    zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_name?: StringFieldUpdateOperationsInput | string
+    zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_product_img?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char1?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char2?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char3?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char4?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char5?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_number1?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    zkp_number2?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    zkp_number3?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ZK_Taxes?: ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZk_product_tax_mapping_product_fkeyInput
   }
 
   export type ZK_OrderCreateWithoutZk_order_customer_id_fkeyInput = {
@@ -10921,16 +11184,38 @@ export namespace Prisma {
     zk_order_termscondition?: StringFieldUpdateOperationsInput | string
   }
 
-  export type ZKProductCreateWithoutZK_Product_Tax_MappingInput = {
+  export type ZKProductCreateWithoutZK_TaxesInput = {
     zkcid: number
     zkpid?: bigint | number
     zkp_type?: PRODUCT_TYPE
     zkp_code?: string | null
     zkp_name: string
     zkp_description?: string | null
-    zkp_unit: number
     zkp_unit_selling_price?: Decimal | number | string
     zkp_unit_cost_price?: Decimal | number | string
+    zkp_product_img?: string | null
+    zkp_char1?: string | null
+    zkp_char2?: string | null
+    zkp_char3?: string | null
+    zkp_char4?: string | null
+    zkp_char5?: string | null
+    zkp_number1?: bigint | number | null
+    zkp_number2?: bigint | number | null
+    zkp_number3?: bigint | number | null
+    ZK_Unit: ZK_UnitCreateNestedOneWithoutZK_ProductInput
+  }
+
+  export type ZKProductUncheckedCreateWithoutZK_TaxesInput = {
+    zkcid: number
+    zkpid?: bigint | number
+    zkp_type?: PRODUCT_TYPE
+    zkp_code?: string | null
+    zkp_name: string
+    zkp_description?: string | null
+    zkp_unit: bigint | number
+    zkp_unit_selling_price?: Decimal | number | string
+    zkp_unit_cost_price?: Decimal | number | string
+    zkp_product_img?: string | null
     zkp_char1?: string | null
     zkp_char2?: string | null
     zkp_char3?: string | null
@@ -10941,65 +11226,67 @@ export namespace Prisma {
     zkp_number3?: bigint | number | null
   }
 
-  export type ZKProductUncheckedCreateWithoutZK_Product_Tax_MappingInput = {
-    zkcid: number
-    zkpid?: bigint | number
-    zkp_type?: PRODUCT_TYPE
-    zkp_code?: string | null
-    zkp_name: string
-    zkp_description?: string | null
-    zkp_unit: number
-    zkp_unit_selling_price?: Decimal | number | string
-    zkp_unit_cost_price?: Decimal | number | string
-    zkp_char1?: string | null
-    zkp_char2?: string | null
-    zkp_char3?: string | null
-    zkp_char4?: string | null
-    zkp_char5?: string | null
-    zkp_number1?: bigint | number | null
-    zkp_number2?: bigint | number | null
-    zkp_number3?: bigint | number | null
-  }
-
-  export type ZKProductCreateOrConnectWithoutZK_Product_Tax_MappingInput = {
+  export type ZKProductCreateOrConnectWithoutZK_TaxesInput = {
     where: ZKProductWhereUniqueInput
-    create: XOR<ZKProductCreateWithoutZK_Product_Tax_MappingInput, ZKProductUncheckedCreateWithoutZK_Product_Tax_MappingInput>
+    create: XOR<ZKProductCreateWithoutZK_TaxesInput, ZKProductUncheckedCreateWithoutZK_TaxesInput>
   }
 
-  export type ZK_TaxCreateWithoutZK_Product_Tax_MappingInput = {
+  export type ZK_TaxCreateWithoutZK_ProductsInput = {
     zkcid: number
     zk_tax_id?: bigint | number
     zk_tax_name: string
     zk_tax_percentage?: Decimal | number | string
   }
 
-  export type ZK_TaxUncheckedCreateWithoutZK_Product_Tax_MappingInput = {
+  export type ZK_TaxUncheckedCreateWithoutZK_ProductsInput = {
     zkcid: number
     zk_tax_id?: bigint | number
     zk_tax_name: string
     zk_tax_percentage?: Decimal | number | string
   }
 
-  export type ZK_TaxCreateOrConnectWithoutZK_Product_Tax_MappingInput = {
+  export type ZK_TaxCreateOrConnectWithoutZK_ProductsInput = {
     where: ZK_TaxWhereUniqueInput
-    create: XOR<ZK_TaxCreateWithoutZK_Product_Tax_MappingInput, ZK_TaxUncheckedCreateWithoutZK_Product_Tax_MappingInput>
+    create: XOR<ZK_TaxCreateWithoutZK_ProductsInput, ZK_TaxUncheckedCreateWithoutZK_ProductsInput>
   }
 
-  export type ZKProductUpsertWithoutZK_Product_Tax_MappingInput = {
-    update: XOR<ZKProductUpdateWithoutZK_Product_Tax_MappingInput, ZKProductUncheckedUpdateWithoutZK_Product_Tax_MappingInput>
-    create: XOR<ZKProductCreateWithoutZK_Product_Tax_MappingInput, ZKProductUncheckedCreateWithoutZK_Product_Tax_MappingInput>
+  export type ZKProductUpsertWithoutZK_TaxesInput = {
+    update: XOR<ZKProductUpdateWithoutZK_TaxesInput, ZKProductUncheckedUpdateWithoutZK_TaxesInput>
+    create: XOR<ZKProductCreateWithoutZK_TaxesInput, ZKProductUncheckedCreateWithoutZK_TaxesInput>
   }
 
-  export type ZKProductUpdateWithoutZK_Product_Tax_MappingInput = {
+  export type ZKProductUpdateWithoutZK_TaxesInput = {
     zkcid?: IntFieldUpdateOperationsInput | number
     zkpid?: BigIntFieldUpdateOperationsInput | bigint | number
     zkp_type?: EnumPRODUCT_TYPEFieldUpdateOperationsInput | PRODUCT_TYPE
     zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_name?: StringFieldUpdateOperationsInput | string
     zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
-    zkp_unit?: IntFieldUpdateOperationsInput | number
     zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_product_img?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char1?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char2?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char3?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char4?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char5?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_number1?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    zkp_number2?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    zkp_number3?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ZK_Unit?: ZK_UnitUpdateOneRequiredWithoutZK_ProductInput
+  }
+
+  export type ZKProductUncheckedUpdateWithoutZK_TaxesInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zkpid?: BigIntFieldUpdateOperationsInput | bigint | number
+    zkp_type?: EnumPRODUCT_TYPEFieldUpdateOperationsInput | PRODUCT_TYPE
+    zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_name?: StringFieldUpdateOperationsInput | string
+    zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_unit?: BigIntFieldUpdateOperationsInput | bigint | number
+    zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_product_img?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char1?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char2?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_char3?: NullableStringFieldUpdateOperationsInput | string | null
@@ -11010,39 +11297,19 @@ export namespace Prisma {
     zkp_number3?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   }
 
-  export type ZKProductUncheckedUpdateWithoutZK_Product_Tax_MappingInput = {
-    zkcid?: IntFieldUpdateOperationsInput | number
-    zkpid?: BigIntFieldUpdateOperationsInput | bigint | number
-    zkp_type?: EnumPRODUCT_TYPEFieldUpdateOperationsInput | PRODUCT_TYPE
-    zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
-    zkp_name?: StringFieldUpdateOperationsInput | string
-    zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
-    zkp_unit?: IntFieldUpdateOperationsInput | number
-    zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
-    zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
-    zkp_char1?: NullableStringFieldUpdateOperationsInput | string | null
-    zkp_char2?: NullableStringFieldUpdateOperationsInput | string | null
-    zkp_char3?: NullableStringFieldUpdateOperationsInput | string | null
-    zkp_char4?: NullableStringFieldUpdateOperationsInput | string | null
-    zkp_char5?: NullableStringFieldUpdateOperationsInput | string | null
-    zkp_number1?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    zkp_number2?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
-    zkp_number3?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  export type ZK_TaxUpsertWithoutZK_ProductsInput = {
+    update: XOR<ZK_TaxUpdateWithoutZK_ProductsInput, ZK_TaxUncheckedUpdateWithoutZK_ProductsInput>
+    create: XOR<ZK_TaxCreateWithoutZK_ProductsInput, ZK_TaxUncheckedCreateWithoutZK_ProductsInput>
   }
 
-  export type ZK_TaxUpsertWithoutZK_Product_Tax_MappingInput = {
-    update: XOR<ZK_TaxUpdateWithoutZK_Product_Tax_MappingInput, ZK_TaxUncheckedUpdateWithoutZK_Product_Tax_MappingInput>
-    create: XOR<ZK_TaxCreateWithoutZK_Product_Tax_MappingInput, ZK_TaxUncheckedCreateWithoutZK_Product_Tax_MappingInput>
-  }
-
-  export type ZK_TaxUpdateWithoutZK_Product_Tax_MappingInput = {
+  export type ZK_TaxUpdateWithoutZK_ProductsInput = {
     zkcid?: IntFieldUpdateOperationsInput | number
     zk_tax_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_tax_name?: StringFieldUpdateOperationsInput | string
     zk_tax_percentage?: DecimalFieldUpdateOperationsInput | Decimal | number | string
   }
 
-  export type ZK_TaxUncheckedUpdateWithoutZK_Product_Tax_MappingInput = {
+  export type ZK_TaxUncheckedUpdateWithoutZK_ProductsInput = {
     zkcid?: IntFieldUpdateOperationsInput | number
     zk_tax_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_tax_name?: StringFieldUpdateOperationsInput | string
@@ -11056,7 +11323,7 @@ export namespace Prisma {
 
   export type ZK_Product_Tax_MappingUpdateWithoutZk_product_tax_mapping_product_fkeyInput = {
     zkcid?: IntFieldUpdateOperationsInput | number
-    zk_product_tax_mapping_tax_fkey?: ZK_TaxUpdateOneRequiredWithoutZK_Product_Tax_MappingInput
+    zk_product_tax_mapping_tax_fkey?: ZK_TaxUpdateOneRequiredWithoutZK_ProductsInput
   }
 
   export type ZK_Product_Tax_MappingUncheckedUpdateWithoutZk_product_tax_mapping_product_fkeyInput = {
@@ -11064,7 +11331,7 @@ export namespace Prisma {
     zkcid?: IntFieldUpdateOperationsInput | number
   }
 
-  export type ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZK_Product_Tax_MappingInput = {
+  export type ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZK_TaxesInput = {
     zk_tax_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zkcid?: IntFieldUpdateOperationsInput | number
   }
@@ -11076,10 +11343,15 @@ export namespace Prisma {
 
   export type ZK_Product_Tax_MappingUpdateWithoutZk_product_tax_mapping_tax_fkeyInput = {
     zkcid?: IntFieldUpdateOperationsInput | number
-    zk_product_tax_mapping_product_fkey?: ZKProductUpdateOneRequiredWithoutZK_Product_Tax_MappingInput
+    zk_product_tax_mapping_product_fkey?: ZKProductUpdateOneRequiredWithoutZK_TaxesInput
   }
 
   export type ZK_Product_Tax_MappingUncheckedUpdateWithoutZk_product_tax_mapping_tax_fkeyInput = {
+    zkpid?: BigIntFieldUpdateOperationsInput | bigint | number
+    zkcid?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZK_ProductsInput = {
     zkpid?: BigIntFieldUpdateOperationsInput | bigint | number
     zkcid?: IntFieldUpdateOperationsInput | number
   }

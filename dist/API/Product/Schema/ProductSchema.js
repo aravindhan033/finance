@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addProduct = void 0;
+exports.addtax = exports.addProduct = void 0;
 exports.addProduct = {
     body: {
         type: "object",
@@ -25,6 +25,16 @@ exports.addProduct = {
             zkp_number3: { type: "number" },
         },
         required: ["zkcid", "zkp_type", "zkp_name", "zkp_unit_selling_price", "zkp_unit_cost_price"]
+    }
+};
+exports.addtax = {
+    body: {
+        type: "object",
+        properties: {
+            zk_tax_name: { type: "string" },
+            zk_tax_percentage: { type: "number" },
+        },
+        required: ["zk_tax_name", "zk_tax_percentage"]
     }
 };
 //# sourceMappingURL=ProductSchema.js.map

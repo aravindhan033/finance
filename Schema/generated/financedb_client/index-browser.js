@@ -88,6 +88,7 @@ exports.Prisma.ZKProductScalarFieldEnum = makeEnum({
   zkp_unit: 'zkp_unit',
   zkp_unit_selling_price: 'zkp_unit_selling_price',
   zkp_unit_cost_price: 'zkp_unit_cost_price',
+  zkp_product_img: 'zkp_product_img',
   zkp_char1: 'zkp_char1',
   zkp_char2: 'zkp_char2',
   zkp_char3: 'zkp_char3',

@@ -22,6 +22,27 @@ export class FinanceStoreCommand {
         }
         return rawJson;
     }
+    async createMany(tablename: any,rowData:any): Promise<any> {
+        let rawJson = null;
+        const persistence = new financeClientPersistence();
+        try {
+            const newRow = await persistence.db[tablename].createMany({
+                data: rowData
+            }).catch((err) => {
+                throw (err)
+            }).finally(async () => {
+                persistence.db.$disconnect();
+            });
+            rawJson = newRow;
+        }
+        catch (error) {
+            console.log(error.message);
+        }
+        finally {
+            persistence.db.$disconnect();
+        }
+        return rawJson;
+    }
     async update(tablename: any,whereCondition:any,updatedRowData:any): Promise<any> {
         let rawJson = null;
         const persistence = new financeClientPersistence();
