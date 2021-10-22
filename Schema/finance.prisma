@@ -24,10 +24,11 @@ model ZKProduct {
     zkp_type               PRODUCT_TYPE @default(GOODS)
     zkp_code               String?
     zkp_name               String       @db.VarChar(255)
-    zkp_description        String?      @db.Text
-    zkp_unit               Int
+    zkp_description        String?      @db.Text    
+    zkp_unit               BigInt
     zkp_unit_selling_price Decimal      @default(0.000) @db.Decimal(17, 3)
     zkp_unit_cost_price    Decimal      @default(0.000) @db.Decimal(17, 3)
+    zkp_product_img        String?      @db.Text    
     zkp_char1              String?
     zkp_char2              String?
     zkp_char3              String?
@@ -36,9 +37,12 @@ model ZKProduct {
     zkp_number1            BigInt?
     zkp_number2            BigInt?
     zkp_number3            BigInt?
+    
+    ZK_Taxes ZK_Product_Tax_Mapping[]
+    ZK_Unit ZK_Unit @relation(fields: [zkp_unit],references:[zk_unit_id])    
 
     @@unique(fields:[zkcid,zkp_name],name:"zkcid_zkp_name")
-    ZK_Product_Tax_Mapping ZK_Product_Tax_Mapping[]
+    
 }
 
 model ZK_Tax {
@@ -46,7 +50,7 @@ model ZK_Tax {
     zk_tax_id   BigInt @id @default(autoincrement())
     zk_tax_name String @db.VarChar(100)
     zk_tax_percentage Decimal      @default(0.000) @db.Decimal(17, 3)
-    ZK_Product_Tax_Mapping ZK_Product_Tax_Mapping[]
+    ZK_Products ZK_Product_Tax_Mapping[]
     @@unique([zkcid, zk_tax_name])
 }
 
@@ -55,6 +59,7 @@ model ZK_Unit {
     zk_unit_id   BigInt @id @default(autoincrement())
     zk_unit_name String @db.VarChar(100)
 
+    ZK_Product ZKProduct? 
     @@unique([zkcid, zk_unit_name])
 }
 
@@ -100,15 +105,16 @@ model ZK_Order_Mapping {
 }
 
 model ZK_Product_Tax_Mapping {
+    zk_product_tax_mapping_product_fkey ZKProduct @relation(fields: [zkpid], references: [zkpid])
     zkpid     BigInt
+    zk_product_tax_mapping_tax_fkey     ZK_Tax    @relation(fields: [zk_tax_id], references: [zk_tax_id])
     zk_tax_id BigInt
     zkcid     Int
 
-    zk_product_tax_mapping_product_fkey ZKProduct @relation(fields: [zkpid], references: [zkpid])
-    zk_product_tax_mapping_tax_fkey     ZK_Tax    @relation(fields: [zk_tax_id], references: [zk_tax_id])
-
     @@unique([zkpid, zk_tax_id])
 }
+
+
 
 enum PRODUCT_TYPE {
     GOODS
