@@ -12,6 +12,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.FinanceStoreQuery = void 0;
 const FinanceClientPersistence_1 = require("../../Configuration/FinanceClientPersistence");
 class FinanceStoreQuery {
+    fetchWithConditionAndJoin(tablename, queryOption) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const persistence = new FinanceClientPersistence_1.financeClientPersistence();
+            let rawJson = null;
+            try {
+                const data = yield persistence.db[tablename].findMany(queryOption).catch((err) => {
+                    throw (err);
+                }).finally(() => __awaiter(this, void 0, void 0, function* () {
+                    persistence.db.$disconnect();
+                }));
+                rawJson = data;
+            }
+            catch (err) {
+                console.log(err);
+            }
+            finally {
+                persistence.db.$disconnect();
+            }
+            return rawJson;
+        });
+    }
     fetch(tablename, whereCondition) {
         return __awaiter(this, void 0, void 0, function* () {
             const persistence = new FinanceClientPersistence_1.financeClientPersistence();

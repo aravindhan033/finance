@@ -85,6 +85,7 @@ exports.Prisma.ZKProductScalarFieldEnum = makeEnum({
   zkp_code: 'zkp_code',
   zkp_name: 'zkp_name',
   zkp_description: 'zkp_description',
+  zk_category_id: 'zk_category_id',
   zkp_unit: 'zkp_unit',
   zkp_unit_selling_price: 'zkp_unit_selling_price',
   zkp_unit_cost_price: 'zkp_unit_cost_price',
@@ -112,6 +113,14 @@ exports.Prisma.ZK_UnitScalarFieldEnum = makeEnum({
   zk_unit_name: 'zk_unit_name'
 });
 
+exports.Prisma.ZK_CategoryScalarFieldEnum = makeEnum({
+  zkcid: 'zkcid',
+  zk_category_id: 'zk_category_id',
+  zk_category_name: 'zk_category_name',
+  zk_category_level: 'zk_category_level',
+  zk_category_parentid: 'zk_category_parentid'
+});
+
 exports.Prisma.ZK_CustomerScalarFieldEnum = makeEnum({
   zkcid: 'zkcid',
   zk_customer_id: 'zk_customer_id',
@@ -121,10 +130,24 @@ exports.Prisma.ZK_CustomerScalarFieldEnum = makeEnum({
   zk_customer_other_details: 'zk_customer_other_details'
 });
 
+exports.Prisma.ZK_ShippingAddressScalarFieldEnum = makeEnum({
+  zkcid: 'zkcid',
+  zk_customer_id: 'zk_customer_id',
+  zk_shipping_id: 'zk_shipping_id',
+  zk_name: 'zk_name',
+  zk_contact_number: 'zk_contact_number',
+  zk_addressline_1: 'zk_addressline_1',
+  zk_addressline_2: 'zk_addressline_2',
+  zk_state: 'zk_state',
+  zk_country: 'zk_country',
+  zk_pincode: 'zk_pincode'
+});
+
 exports.Prisma.ZK_OrderScalarFieldEnum = makeEnum({
   zkcid: 'zkcid',
   zk_order_id: 'zk_order_id',
   zk_order_number: 'zk_order_number',
+  zk_shipping_id: 'zk_shipping_id',
   zk_order_description: 'zk_order_description',
   zk_order_total_amount: 'zk_order_total_amount',
   zk_order_total_tax: 'zk_order_total_tax',
@@ -181,7 +204,9 @@ exports.Prisma.ModelName = makeEnum({
   ZKProduct: 'ZKProduct',
   ZK_Tax: 'ZK_Tax',
   ZK_Unit: 'ZK_Unit',
+  ZK_Category: 'ZK_Category',
   ZK_Customer: 'ZK_Customer',
+  ZK_ShippingAddress: 'ZK_ShippingAddress',
   ZK_Order: 'ZK_Order',
   ZK_Order_Mapping: 'ZK_Order_Mapping',
   ZK_Product_Tax_Mapping: 'ZK_Product_Tax_Mapping'

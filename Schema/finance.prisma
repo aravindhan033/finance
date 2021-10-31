@@ -15,7 +15,7 @@ model ZKUserCompanyMapping {
     createAt     DateTime     @default(now()) @db.Timestamptz
     updatedAt    DateTime     @updatedAt @db.Timestamptz
 
-    @@unique(fields:[zkuid, zkcid],name:"zkuid_zkcid")
+    @@unique(fields: [zkuid, zkcid], name: "zkuid_zkcid")
 }
 
 model ZKProduct {
@@ -24,11 +24,12 @@ model ZKProduct {
     zkp_type               PRODUCT_TYPE @default(GOODS)
     zkp_code               String?
     zkp_name               String       @db.VarChar(255)
-    zkp_description        String?      @db.Text    
-    zkp_unit               BigInt
+    zkp_description        String?      @db.Text
+    zk_category_id         BigInt       @default(1)@unique
+    zkp_unit               BigInt       @unique
     zkp_unit_selling_price Decimal      @default(0.000) @db.Decimal(17, 3)
     zkp_unit_cost_price    Decimal      @default(0.000) @db.Decimal(17, 3)
-    zkp_product_img        String?      @db.Text    
+    zkp_product_img        String?      @db.Text
     zkp_char1              String?
     zkp_char2              String?
     zkp_char3              String?
@@ -37,20 +38,23 @@ model ZKProduct {
     zkp_number1            BigInt?
     zkp_number2            BigInt?
     zkp_number3            BigInt?
-    
-    ZK_Taxes ZK_Product_Tax_Mapping[]
-    ZK_Unit ZK_Unit @relation(fields: [zkp_unit],references:[zk_unit_id])    
 
-    @@unique(fields:[zkcid,zkp_name],name:"zkcid_zkp_name")
-    
+
+    ZK_Taxes    ZK_Product_Tax_Mapping[]
+    ZK_Unit     ZK_Unit                  @relation(fields: [zkp_unit], references: [zk_unit_id])
+    ZK_Category ZK_Category              @relation(fields: [zk_category_id], references: [zk_category_id])
+
+
+    @@unique(fields: [zkcid, zkp_name], name: "zkcid_zkp_name")
 }
 
 model ZK_Tax {
-    zkcid       Int
-    zk_tax_id   BigInt @id @default(autoincrement())
-    zk_tax_name String @db.VarChar(100)
-    zk_tax_percentage Decimal      @default(0.000) @db.Decimal(17, 3)
-    ZK_Products ZK_Product_Tax_Mapping[]
+    zkcid             Int
+    zk_tax_id         BigInt                   @id @default(autoincrement())
+    zk_tax_name       String                   @db.VarChar(100)
+    zk_tax_percentage Decimal                  @default(0.000) @db.Decimal(17, 3)
+    ZK_Products       ZK_Product_Tax_Mapping[]
+
     @@unique([zkcid, zk_tax_name])
 }
 
@@ -59,25 +63,52 @@ model ZK_Unit {
     zk_unit_id   BigInt @id @default(autoincrement())
     zk_unit_name String @db.VarChar(100)
 
-    ZK_Product ZKProduct? 
+    ZK_Product ZKProduct?
     @@unique([zkcid, zk_unit_name])
 }
 
-model ZK_Customer {
-    zkcid                     Int
-    zk_customer_id            BigInt  @id @default(autoincrement())
-    zk_customer_name          String  @db.VarChar(200)
-    zk_customer_mobile        String? @db.VarChar(25)
-    zk_customer_email         String? @db.VarChar(50)
-    zk_customer_other_details String
+model ZK_Category {
+    zkcid                Int
+    zk_category_id       BigInt  @id @default(autoincrement())
+    zk_category_name     String  @db.VarChar(200)
+    zk_category_level    Int     @default(0)
+    zk_category_parentid BigInt?
 
-    ZK_Order ZK_Order[]
+    ZKProduct ZKProduct?
+}
+
+model ZK_Customer {
+    zkcid              Int
+    zk_customer_id     BigInt              @id @default(autoincrement())
+    zk_customer_name   String?             @db.VarChar(200)
+    zk_customer_mobile String?             @db.VarChar(25)
+    zk_customer_email  String?             @db.VarChar(50)    
+    zkuid              BigInt?
+    ZK_Order           ZK_Order[]
+    ZK_ShippingAddress ZK_ShippingAddress?
+}
+
+model ZK_ShippingAddress {
+    zkcid             Int
+    zk_customer_id    BigInt  @unique
+    zk_shipping_id    BigInt  @id @default(autoincrement())
+    zk_name           String
+    zk_contact_number String
+    zk_addressline_1  String
+    zk_addressline_2  String?
+    zk_state          String
+    zk_country        String
+    zk_pincode        Int
+
+    ZK_Order    ZK_Order?
+    ZK_Customer ZK_Customer @relation(fields: [zk_customer_id], references: [zk_customer_id])
 }
 
 model ZK_Order {
     zkcid                   Int
     zk_order_id             BigInt             @id @default(autoincrement())
     zk_order_number         String             @db.VarChar(150)
+    zk_shipping_id          BigInt             @unique
     zk_order_description    String?            @db.Text
     zk_order_total_amount   Decimal            @db.Decimal(17, 3)
     zk_order_total_tax      Json
@@ -92,6 +123,7 @@ model ZK_Order {
 
     zk_order_customer_id_fkey ZK_Customer? @relation(fields: [zk_order_customer_id], references: [zk_customer_id])
 
+    ZK_ShippingAddress ZK_ShippingAddress @relation(fields: [zk_shipping_id], references: [zk_shipping_id])
 }
 
 model ZK_Order_Mapping {
@@ -106,15 +138,13 @@ model ZK_Order_Mapping {
 
 model ZK_Product_Tax_Mapping {
     zk_product_tax_mapping_product_fkey ZKProduct @relation(fields: [zkpid], references: [zkpid])
-    zkpid     BigInt
+    zkpid                               BigInt
     zk_product_tax_mapping_tax_fkey     ZK_Tax    @relation(fields: [zk_tax_id], references: [zk_tax_id])
-    zk_tax_id BigInt
-    zkcid     Int
+    zk_tax_id                           BigInt
+    zkcid                               Int
 
     @@unique([zkpid, zk_tax_id])
 }
-
-
 
 enum PRODUCT_TYPE {
     GOODS

@@ -21,21 +21,26 @@ const ProductSchema_1 = require("../Schema/ProductSchema");
 const CommonUtils_1 = require("../../../Library/CommonUtils");
 const productRoutes = (server, options) => __awaiter(void 0, void 0, void 0, function* () {
     server.post("/product/add", { schema: ProductSchema_1.addProduct, preValidation: Auth_1.default }, (req, reply) => {
-        let zkproduct = req.body;
+        let zkproduct = req.body["product"];
+        zkproduct.zkcid = CommonUtils_1.CommonUtils.getZkcid(req);
+        let taxArr = req.body["tax"];
         const productProcessor = new ProductProcessor_1.ProductProcessor();
-        productProcessor.addProduct(zkproduct).then((res) => {
+        productProcessor.addProduct(zkproduct, taxArr).then((res) => {
             if (res != null) {
                 reply.send(res);
             }
             else {
                 reply.send({});
             }
+        }).catch(() => {
+            reply.status(500);
+            reply.send({});
         });
     });
-    server.get("/product/get", { schema: ProductSchema_1.addProduct, preValidation: Auth_1.default }, (req, reply) => {
-        let zkproduct = req.body;
+    server.get("/product/get/:zkpid", { preValidation: Auth_1.default }, (req, reply) => {
+        let zkpid = req.params["zkpid"];
         const productProcessor = new ProductProcessor_1.ProductProcessor();
-        productProcessor.addProduct(zkproduct).then((res) => {
+        productProcessor.getProduct(zkpid).then((res) => {
             if (res != null) {
                 reply.send(res);
             }

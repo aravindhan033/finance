@@ -11,9 +11,23 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.ProductProcessor = void 0;
 const ProductCommand_1 = require("../../DataStore/Store/FinanceDataStore/ProductStore/ProductCommand");
+const ProductQuery_1 = require("../../DataStore/Store/FinanceDataStore/ProductStore/ProductQuery");
 const UnitProcessor_1 = require("./UnitProcessor");
 class ProductProcessor {
-    addProduct(zkproduct) {
+    getProduct(zkpid) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                let zkProduct;
+                const prodQry = new ProductQuery_1.ProductQuery();
+                zkProduct = yield prodQry.getProductById(zkpid);
+                return zkProduct;
+            }
+            catch (err) {
+                Promise.reject();
+            }
+        });
+    }
+    addProduct(zkproduct, taxArray) {
         return __awaiter(this, void 0, void 0, function* () {
             let newzkProduct;
             try {
@@ -25,7 +39,7 @@ class ProductProcessor {
                 if (this.validateProduct(newzkProduct)) {
                     const productCmd = new ProductCommand_1.ProductCommand();
                     newzkProduct = yield productCmd.create(zkproduct);
-                    //productCmd.addProductTax(newzkProduct,)
+                    productCmd.addProductTax(newzkProduct, taxArray);
                 }
             }
             catch (error) {

@@ -35,6 +35,7 @@ export type ZKProduct = {
   zkp_code: string | null
   zkp_name: string
   zkp_description: string | null
+  zk_category_id: bigint
   zkp_unit: bigint
   zkp_unit_selling_price: Prisma.Decimal
   zkp_unit_cost_price: Prisma.Decimal
@@ -71,6 +72,18 @@ export type ZK_Unit = {
 }
 
 /**
+ * Model ZK_Category
+ */
+
+export type ZK_Category = {
+  zkcid: number
+  zk_category_id: bigint
+  zk_category_name: string
+  zk_category_level: number
+  zk_category_parentid: bigint | null
+}
+
+/**
  * Model ZK_Customer
  */
 
@@ -84,6 +97,23 @@ export type ZK_Customer = {
 }
 
 /**
+ * Model ZK_ShippingAddress
+ */
+
+export type ZK_ShippingAddress = {
+  zkcid: number
+  zk_customer_id: bigint
+  zk_shipping_id: bigint
+  zk_name: string
+  zk_contact_number: string
+  zk_addressline_1: string
+  zk_addressline_2: string | null
+  zk_state: string
+  zk_country: string
+  zk_pincode: number
+}
+
+/**
  * Model ZK_Order
  */
 
@@ -91,6 +121,7 @@ export type ZK_Order = {
   zkcid: number
   zk_order_id: bigint
   zk_order_number: string
+  zk_shipping_id: bigint
   zk_order_description: string | null
   zk_order_total_amount: Prisma.Decimal
   zk_order_total_tax: Prisma.JsonValue
@@ -318,6 +349,16 @@ export class PrismaClient<
   get zK_Unit(): Prisma.ZK_UnitDelegate<GlobalReject>;
 
   /**
+   * `prisma.zK_Category`: Exposes CRUD operations for the **ZK_Category** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ZK_Categories
+    * const zK_Categories = await prisma.zK_Category.findMany()
+    * ```
+    */
+  get zK_Category(): Prisma.ZK_CategoryDelegate<GlobalReject>;
+
+  /**
    * `prisma.zK_Customer`: Exposes CRUD operations for the **ZK_Customer** model.
     * Example usage:
     * ```ts
@@ -326,6 +367,16 @@ export class PrismaClient<
     * ```
     */
   get zK_Customer(): Prisma.ZK_CustomerDelegate<GlobalReject>;
+
+  /**
+   * `prisma.zK_ShippingAddress`: Exposes CRUD operations for the **ZK_ShippingAddress** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more ZK_ShippingAddresses
+    * const zK_ShippingAddresses = await prisma.zK_ShippingAddress.findMany()
+    * ```
+    */
+  get zK_ShippingAddress(): Prisma.ZK_ShippingAddressDelegate<GlobalReject>;
 
   /**
    * `prisma.zK_Order`: Exposes CRUD operations for the **ZK_Order** model.
@@ -730,7 +781,9 @@ export namespace Prisma {
     ZKProduct: 'ZKProduct',
     ZK_Tax: 'ZK_Tax',
     ZK_Unit: 'ZK_Unit',
+    ZK_Category: 'ZK_Category',
     ZK_Customer: 'ZK_Customer',
+    ZK_ShippingAddress: 'ZK_ShippingAddress',
     ZK_Order: 'ZK_Order',
     ZK_Order_Mapping: 'ZK_Order_Mapping',
     ZK_Product_Tax_Mapping: 'ZK_Product_Tax_Mapping'
@@ -1777,6 +1830,7 @@ export namespace Prisma {
   export type ZKProductAvgAggregateOutputType = {
     zkcid: number | null
     zkpid: number | null
+    zk_category_id: number | null
     zkp_unit: number | null
     zkp_unit_selling_price: Decimal | null
     zkp_unit_cost_price: Decimal | null
@@ -1788,6 +1842,7 @@ export namespace Prisma {
   export type ZKProductSumAggregateOutputType = {
     zkcid: number | null
     zkpid: bigint | null
+    zk_category_id: bigint | null
     zkp_unit: bigint | null
     zkp_unit_selling_price: Decimal | null
     zkp_unit_cost_price: Decimal | null
@@ -1803,6 +1858,7 @@ export namespace Prisma {
     zkp_code: string | null
     zkp_name: string | null
     zkp_description: string | null
+    zk_category_id: bigint | null
     zkp_unit: bigint | null
     zkp_unit_selling_price: Decimal | null
     zkp_unit_cost_price: Decimal | null
@@ -1824,6 +1880,7 @@ export namespace Prisma {
     zkp_code: string | null
     zkp_name: string | null
     zkp_description: string | null
+    zk_category_id: bigint | null
     zkp_unit: bigint | null
     zkp_unit_selling_price: Decimal | null
     zkp_unit_cost_price: Decimal | null
@@ -1845,6 +1902,7 @@ export namespace Prisma {
     zkp_code: number
     zkp_name: number
     zkp_description: number
+    zk_category_id: number
     zkp_unit: number
     zkp_unit_selling_price: number
     zkp_unit_cost_price: number
@@ -1864,6 +1922,7 @@ export namespace Prisma {
   export type ZKProductAvgAggregateInputType = {
     zkcid?: true
     zkpid?: true
+    zk_category_id?: true
     zkp_unit?: true
     zkp_unit_selling_price?: true
     zkp_unit_cost_price?: true
@@ -1875,6 +1934,7 @@ export namespace Prisma {
   export type ZKProductSumAggregateInputType = {
     zkcid?: true
     zkpid?: true
+    zk_category_id?: true
     zkp_unit?: true
     zkp_unit_selling_price?: true
     zkp_unit_cost_price?: true
@@ -1890,6 +1950,7 @@ export namespace Prisma {
     zkp_code?: true
     zkp_name?: true
     zkp_description?: true
+    zk_category_id?: true
     zkp_unit?: true
     zkp_unit_selling_price?: true
     zkp_unit_cost_price?: true
@@ -1911,6 +1972,7 @@ export namespace Prisma {
     zkp_code?: true
     zkp_name?: true
     zkp_description?: true
+    zk_category_id?: true
     zkp_unit?: true
     zkp_unit_selling_price?: true
     zkp_unit_cost_price?: true
@@ -1932,6 +1994,7 @@ export namespace Prisma {
     zkp_code?: true
     zkp_name?: true
     zkp_description?: true
+    zk_category_id?: true
     zkp_unit?: true
     zkp_unit_selling_price?: true
     zkp_unit_cost_price?: true
@@ -2066,6 +2129,7 @@ export namespace Prisma {
     zkp_code: string | null
     zkp_name: string
     zkp_description: string | null
+    zk_category_id: bigint
     zkp_unit: bigint
     zkp_unit_selling_price: Decimal
     zkp_unit_cost_price: Decimal
@@ -2106,6 +2170,7 @@ export namespace Prisma {
     zkp_code?: boolean
     zkp_name?: boolean
     zkp_description?: boolean
+    zk_category_id?: boolean
     zkp_unit?: boolean
     zkp_unit_selling_price?: boolean
     zkp_unit_cost_price?: boolean
@@ -2120,11 +2185,13 @@ export namespace Prisma {
     zkp_number3?: boolean
     ZK_Taxes?: boolean | ZK_Product_Tax_MappingFindManyArgs
     ZK_Unit?: boolean | ZK_UnitArgs
+    ZK_Category?: boolean | ZK_CategoryArgs
   }
 
   export type ZKProductInclude = {
     ZK_Taxes?: boolean | ZK_Product_Tax_MappingFindManyArgs
     ZK_Unit?: boolean | ZK_UnitArgs
+    ZK_Category?: boolean | ZK_CategoryArgs
   }
 
   export type ZKProductGetPayload<
@@ -2141,7 +2208,9 @@ export namespace Prisma {
           P extends 'ZK_Taxes'
         ? Array < ZK_Product_Tax_MappingGetPayload<S['include'][P]>>  :
         P extends 'ZK_Unit'
-        ? ZK_UnitGetPayload<S['include'][P]> : never
+        ? ZK_UnitGetPayload<S['include'][P]> :
+        P extends 'ZK_Category'
+        ? ZK_CategoryGetPayload<S['include'][P]> : never
   } 
     : 'select' extends U
     ? {
@@ -2150,7 +2219,9 @@ export namespace Prisma {
           P extends 'ZK_Taxes'
         ? Array < ZK_Product_Tax_MappingGetPayload<S['select'][P]>>  :
         P extends 'ZK_Unit'
-        ? ZK_UnitGetPayload<S['select'][P]> : never
+        ? ZK_UnitGetPayload<S['select'][P]> :
+        P extends 'ZK_Category'
+        ? ZK_CategoryGetPayload<S['select'][P]> : never
   } 
     : ZKProduct
   : ZKProduct
@@ -2493,6 +2564,8 @@ export namespace Prisma {
     ZK_Taxes<T extends ZK_Product_Tax_MappingFindManyArgs = {}>(args?: Subset<T, ZK_Product_Tax_MappingFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ZK_Product_Tax_Mapping>>, PrismaPromise<Array<ZK_Product_Tax_MappingGetPayload<T>>>>;
 
     ZK_Unit<T extends ZK_UnitArgs = {}>(args?: Subset<T, ZK_UnitArgs>): CheckSelect<T, Prisma__ZK_UnitClient<ZK_Unit | null >, Prisma__ZK_UnitClient<ZK_UnitGetPayload<T> | null >>;
+
+    ZK_Category<T extends ZK_CategoryArgs = {}>(args?: Subset<T, ZK_CategoryArgs>): CheckSelect<T, Prisma__ZK_CategoryClient<ZK_Category | null >, Prisma__ZK_CategoryClient<ZK_CategoryGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -4615,6 +4688,928 @@ export namespace Prisma {
 
 
   /**
+   * Model ZK_Category
+   */
+
+
+  export type AggregateZK_Category = {
+    _count: ZK_CategoryCountAggregateOutputType | null
+    count: ZK_CategoryCountAggregateOutputType | null
+    _avg: ZK_CategoryAvgAggregateOutputType | null
+    avg: ZK_CategoryAvgAggregateOutputType | null
+    _sum: ZK_CategorySumAggregateOutputType | null
+    sum: ZK_CategorySumAggregateOutputType | null
+    _min: ZK_CategoryMinAggregateOutputType | null
+    min: ZK_CategoryMinAggregateOutputType | null
+    _max: ZK_CategoryMaxAggregateOutputType | null
+    max: ZK_CategoryMaxAggregateOutputType | null
+  }
+
+  export type ZK_CategoryAvgAggregateOutputType = {
+    zkcid: number | null
+    zk_category_id: number | null
+    zk_category_level: number | null
+    zk_category_parentid: number | null
+  }
+
+  export type ZK_CategorySumAggregateOutputType = {
+    zkcid: number | null
+    zk_category_id: bigint | null
+    zk_category_level: number | null
+    zk_category_parentid: bigint | null
+  }
+
+  export type ZK_CategoryMinAggregateOutputType = {
+    zkcid: number | null
+    zk_category_id: bigint | null
+    zk_category_name: string | null
+    zk_category_level: number | null
+    zk_category_parentid: bigint | null
+  }
+
+  export type ZK_CategoryMaxAggregateOutputType = {
+    zkcid: number | null
+    zk_category_id: bigint | null
+    zk_category_name: string | null
+    zk_category_level: number | null
+    zk_category_parentid: bigint | null
+  }
+
+  export type ZK_CategoryCountAggregateOutputType = {
+    zkcid: number
+    zk_category_id: number
+    zk_category_name: number
+    zk_category_level: number
+    zk_category_parentid: number
+    _all: number
+  }
+
+
+  export type ZK_CategoryAvgAggregateInputType = {
+    zkcid?: true
+    zk_category_id?: true
+    zk_category_level?: true
+    zk_category_parentid?: true
+  }
+
+  export type ZK_CategorySumAggregateInputType = {
+    zkcid?: true
+    zk_category_id?: true
+    zk_category_level?: true
+    zk_category_parentid?: true
+  }
+
+  export type ZK_CategoryMinAggregateInputType = {
+    zkcid?: true
+    zk_category_id?: true
+    zk_category_name?: true
+    zk_category_level?: true
+    zk_category_parentid?: true
+  }
+
+  export type ZK_CategoryMaxAggregateInputType = {
+    zkcid?: true
+    zk_category_id?: true
+    zk_category_name?: true
+    zk_category_level?: true
+    zk_category_parentid?: true
+  }
+
+  export type ZK_CategoryCountAggregateInputType = {
+    zkcid?: true
+    zk_category_id?: true
+    zk_category_name?: true
+    zk_category_level?: true
+    zk_category_parentid?: true
+    _all?: true
+  }
+
+  export type ZK_CategoryAggregateArgs = {
+    /**
+     * Filter which ZK_Category to aggregate.
+     * 
+    **/
+    where?: ZK_CategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ZK_Categories to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ZK_CategoryOrderByInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: ZK_CategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ZK_Categories from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ZK_Categories.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ZK_Categories
+    **/
+    _count?: true | ZK_CategoryCountAggregateInputType
+    /**
+     * @deprecated since 2.23.0 please use `_count`
+    **/
+    count?: true | ZK_CategoryCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ZK_CategoryAvgAggregateInputType
+    /**
+     * @deprecated since 2.23.0 please use `_avg`
+    **/
+    avg?: ZK_CategoryAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ZK_CategorySumAggregateInputType
+    /**
+     * @deprecated since 2.23.0 please use `_sum`
+    **/
+    sum?: ZK_CategorySumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ZK_CategoryMinAggregateInputType
+    /**
+     * @deprecated since 2.23.0 please use `_min`
+    **/
+    min?: ZK_CategoryMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ZK_CategoryMaxAggregateInputType
+    /**
+     * @deprecated since 2.23.0 please use `_max`
+    **/
+    max?: ZK_CategoryMaxAggregateInputType
+  }
+
+  export type GetZK_CategoryAggregateType<T extends ZK_CategoryAggregateArgs> = {
+        [P in keyof T & keyof AggregateZK_Category]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateZK_Category[P]>
+      : GetScalarType<T[P], AggregateZK_Category[P]>
+  }
+
+
+    
+    
+  export type ZK_CategoryGroupByArgs = {
+    where?: ZK_CategoryWhereInput
+    orderBy?: Enumerable<ZK_CategoryOrderByInput>
+    by: Array<ZK_CategoryScalarFieldEnum>
+    having?: ZK_CategoryScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ZK_CategoryCountAggregateInputType | true
+    _avg?: ZK_CategoryAvgAggregateInputType
+    _sum?: ZK_CategorySumAggregateInputType
+    _min?: ZK_CategoryMinAggregateInputType
+    _max?: ZK_CategoryMaxAggregateInputType
+  }
+
+
+  export type ZK_CategoryGroupByOutputType = {
+    zkcid: number
+    zk_category_id: bigint
+    zk_category_name: string
+    zk_category_level: number
+    zk_category_parentid: bigint | null
+    _count: ZK_CategoryCountAggregateOutputType | null
+    _avg: ZK_CategoryAvgAggregateOutputType | null
+    _sum: ZK_CategorySumAggregateOutputType | null
+    _min: ZK_CategoryMinAggregateOutputType | null
+    _max: ZK_CategoryMaxAggregateOutputType | null
+  }
+
+  type GetZK_CategoryGroupByPayload<T extends ZK_CategoryGroupByArgs> = Promise<
+    Array<
+      PickArray<ZK_CategoryGroupByOutputType, T['by']> & 
+        {
+          [P in ((keyof T) & (keyof ZK_CategoryGroupByOutputType))]: P extends '_count' 
+            ? T[P] extends boolean 
+              ? number 
+              : GetScalarType<T[P], ZK_CategoryGroupByOutputType[P]> 
+            : GetScalarType<T[P], ZK_CategoryGroupByOutputType[P]>
+        }
+      > 
+    >
+
+
+  export type ZK_CategorySelect = {
+    zkcid?: boolean
+    zk_category_id?: boolean
+    zk_category_name?: boolean
+    zk_category_level?: boolean
+    zk_category_parentid?: boolean
+    ZKProduct?: boolean | ZKProductArgs
+  }
+
+  export type ZK_CategoryInclude = {
+    ZKProduct?: boolean | ZKProductArgs
+  }
+
+  export type ZK_CategoryGetPayload<
+    S extends boolean | null | undefined | ZK_CategoryArgs,
+    U = keyof S
+      > = S extends true
+        ? ZK_Category
+    : S extends undefined
+    ? never
+    : S extends ZK_CategoryArgs | ZK_CategoryFindManyArgs
+    ?'include' extends U
+    ? ZK_Category  & {
+    [P in TrueKeys<S['include']>]: 
+          P extends 'ZKProduct'
+        ? ZKProductGetPayload<S['include'][P]> | null : never
+  } 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof ZK_Category ?ZK_Category [P]
+  : 
+          P extends 'ZKProduct'
+        ? ZKProductGetPayload<S['select'][P]> | null : never
+  } 
+    : ZK_Category
+  : ZK_Category
+
+
+  type ZK_CategoryCountArgs = Merge<
+    Omit<ZK_CategoryFindManyArgs, 'select' | 'include'> & {
+      select?: ZK_CategoryCountAggregateInputType | true
+    }
+  >
+
+  export interface ZK_CategoryDelegate<GlobalRejectSettings> {
+    /**
+     * Find zero or one ZK_Category that matches the filter.
+     * @param {ZK_CategoryFindUniqueArgs} args - Arguments to find a ZK_Category
+     * @example
+     * // Get one ZK_Category
+     * const zK_Category = await prisma.zK_Category.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends ZK_CategoryFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ZK_CategoryFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ZK_Category'> extends True ? CheckSelect<T, Prisma__ZK_CategoryClient<ZK_Category>, Prisma__ZK_CategoryClient<ZK_CategoryGetPayload<T>>> : CheckSelect<T, Prisma__ZK_CategoryClient<ZK_Category | null >, Prisma__ZK_CategoryClient<ZK_CategoryGetPayload<T> | null >>
+
+    /**
+     * Find the first ZK_Category that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ZK_CategoryFindFirstArgs} args - Arguments to find a ZK_Category
+     * @example
+     * // Get one ZK_Category
+     * const zK_Category = await prisma.zK_Category.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends ZK_CategoryFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ZK_CategoryFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ZK_Category'> extends True ? CheckSelect<T, Prisma__ZK_CategoryClient<ZK_Category>, Prisma__ZK_CategoryClient<ZK_CategoryGetPayload<T>>> : CheckSelect<T, Prisma__ZK_CategoryClient<ZK_Category | null >, Prisma__ZK_CategoryClient<ZK_CategoryGetPayload<T> | null >>
+
+    /**
+     * Find zero or more ZK_Categories that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ZK_CategoryFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ZK_Categories
+     * const zK_Categories = await prisma.zK_Category.findMany()
+     * 
+     * // Get first 10 ZK_Categories
+     * const zK_Categories = await prisma.zK_Category.findMany({ take: 10 })
+     * 
+     * // Only select the `zkcid`
+     * const zK_CategoryWithZkcidOnly = await prisma.zK_Category.findMany({ select: { zkcid: true } })
+     * 
+    **/
+    findMany<T extends ZK_CategoryFindManyArgs>(
+      args?: SelectSubset<T, ZK_CategoryFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<ZK_Category>>, PrismaPromise<Array<ZK_CategoryGetPayload<T>>>>
+
+    /**
+     * Create a ZK_Category.
+     * @param {ZK_CategoryCreateArgs} args - Arguments to create a ZK_Category.
+     * @example
+     * // Create one ZK_Category
+     * const ZK_Category = await prisma.zK_Category.create({
+     *   data: {
+     *     // ... data to create a ZK_Category
+     *   }
+     * })
+     * 
+    **/
+    create<T extends ZK_CategoryCreateArgs>(
+      args: SelectSubset<T, ZK_CategoryCreateArgs>
+    ): CheckSelect<T, Prisma__ZK_CategoryClient<ZK_Category>, Prisma__ZK_CategoryClient<ZK_CategoryGetPayload<T>>>
+
+    /**
+     * Create many ZK_Categories.
+     *     @param {ZK_CategoryCreateManyArgs} args - Arguments to create many ZK_Categories.
+     *     @example
+     *     // Create many ZK_Categories
+     *     const zK_Category = await prisma.zK_Category.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends ZK_CategoryCreateManyArgs>(
+      args?: SelectSubset<T, ZK_CategoryCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a ZK_Category.
+     * @param {ZK_CategoryDeleteArgs} args - Arguments to delete one ZK_Category.
+     * @example
+     * // Delete one ZK_Category
+     * const ZK_Category = await prisma.zK_Category.delete({
+     *   where: {
+     *     // ... filter to delete one ZK_Category
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends ZK_CategoryDeleteArgs>(
+      args: SelectSubset<T, ZK_CategoryDeleteArgs>
+    ): CheckSelect<T, Prisma__ZK_CategoryClient<ZK_Category>, Prisma__ZK_CategoryClient<ZK_CategoryGetPayload<T>>>
+
+    /**
+     * Update one ZK_Category.
+     * @param {ZK_CategoryUpdateArgs} args - Arguments to update one ZK_Category.
+     * @example
+     * // Update one ZK_Category
+     * const zK_Category = await prisma.zK_Category.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends ZK_CategoryUpdateArgs>(
+      args: SelectSubset<T, ZK_CategoryUpdateArgs>
+    ): CheckSelect<T, Prisma__ZK_CategoryClient<ZK_Category>, Prisma__ZK_CategoryClient<ZK_CategoryGetPayload<T>>>
+
+    /**
+     * Delete zero or more ZK_Categories.
+     * @param {ZK_CategoryDeleteManyArgs} args - Arguments to filter ZK_Categories to delete.
+     * @example
+     * // Delete a few ZK_Categories
+     * const { count } = await prisma.zK_Category.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends ZK_CategoryDeleteManyArgs>(
+      args?: SelectSubset<T, ZK_CategoryDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ZK_Categories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ZK_CategoryUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ZK_Categories
+     * const zK_Category = await prisma.zK_Category.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends ZK_CategoryUpdateManyArgs>(
+      args: SelectSubset<T, ZK_CategoryUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ZK_Category.
+     * @param {ZK_CategoryUpsertArgs} args - Arguments to update or create a ZK_Category.
+     * @example
+     * // Update or create a ZK_Category
+     * const zK_Category = await prisma.zK_Category.upsert({
+     *   create: {
+     *     // ... data to create a ZK_Category
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ZK_Category we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends ZK_CategoryUpsertArgs>(
+      args: SelectSubset<T, ZK_CategoryUpsertArgs>
+    ): CheckSelect<T, Prisma__ZK_CategoryClient<ZK_Category>, Prisma__ZK_CategoryClient<ZK_CategoryGetPayload<T>>>
+
+    /**
+     * Count the number of ZK_Categories.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ZK_CategoryCountArgs} args - Arguments to filter ZK_Categories to count.
+     * @example
+     * // Count the number of ZK_Categories
+     * const count = await prisma.zK_Category.count({
+     *   where: {
+     *     // ... the filter for the ZK_Categories we want to count
+     *   }
+     * })
+    **/
+    count<T extends ZK_CategoryCountArgs>(
+      args?: Subset<T, ZK_CategoryCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ZK_CategoryCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ZK_Category.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ZK_CategoryAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ZK_CategoryAggregateArgs>(args: Subset<T, ZK_CategoryAggregateArgs>): PrismaPromise<GetZK_CategoryAggregateType<T>>
+
+    /**
+     * Group by ZK_Category.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ZK_CategoryGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ZK_CategoryGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ZK_CategoryGroupByArgs['orderBy'] }
+        : { orderBy?: ZK_CategoryGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ZK_CategoryGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetZK_CategoryGroupByPayload<T> : Promise<InputErrors>
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ZK_Category.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in 
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__ZK_CategoryClient<T> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+    ZKProduct<T extends ZKProductArgs = {}>(args?: Subset<T, ZKProductArgs>): CheckSelect<T, Prisma__ZKProductClient<ZKProduct | null >, Prisma__ZKProductClient<ZKProductGetPayload<T> | null >>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * ZK_Category findUnique
+   */
+  export type ZK_CategoryFindUniqueArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_Category
+     * 
+    **/
+    select?: ZK_CategorySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_CategoryInclude | null
+    /**
+     * Throw an Error if a ZK_Category can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which ZK_Category to fetch.
+     * 
+    **/
+    where: ZK_CategoryWhereUniqueInput
+  }
+
+
+  /**
+   * ZK_Category findFirst
+   */
+  export type ZK_CategoryFindFirstArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_Category
+     * 
+    **/
+    select?: ZK_CategorySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_CategoryInclude | null
+    /**
+     * Throw an Error if a ZK_Category can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which ZK_Category to fetch.
+     * 
+    **/
+    where?: ZK_CategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ZK_Categories to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ZK_CategoryOrderByInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ZK_Categories.
+     * 
+    **/
+    cursor?: ZK_CategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ZK_Categories from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ZK_Categories.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ZK_Categories.
+     * 
+    **/
+    distinct?: Enumerable<ZK_CategoryScalarFieldEnum>
+  }
+
+
+  /**
+   * ZK_Category findMany
+   */
+  export type ZK_CategoryFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_Category
+     * 
+    **/
+    select?: ZK_CategorySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_CategoryInclude | null
+    /**
+     * Filter, which ZK_Categories to fetch.
+     * 
+    **/
+    where?: ZK_CategoryWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ZK_Categories to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ZK_CategoryOrderByInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ZK_Categories.
+     * 
+    **/
+    cursor?: ZK_CategoryWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ZK_Categories from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ZK_Categories.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<ZK_CategoryScalarFieldEnum>
+  }
+
+
+  /**
+   * ZK_Category create
+   */
+  export type ZK_CategoryCreateArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_Category
+     * 
+    **/
+    select?: ZK_CategorySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_CategoryInclude | null
+    /**
+     * The data needed to create a ZK_Category.
+     * 
+    **/
+    data: XOR<ZK_CategoryCreateInput, ZK_CategoryUncheckedCreateInput>
+  }
+
+
+  /**
+   * ZK_Category createMany
+   */
+  export type ZK_CategoryCreateManyArgs = {
+    data: Enumerable<ZK_CategoryCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * ZK_Category update
+   */
+  export type ZK_CategoryUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_Category
+     * 
+    **/
+    select?: ZK_CategorySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_CategoryInclude | null
+    /**
+     * The data needed to update a ZK_Category.
+     * 
+    **/
+    data: XOR<ZK_CategoryUpdateInput, ZK_CategoryUncheckedUpdateInput>
+    /**
+     * Choose, which ZK_Category to update.
+     * 
+    **/
+    where: ZK_CategoryWhereUniqueInput
+  }
+
+
+  /**
+   * ZK_Category updateMany
+   */
+  export type ZK_CategoryUpdateManyArgs = {
+    data: XOR<ZK_CategoryUpdateManyMutationInput, ZK_CategoryUncheckedUpdateManyInput>
+    where?: ZK_CategoryWhereInput
+  }
+
+
+  /**
+   * ZK_Category upsert
+   */
+  export type ZK_CategoryUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_Category
+     * 
+    **/
+    select?: ZK_CategorySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_CategoryInclude | null
+    /**
+     * The filter to search for the ZK_Category to update in case it exists.
+     * 
+    **/
+    where: ZK_CategoryWhereUniqueInput
+    /**
+     * In case the ZK_Category found by the `where` argument doesn't exist, create a new ZK_Category with this data.
+     * 
+    **/
+    create: XOR<ZK_CategoryCreateInput, ZK_CategoryUncheckedCreateInput>
+    /**
+     * In case the ZK_Category was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<ZK_CategoryUpdateInput, ZK_CategoryUncheckedUpdateInput>
+  }
+
+
+  /**
+   * ZK_Category delete
+   */
+  export type ZK_CategoryDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_Category
+     * 
+    **/
+    select?: ZK_CategorySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_CategoryInclude | null
+    /**
+     * Filter which ZK_Category to delete.
+     * 
+    **/
+    where: ZK_CategoryWhereUniqueInput
+  }
+
+
+  /**
+   * ZK_Category deleteMany
+   */
+  export type ZK_CategoryDeleteManyArgs = {
+    where?: ZK_CategoryWhereInput
+  }
+
+
+  /**
+   * ZK_Category without action
+   */
+  export type ZK_CategoryArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_Category
+     * 
+    **/
+    select?: ZK_CategorySelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_CategoryInclude | null
+  }
+
+
+
+  /**
    * Model ZK_Customer
    */
 
@@ -4857,10 +5852,12 @@ export namespace Prisma {
     zk_customer_email?: boolean
     zk_customer_other_details?: boolean
     ZK_Order?: boolean | ZK_OrderFindManyArgs
+    ZK_ShippingAddress?: boolean | ZK_ShippingAddressArgs
   }
 
   export type ZK_CustomerInclude = {
     ZK_Order?: boolean | ZK_OrderFindManyArgs
+    ZK_ShippingAddress?: boolean | ZK_ShippingAddressArgs
   }
 
   export type ZK_CustomerGetPayload<
@@ -4875,14 +5872,18 @@ export namespace Prisma {
     ? ZK_Customer  & {
     [P in TrueKeys<S['include']>]: 
           P extends 'ZK_Order'
-        ? Array < ZK_OrderGetPayload<S['include'][P]>>  : never
+        ? Array < ZK_OrderGetPayload<S['include'][P]>>  :
+        P extends 'ZK_ShippingAddress'
+        ? ZK_ShippingAddressGetPayload<S['include'][P]> | null : never
   } 
     : 'select' extends U
     ? {
     [P in TrueKeys<S['select']>]: P extends keyof ZK_Customer ?ZK_Customer [P]
   : 
           P extends 'ZK_Order'
-        ? Array < ZK_OrderGetPayload<S['select'][P]>>  : never
+        ? Array < ZK_OrderGetPayload<S['select'][P]>>  :
+        P extends 'ZK_ShippingAddress'
+        ? ZK_ShippingAddressGetPayload<S['select'][P]> | null : never
   } 
     : ZK_Customer
   : ZK_Customer
@@ -5224,6 +6225,8 @@ export namespace Prisma {
 
     ZK_Order<T extends ZK_OrderFindManyArgs = {}>(args?: Subset<T, ZK_OrderFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ZK_Order>>, PrismaPromise<Array<ZK_OrderGetPayload<T>>>>;
 
+    ZK_ShippingAddress<T extends ZK_ShippingAddressArgs = {}>(args?: Subset<T, ZK_ShippingAddressArgs>): CheckSelect<T, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddress | null >, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddressGetPayload<T> | null >>;
+
     private get _document();
     /**
      * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -5537,6 +6540,976 @@ export namespace Prisma {
 
 
   /**
+   * Model ZK_ShippingAddress
+   */
+
+
+  export type AggregateZK_ShippingAddress = {
+    _count: ZK_ShippingAddressCountAggregateOutputType | null
+    count: ZK_ShippingAddressCountAggregateOutputType | null
+    _avg: ZK_ShippingAddressAvgAggregateOutputType | null
+    avg: ZK_ShippingAddressAvgAggregateOutputType | null
+    _sum: ZK_ShippingAddressSumAggregateOutputType | null
+    sum: ZK_ShippingAddressSumAggregateOutputType | null
+    _min: ZK_ShippingAddressMinAggregateOutputType | null
+    min: ZK_ShippingAddressMinAggregateOutputType | null
+    _max: ZK_ShippingAddressMaxAggregateOutputType | null
+    max: ZK_ShippingAddressMaxAggregateOutputType | null
+  }
+
+  export type ZK_ShippingAddressAvgAggregateOutputType = {
+    zkcid: number | null
+    zk_customer_id: number | null
+    zk_shipping_id: number | null
+    zk_pincode: number | null
+  }
+
+  export type ZK_ShippingAddressSumAggregateOutputType = {
+    zkcid: number | null
+    zk_customer_id: bigint | null
+    zk_shipping_id: bigint | null
+    zk_pincode: number | null
+  }
+
+  export type ZK_ShippingAddressMinAggregateOutputType = {
+    zkcid: number | null
+    zk_customer_id: bigint | null
+    zk_shipping_id: bigint | null
+    zk_name: string | null
+    zk_contact_number: string | null
+    zk_addressline_1: string | null
+    zk_addressline_2: string | null
+    zk_state: string | null
+    zk_country: string | null
+    zk_pincode: number | null
+  }
+
+  export type ZK_ShippingAddressMaxAggregateOutputType = {
+    zkcid: number | null
+    zk_customer_id: bigint | null
+    zk_shipping_id: bigint | null
+    zk_name: string | null
+    zk_contact_number: string | null
+    zk_addressline_1: string | null
+    zk_addressline_2: string | null
+    zk_state: string | null
+    zk_country: string | null
+    zk_pincode: number | null
+  }
+
+  export type ZK_ShippingAddressCountAggregateOutputType = {
+    zkcid: number
+    zk_customer_id: number
+    zk_shipping_id: number
+    zk_name: number
+    zk_contact_number: number
+    zk_addressline_1: number
+    zk_addressline_2: number
+    zk_state: number
+    zk_country: number
+    zk_pincode: number
+    _all: number
+  }
+
+
+  export type ZK_ShippingAddressAvgAggregateInputType = {
+    zkcid?: true
+    zk_customer_id?: true
+    zk_shipping_id?: true
+    zk_pincode?: true
+  }
+
+  export type ZK_ShippingAddressSumAggregateInputType = {
+    zkcid?: true
+    zk_customer_id?: true
+    zk_shipping_id?: true
+    zk_pincode?: true
+  }
+
+  export type ZK_ShippingAddressMinAggregateInputType = {
+    zkcid?: true
+    zk_customer_id?: true
+    zk_shipping_id?: true
+    zk_name?: true
+    zk_contact_number?: true
+    zk_addressline_1?: true
+    zk_addressline_2?: true
+    zk_state?: true
+    zk_country?: true
+    zk_pincode?: true
+  }
+
+  export type ZK_ShippingAddressMaxAggregateInputType = {
+    zkcid?: true
+    zk_customer_id?: true
+    zk_shipping_id?: true
+    zk_name?: true
+    zk_contact_number?: true
+    zk_addressline_1?: true
+    zk_addressline_2?: true
+    zk_state?: true
+    zk_country?: true
+    zk_pincode?: true
+  }
+
+  export type ZK_ShippingAddressCountAggregateInputType = {
+    zkcid?: true
+    zk_customer_id?: true
+    zk_shipping_id?: true
+    zk_name?: true
+    zk_contact_number?: true
+    zk_addressline_1?: true
+    zk_addressline_2?: true
+    zk_state?: true
+    zk_country?: true
+    zk_pincode?: true
+    _all?: true
+  }
+
+  export type ZK_ShippingAddressAggregateArgs = {
+    /**
+     * Filter which ZK_ShippingAddress to aggregate.
+     * 
+    **/
+    where?: ZK_ShippingAddressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ZK_ShippingAddresses to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ZK_ShippingAddressOrderByInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     * 
+    **/
+    cursor?: ZK_ShippingAddressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ZK_ShippingAddresses from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ZK_ShippingAddresses.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned ZK_ShippingAddresses
+    **/
+    _count?: true | ZK_ShippingAddressCountAggregateInputType
+    /**
+     * @deprecated since 2.23.0 please use `_count`
+    **/
+    count?: true | ZK_ShippingAddressCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to average
+    **/
+    _avg?: ZK_ShippingAddressAvgAggregateInputType
+    /**
+     * @deprecated since 2.23.0 please use `_avg`
+    **/
+    avg?: ZK_ShippingAddressAvgAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to sum
+    **/
+    _sum?: ZK_ShippingAddressSumAggregateInputType
+    /**
+     * @deprecated since 2.23.0 please use `_sum`
+    **/
+    sum?: ZK_ShippingAddressSumAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: ZK_ShippingAddressMinAggregateInputType
+    /**
+     * @deprecated since 2.23.0 please use `_min`
+    **/
+    min?: ZK_ShippingAddressMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: ZK_ShippingAddressMaxAggregateInputType
+    /**
+     * @deprecated since 2.23.0 please use `_max`
+    **/
+    max?: ZK_ShippingAddressMaxAggregateInputType
+  }
+
+  export type GetZK_ShippingAddressAggregateType<T extends ZK_ShippingAddressAggregateArgs> = {
+        [P in keyof T & keyof AggregateZK_ShippingAddress]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateZK_ShippingAddress[P]>
+      : GetScalarType<T[P], AggregateZK_ShippingAddress[P]>
+  }
+
+
+    
+    
+  export type ZK_ShippingAddressGroupByArgs = {
+    where?: ZK_ShippingAddressWhereInput
+    orderBy?: Enumerable<ZK_ShippingAddressOrderByInput>
+    by: Array<ZK_ShippingAddressScalarFieldEnum>
+    having?: ZK_ShippingAddressScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: ZK_ShippingAddressCountAggregateInputType | true
+    _avg?: ZK_ShippingAddressAvgAggregateInputType
+    _sum?: ZK_ShippingAddressSumAggregateInputType
+    _min?: ZK_ShippingAddressMinAggregateInputType
+    _max?: ZK_ShippingAddressMaxAggregateInputType
+  }
+
+
+  export type ZK_ShippingAddressGroupByOutputType = {
+    zkcid: number
+    zk_customer_id: bigint
+    zk_shipping_id: bigint
+    zk_name: string
+    zk_contact_number: string
+    zk_addressline_1: string
+    zk_addressline_2: string | null
+    zk_state: string
+    zk_country: string
+    zk_pincode: number
+    _count: ZK_ShippingAddressCountAggregateOutputType | null
+    _avg: ZK_ShippingAddressAvgAggregateOutputType | null
+    _sum: ZK_ShippingAddressSumAggregateOutputType | null
+    _min: ZK_ShippingAddressMinAggregateOutputType | null
+    _max: ZK_ShippingAddressMaxAggregateOutputType | null
+  }
+
+  type GetZK_ShippingAddressGroupByPayload<T extends ZK_ShippingAddressGroupByArgs> = Promise<
+    Array<
+      PickArray<ZK_ShippingAddressGroupByOutputType, T['by']> & 
+        {
+          [P in ((keyof T) & (keyof ZK_ShippingAddressGroupByOutputType))]: P extends '_count' 
+            ? T[P] extends boolean 
+              ? number 
+              : GetScalarType<T[P], ZK_ShippingAddressGroupByOutputType[P]> 
+            : GetScalarType<T[P], ZK_ShippingAddressGroupByOutputType[P]>
+        }
+      > 
+    >
+
+
+  export type ZK_ShippingAddressSelect = {
+    zkcid?: boolean
+    zk_customer_id?: boolean
+    zk_shipping_id?: boolean
+    zk_name?: boolean
+    zk_contact_number?: boolean
+    zk_addressline_1?: boolean
+    zk_addressline_2?: boolean
+    zk_state?: boolean
+    zk_country?: boolean
+    zk_pincode?: boolean
+    ZK_Order?: boolean | ZK_OrderArgs
+    ZK_Customer?: boolean | ZK_CustomerArgs
+  }
+
+  export type ZK_ShippingAddressInclude = {
+    ZK_Order?: boolean | ZK_OrderArgs
+    ZK_Customer?: boolean | ZK_CustomerArgs
+  }
+
+  export type ZK_ShippingAddressGetPayload<
+    S extends boolean | null | undefined | ZK_ShippingAddressArgs,
+    U = keyof S
+      > = S extends true
+        ? ZK_ShippingAddress
+    : S extends undefined
+    ? never
+    : S extends ZK_ShippingAddressArgs | ZK_ShippingAddressFindManyArgs
+    ?'include' extends U
+    ? ZK_ShippingAddress  & {
+    [P in TrueKeys<S['include']>]: 
+          P extends 'ZK_Order'
+        ? ZK_OrderGetPayload<S['include'][P]> | null :
+        P extends 'ZK_Customer'
+        ? ZK_CustomerGetPayload<S['include'][P]> : never
+  } 
+    : 'select' extends U
+    ? {
+    [P in TrueKeys<S['select']>]: P extends keyof ZK_ShippingAddress ?ZK_ShippingAddress [P]
+  : 
+          P extends 'ZK_Order'
+        ? ZK_OrderGetPayload<S['select'][P]> | null :
+        P extends 'ZK_Customer'
+        ? ZK_CustomerGetPayload<S['select'][P]> : never
+  } 
+    : ZK_ShippingAddress
+  : ZK_ShippingAddress
+
+
+  type ZK_ShippingAddressCountArgs = Merge<
+    Omit<ZK_ShippingAddressFindManyArgs, 'select' | 'include'> & {
+      select?: ZK_ShippingAddressCountAggregateInputType | true
+    }
+  >
+
+  export interface ZK_ShippingAddressDelegate<GlobalRejectSettings> {
+    /**
+     * Find zero or one ZK_ShippingAddress that matches the filter.
+     * @param {ZK_ShippingAddressFindUniqueArgs} args - Arguments to find a ZK_ShippingAddress
+     * @example
+     * // Get one ZK_ShippingAddress
+     * const zK_ShippingAddress = await prisma.zK_ShippingAddress.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends ZK_ShippingAddressFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, ZK_ShippingAddressFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'ZK_ShippingAddress'> extends True ? CheckSelect<T, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddress>, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddressGetPayload<T>>> : CheckSelect<T, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddress | null >, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddressGetPayload<T> | null >>
+
+    /**
+     * Find the first ZK_ShippingAddress that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ZK_ShippingAddressFindFirstArgs} args - Arguments to find a ZK_ShippingAddress
+     * @example
+     * // Get one ZK_ShippingAddress
+     * const zK_ShippingAddress = await prisma.zK_ShippingAddress.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends ZK_ShippingAddressFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, ZK_ShippingAddressFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'ZK_ShippingAddress'> extends True ? CheckSelect<T, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddress>, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddressGetPayload<T>>> : CheckSelect<T, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddress | null >, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddressGetPayload<T> | null >>
+
+    /**
+     * Find zero or more ZK_ShippingAddresses that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ZK_ShippingAddressFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all ZK_ShippingAddresses
+     * const zK_ShippingAddresses = await prisma.zK_ShippingAddress.findMany()
+     * 
+     * // Get first 10 ZK_ShippingAddresses
+     * const zK_ShippingAddresses = await prisma.zK_ShippingAddress.findMany({ take: 10 })
+     * 
+     * // Only select the `zkcid`
+     * const zK_ShippingAddressWithZkcidOnly = await prisma.zK_ShippingAddress.findMany({ select: { zkcid: true } })
+     * 
+    **/
+    findMany<T extends ZK_ShippingAddressFindManyArgs>(
+      args?: SelectSubset<T, ZK_ShippingAddressFindManyArgs>
+    ): CheckSelect<T, PrismaPromise<Array<ZK_ShippingAddress>>, PrismaPromise<Array<ZK_ShippingAddressGetPayload<T>>>>
+
+    /**
+     * Create a ZK_ShippingAddress.
+     * @param {ZK_ShippingAddressCreateArgs} args - Arguments to create a ZK_ShippingAddress.
+     * @example
+     * // Create one ZK_ShippingAddress
+     * const ZK_ShippingAddress = await prisma.zK_ShippingAddress.create({
+     *   data: {
+     *     // ... data to create a ZK_ShippingAddress
+     *   }
+     * })
+     * 
+    **/
+    create<T extends ZK_ShippingAddressCreateArgs>(
+      args: SelectSubset<T, ZK_ShippingAddressCreateArgs>
+    ): CheckSelect<T, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddress>, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddressGetPayload<T>>>
+
+    /**
+     * Create many ZK_ShippingAddresses.
+     *     @param {ZK_ShippingAddressCreateManyArgs} args - Arguments to create many ZK_ShippingAddresses.
+     *     @example
+     *     // Create many ZK_ShippingAddresses
+     *     const zK_ShippingAddress = await prisma.zK_ShippingAddress.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends ZK_ShippingAddressCreateManyArgs>(
+      args?: SelectSubset<T, ZK_ShippingAddressCreateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a ZK_ShippingAddress.
+     * @param {ZK_ShippingAddressDeleteArgs} args - Arguments to delete one ZK_ShippingAddress.
+     * @example
+     * // Delete one ZK_ShippingAddress
+     * const ZK_ShippingAddress = await prisma.zK_ShippingAddress.delete({
+     *   where: {
+     *     // ... filter to delete one ZK_ShippingAddress
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends ZK_ShippingAddressDeleteArgs>(
+      args: SelectSubset<T, ZK_ShippingAddressDeleteArgs>
+    ): CheckSelect<T, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddress>, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddressGetPayload<T>>>
+
+    /**
+     * Update one ZK_ShippingAddress.
+     * @param {ZK_ShippingAddressUpdateArgs} args - Arguments to update one ZK_ShippingAddress.
+     * @example
+     * // Update one ZK_ShippingAddress
+     * const zK_ShippingAddress = await prisma.zK_ShippingAddress.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends ZK_ShippingAddressUpdateArgs>(
+      args: SelectSubset<T, ZK_ShippingAddressUpdateArgs>
+    ): CheckSelect<T, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddress>, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddressGetPayload<T>>>
+
+    /**
+     * Delete zero or more ZK_ShippingAddresses.
+     * @param {ZK_ShippingAddressDeleteManyArgs} args - Arguments to filter ZK_ShippingAddresses to delete.
+     * @example
+     * // Delete a few ZK_ShippingAddresses
+     * const { count } = await prisma.zK_ShippingAddress.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends ZK_ShippingAddressDeleteManyArgs>(
+      args?: SelectSubset<T, ZK_ShippingAddressDeleteManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more ZK_ShippingAddresses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ZK_ShippingAddressUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many ZK_ShippingAddresses
+     * const zK_ShippingAddress = await prisma.zK_ShippingAddress.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends ZK_ShippingAddressUpdateManyArgs>(
+      args: SelectSubset<T, ZK_ShippingAddressUpdateManyArgs>
+    ): PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one ZK_ShippingAddress.
+     * @param {ZK_ShippingAddressUpsertArgs} args - Arguments to update or create a ZK_ShippingAddress.
+     * @example
+     * // Update or create a ZK_ShippingAddress
+     * const zK_ShippingAddress = await prisma.zK_ShippingAddress.upsert({
+     *   create: {
+     *     // ... data to create a ZK_ShippingAddress
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the ZK_ShippingAddress we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends ZK_ShippingAddressUpsertArgs>(
+      args: SelectSubset<T, ZK_ShippingAddressUpsertArgs>
+    ): CheckSelect<T, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddress>, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddressGetPayload<T>>>
+
+    /**
+     * Count the number of ZK_ShippingAddresses.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ZK_ShippingAddressCountArgs} args - Arguments to filter ZK_ShippingAddresses to count.
+     * @example
+     * // Count the number of ZK_ShippingAddresses
+     * const count = await prisma.zK_ShippingAddress.count({
+     *   where: {
+     *     // ... the filter for the ZK_ShippingAddresses we want to count
+     *   }
+     * })
+    **/
+    count<T extends ZK_ShippingAddressCountArgs>(
+      args?: Subset<T, ZK_ShippingAddressCountArgs>,
+    ): PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], ZK_ShippingAddressCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a ZK_ShippingAddress.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ZK_ShippingAddressAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends ZK_ShippingAddressAggregateArgs>(args: Subset<T, ZK_ShippingAddressAggregateArgs>): PrismaPromise<GetZK_ShippingAddressAggregateType<T>>
+
+    /**
+     * Group by ZK_ShippingAddress.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {ZK_ShippingAddressGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends ZK_ShippingAddressGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: ZK_ShippingAddressGroupByArgs['orderBy'] }
+        : { orderBy?: ZK_ShippingAddressGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, ZK_ShippingAddressGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetZK_ShippingAddressGroupByPayload<T> : Promise<InputErrors>
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for ZK_ShippingAddress.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in 
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__ZK_ShippingAddressClient<T> implements PrismaPromise<T> {
+    [prisma]: true;
+    private readonly _dmmf;
+    private readonly _fetcher;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+
+    ZK_Order<T extends ZK_OrderArgs = {}>(args?: Subset<T, ZK_OrderArgs>): CheckSelect<T, Prisma__ZK_OrderClient<ZK_Order | null >, Prisma__ZK_OrderClient<ZK_OrderGetPayload<T> | null >>;
+
+    ZK_Customer<T extends ZK_CustomerArgs = {}>(args?: Subset<T, ZK_CustomerArgs>): CheckSelect<T, Prisma__ZK_CustomerClient<ZK_Customer | null >, Prisma__ZK_CustomerClient<ZK_CustomerGetPayload<T> | null >>;
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+  // Custom InputTypes
+
+  /**
+   * ZK_ShippingAddress findUnique
+   */
+  export type ZK_ShippingAddressFindUniqueArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_ShippingAddress
+     * 
+    **/
+    select?: ZK_ShippingAddressSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_ShippingAddressInclude | null
+    /**
+     * Throw an Error if a ZK_ShippingAddress can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which ZK_ShippingAddress to fetch.
+     * 
+    **/
+    where: ZK_ShippingAddressWhereUniqueInput
+  }
+
+
+  /**
+   * ZK_ShippingAddress findFirst
+   */
+  export type ZK_ShippingAddressFindFirstArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_ShippingAddress
+     * 
+    **/
+    select?: ZK_ShippingAddressSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_ShippingAddressInclude | null
+    /**
+     * Throw an Error if a ZK_ShippingAddress can't be found
+     * 
+    **/
+    rejectOnNotFound?: RejectOnNotFound
+    /**
+     * Filter, which ZK_ShippingAddress to fetch.
+     * 
+    **/
+    where?: ZK_ShippingAddressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ZK_ShippingAddresses to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ZK_ShippingAddressOrderByInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for ZK_ShippingAddresses.
+     * 
+    **/
+    cursor?: ZK_ShippingAddressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ZK_ShippingAddresses from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ZK_ShippingAddresses.
+     * 
+    **/
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of ZK_ShippingAddresses.
+     * 
+    **/
+    distinct?: Enumerable<ZK_ShippingAddressScalarFieldEnum>
+  }
+
+
+  /**
+   * ZK_ShippingAddress findMany
+   */
+  export type ZK_ShippingAddressFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_ShippingAddress
+     * 
+    **/
+    select?: ZK_ShippingAddressSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_ShippingAddressInclude | null
+    /**
+     * Filter, which ZK_ShippingAddresses to fetch.
+     * 
+    **/
+    where?: ZK_ShippingAddressWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of ZK_ShippingAddresses to fetch.
+     * 
+    **/
+    orderBy?: Enumerable<ZK_ShippingAddressOrderByInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing ZK_ShippingAddresses.
+     * 
+    **/
+    cursor?: ZK_ShippingAddressWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` ZK_ShippingAddresses from the position of the cursor.
+     * 
+    **/
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` ZK_ShippingAddresses.
+     * 
+    **/
+    skip?: number
+    distinct?: Enumerable<ZK_ShippingAddressScalarFieldEnum>
+  }
+
+
+  /**
+   * ZK_ShippingAddress create
+   */
+  export type ZK_ShippingAddressCreateArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_ShippingAddress
+     * 
+    **/
+    select?: ZK_ShippingAddressSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_ShippingAddressInclude | null
+    /**
+     * The data needed to create a ZK_ShippingAddress.
+     * 
+    **/
+    data: XOR<ZK_ShippingAddressCreateInput, ZK_ShippingAddressUncheckedCreateInput>
+  }
+
+
+  /**
+   * ZK_ShippingAddress createMany
+   */
+  export type ZK_ShippingAddressCreateManyArgs = {
+    data: Enumerable<ZK_ShippingAddressCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * ZK_ShippingAddress update
+   */
+  export type ZK_ShippingAddressUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_ShippingAddress
+     * 
+    **/
+    select?: ZK_ShippingAddressSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_ShippingAddressInclude | null
+    /**
+     * The data needed to update a ZK_ShippingAddress.
+     * 
+    **/
+    data: XOR<ZK_ShippingAddressUpdateInput, ZK_ShippingAddressUncheckedUpdateInput>
+    /**
+     * Choose, which ZK_ShippingAddress to update.
+     * 
+    **/
+    where: ZK_ShippingAddressWhereUniqueInput
+  }
+
+
+  /**
+   * ZK_ShippingAddress updateMany
+   */
+  export type ZK_ShippingAddressUpdateManyArgs = {
+    data: XOR<ZK_ShippingAddressUpdateManyMutationInput, ZK_ShippingAddressUncheckedUpdateManyInput>
+    where?: ZK_ShippingAddressWhereInput
+  }
+
+
+  /**
+   * ZK_ShippingAddress upsert
+   */
+  export type ZK_ShippingAddressUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_ShippingAddress
+     * 
+    **/
+    select?: ZK_ShippingAddressSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_ShippingAddressInclude | null
+    /**
+     * The filter to search for the ZK_ShippingAddress to update in case it exists.
+     * 
+    **/
+    where: ZK_ShippingAddressWhereUniqueInput
+    /**
+     * In case the ZK_ShippingAddress found by the `where` argument doesn't exist, create a new ZK_ShippingAddress with this data.
+     * 
+    **/
+    create: XOR<ZK_ShippingAddressCreateInput, ZK_ShippingAddressUncheckedCreateInput>
+    /**
+     * In case the ZK_ShippingAddress was found with the provided `where` argument, update it with this data.
+     * 
+    **/
+    update: XOR<ZK_ShippingAddressUpdateInput, ZK_ShippingAddressUncheckedUpdateInput>
+  }
+
+
+  /**
+   * ZK_ShippingAddress delete
+   */
+  export type ZK_ShippingAddressDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_ShippingAddress
+     * 
+    **/
+    select?: ZK_ShippingAddressSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_ShippingAddressInclude | null
+    /**
+     * Filter which ZK_ShippingAddress to delete.
+     * 
+    **/
+    where: ZK_ShippingAddressWhereUniqueInput
+  }
+
+
+  /**
+   * ZK_ShippingAddress deleteMany
+   */
+  export type ZK_ShippingAddressDeleteManyArgs = {
+    where?: ZK_ShippingAddressWhereInput
+  }
+
+
+  /**
+   * ZK_ShippingAddress without action
+   */
+  export type ZK_ShippingAddressArgs = {
+    /**
+     * Select specific fields to fetch from the ZK_ShippingAddress
+     * 
+    **/
+    select?: ZK_ShippingAddressSelect | null
+    /**
+     * Choose, which related nodes to fetch as well.
+     * 
+    **/
+    include?: ZK_ShippingAddressInclude | null
+  }
+
+
+
+  /**
    * Model ZK_Order
    */
 
@@ -5557,6 +7530,7 @@ export namespace Prisma {
   export type ZK_OrderAvgAggregateOutputType = {
     zkcid: number | null
     zk_order_id: number | null
+    zk_shipping_id: number | null
     zk_order_total_amount: Decimal | null
     zk_order_createby: number | null
     zk_order_customer_id: number | null
@@ -5565,6 +7539,7 @@ export namespace Prisma {
   export type ZK_OrderSumAggregateOutputType = {
     zkcid: number | null
     zk_order_id: bigint | null
+    zk_shipping_id: bigint | null
     zk_order_total_amount: Decimal | null
     zk_order_createby: number | null
     zk_order_customer_id: bigint | null
@@ -5574,6 +7549,7 @@ export namespace Prisma {
     zkcid: number | null
     zk_order_id: bigint | null
     zk_order_number: string | null
+    zk_shipping_id: bigint | null
     zk_order_description: string | null
     zk_order_total_amount: Decimal | null
     zk_order_createAt: Date | null
@@ -5588,6 +7564,7 @@ export namespace Prisma {
     zkcid: number | null
     zk_order_id: bigint | null
     zk_order_number: string | null
+    zk_shipping_id: bigint | null
     zk_order_description: string | null
     zk_order_total_amount: Decimal | null
     zk_order_createAt: Date | null
@@ -5602,6 +7579,7 @@ export namespace Prisma {
     zkcid: number
     zk_order_id: number
     zk_order_number: number
+    zk_shipping_id: number
     zk_order_description: number
     zk_order_total_amount: number
     zk_order_total_tax: number
@@ -5619,6 +7597,7 @@ export namespace Prisma {
   export type ZK_OrderAvgAggregateInputType = {
     zkcid?: true
     zk_order_id?: true
+    zk_shipping_id?: true
     zk_order_total_amount?: true
     zk_order_createby?: true
     zk_order_customer_id?: true
@@ -5627,6 +7606,7 @@ export namespace Prisma {
   export type ZK_OrderSumAggregateInputType = {
     zkcid?: true
     zk_order_id?: true
+    zk_shipping_id?: true
     zk_order_total_amount?: true
     zk_order_createby?: true
     zk_order_customer_id?: true
@@ -5636,6 +7616,7 @@ export namespace Prisma {
     zkcid?: true
     zk_order_id?: true
     zk_order_number?: true
+    zk_shipping_id?: true
     zk_order_description?: true
     zk_order_total_amount?: true
     zk_order_createAt?: true
@@ -5650,6 +7631,7 @@ export namespace Prisma {
     zkcid?: true
     zk_order_id?: true
     zk_order_number?: true
+    zk_shipping_id?: true
     zk_order_description?: true
     zk_order_total_amount?: true
     zk_order_createAt?: true
@@ -5664,6 +7646,7 @@ export namespace Prisma {
     zkcid?: true
     zk_order_id?: true
     zk_order_number?: true
+    zk_shipping_id?: true
     zk_order_description?: true
     zk_order_total_amount?: true
     zk_order_total_tax?: true
@@ -5793,6 +7776,7 @@ export namespace Prisma {
     zkcid: number
     zk_order_id: bigint
     zk_order_number: string
+    zk_shipping_id: bigint
     zk_order_description: string | null
     zk_order_total_amount: Decimal
     zk_order_total_tax: JsonValue
@@ -5828,6 +7812,7 @@ export namespace Prisma {
     zkcid?: boolean
     zk_order_id?: boolean
     zk_order_number?: boolean
+    zk_shipping_id?: boolean
     zk_order_description?: boolean
     zk_order_total_amount?: boolean
     zk_order_total_tax?: boolean
@@ -5840,11 +7825,13 @@ export namespace Prisma {
     zk_order_termscondition?: boolean
     ZK_Order_Mapping?: boolean | ZK_Order_MappingFindManyArgs
     zk_order_customer_id_fkey?: boolean | ZK_CustomerArgs
+    ZK_ShippingAddress?: boolean | ZK_ShippingAddressArgs
   }
 
   export type ZK_OrderInclude = {
     ZK_Order_Mapping?: boolean | ZK_Order_MappingFindManyArgs
     zk_order_customer_id_fkey?: boolean | ZK_CustomerArgs
+    ZK_ShippingAddress?: boolean | ZK_ShippingAddressArgs
   }
 
   export type ZK_OrderGetPayload<
@@ -5861,7 +7848,9 @@ export namespace Prisma {
           P extends 'ZK_Order_Mapping'
         ? Array < ZK_Order_MappingGetPayload<S['include'][P]>>  :
         P extends 'zk_order_customer_id_fkey'
-        ? ZK_CustomerGetPayload<S['include'][P]> | null : never
+        ? ZK_CustomerGetPayload<S['include'][P]> | null :
+        P extends 'ZK_ShippingAddress'
+        ? ZK_ShippingAddressGetPayload<S['include'][P]> : never
   } 
     : 'select' extends U
     ? {
@@ -5870,7 +7859,9 @@ export namespace Prisma {
           P extends 'ZK_Order_Mapping'
         ? Array < ZK_Order_MappingGetPayload<S['select'][P]>>  :
         P extends 'zk_order_customer_id_fkey'
-        ? ZK_CustomerGetPayload<S['select'][P]> | null : never
+        ? ZK_CustomerGetPayload<S['select'][P]> | null :
+        P extends 'ZK_ShippingAddress'
+        ? ZK_ShippingAddressGetPayload<S['select'][P]> : never
   } 
     : ZK_Order
   : ZK_Order
@@ -6213,6 +8204,8 @@ export namespace Prisma {
     ZK_Order_Mapping<T extends ZK_Order_MappingFindManyArgs = {}>(args?: Subset<T, ZK_Order_MappingFindManyArgs>): CheckSelect<T, PrismaPromise<Array<ZK_Order_Mapping>>, PrismaPromise<Array<ZK_Order_MappingGetPayload<T>>>>;
 
     zk_order_customer_id_fkey<T extends ZK_CustomerArgs = {}>(args?: Subset<T, ZK_CustomerArgs>): CheckSelect<T, Prisma__ZK_CustomerClient<ZK_Customer | null >, Prisma__ZK_CustomerClient<ZK_CustomerGetPayload<T> | null >>;
+
+    ZK_ShippingAddress<T extends ZK_ShippingAddressArgs = {}>(args?: Subset<T, ZK_ShippingAddressArgs>): CheckSelect<T, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddress | null >, Prisma__ZK_ShippingAddressClient<ZK_ShippingAddressGetPayload<T> | null >>;
 
     private get _document();
     /**
@@ -8399,6 +10392,7 @@ export namespace Prisma {
     zkp_code: 'zkp_code',
     zkp_name: 'zkp_name',
     zkp_description: 'zkp_description',
+    zk_category_id: 'zk_category_id',
     zkp_unit: 'zkp_unit',
     zkp_unit_selling_price: 'zkp_unit_selling_price',
     zkp_unit_cost_price: 'zkp_unit_cost_price',
@@ -8435,6 +10429,17 @@ export namespace Prisma {
   export type ZK_UnitScalarFieldEnum = (typeof ZK_UnitScalarFieldEnum)[keyof typeof ZK_UnitScalarFieldEnum]
 
 
+  export const ZK_CategoryScalarFieldEnum: {
+    zkcid: 'zkcid',
+    zk_category_id: 'zk_category_id',
+    zk_category_name: 'zk_category_name',
+    zk_category_level: 'zk_category_level',
+    zk_category_parentid: 'zk_category_parentid'
+  };
+
+  export type ZK_CategoryScalarFieldEnum = (typeof ZK_CategoryScalarFieldEnum)[keyof typeof ZK_CategoryScalarFieldEnum]
+
+
   export const ZK_CustomerScalarFieldEnum: {
     zkcid: 'zkcid',
     zk_customer_id: 'zk_customer_id',
@@ -8447,10 +10452,27 @@ export namespace Prisma {
   export type ZK_CustomerScalarFieldEnum = (typeof ZK_CustomerScalarFieldEnum)[keyof typeof ZK_CustomerScalarFieldEnum]
 
 
+  export const ZK_ShippingAddressScalarFieldEnum: {
+    zkcid: 'zkcid',
+    zk_customer_id: 'zk_customer_id',
+    zk_shipping_id: 'zk_shipping_id',
+    zk_name: 'zk_name',
+    zk_contact_number: 'zk_contact_number',
+    zk_addressline_1: 'zk_addressline_1',
+    zk_addressline_2: 'zk_addressline_2',
+    zk_state: 'zk_state',
+    zk_country: 'zk_country',
+    zk_pincode: 'zk_pincode'
+  };
+
+  export type ZK_ShippingAddressScalarFieldEnum = (typeof ZK_ShippingAddressScalarFieldEnum)[keyof typeof ZK_ShippingAddressScalarFieldEnum]
+
+
   export const ZK_OrderScalarFieldEnum: {
     zkcid: 'zkcid',
     zk_order_id: 'zk_order_id',
     zk_order_number: 'zk_order_number',
+    zk_shipping_id: 'zk_shipping_id',
     zk_order_description: 'zk_order_description',
     zk_order_total_amount: 'zk_order_total_amount',
     zk_order_total_tax: 'zk_order_total_tax',
@@ -8552,6 +10574,7 @@ export namespace Prisma {
     zkp_code?: StringNullableFilter | string | null
     zkp_name?: StringFilter | string
     zkp_description?: StringNullableFilter | string | null
+    zk_category_id?: BigIntFilter | bigint | number
     zkp_unit?: BigIntFilter | bigint | number
     zkp_unit_selling_price?: DecimalFilter | Decimal | number | string
     zkp_unit_cost_price?: DecimalFilter | Decimal | number | string
@@ -8566,6 +10589,7 @@ export namespace Prisma {
     zkp_number3?: BigIntNullableFilter | bigint | number | null
     ZK_Taxes?: ZK_Product_Tax_MappingListRelationFilter
     ZK_Unit?: XOR<ZK_UnitRelationFilter, ZK_UnitWhereInput>
+    ZK_Category?: XOR<ZK_CategoryRelationFilter, ZK_CategoryWhereInput>
   }
 
   export type ZKProductOrderByInput = {
@@ -8575,6 +10599,7 @@ export namespace Prisma {
     zkp_code?: SortOrder
     zkp_name?: SortOrder
     zkp_description?: SortOrder
+    zk_category_id?: SortOrder
     zkp_unit?: SortOrder
     zkp_unit_selling_price?: SortOrder
     zkp_unit_cost_price?: SortOrder
@@ -8604,6 +10629,7 @@ export namespace Prisma {
     zkp_code?: StringNullableWithAggregatesFilter | string | null
     zkp_name?: StringWithAggregatesFilter | string
     zkp_description?: StringNullableWithAggregatesFilter | string | null
+    zk_category_id?: BigIntWithAggregatesFilter | bigint | number
     zkp_unit?: BigIntWithAggregatesFilter | bigint | number
     zkp_unit_selling_price?: DecimalWithAggregatesFilter | Decimal | number | string
     zkp_unit_cost_price?: DecimalWithAggregatesFilter | Decimal | number | string
@@ -8681,6 +10707,41 @@ export namespace Prisma {
     zk_unit_name?: StringWithAggregatesFilter | string
   }
 
+  export type ZK_CategoryWhereInput = {
+    AND?: Enumerable<ZK_CategoryWhereInput>
+    OR?: Enumerable<ZK_CategoryWhereInput>
+    NOT?: Enumerable<ZK_CategoryWhereInput>
+    zkcid?: IntFilter | number
+    zk_category_id?: BigIntFilter | bigint | number
+    zk_category_name?: StringFilter | string
+    zk_category_level?: IntFilter | number
+    zk_category_parentid?: BigIntNullableFilter | bigint | number | null
+    ZKProduct?: XOR<ZKProductRelationFilter, ZKProductWhereInput> | null
+  }
+
+  export type ZK_CategoryOrderByInput = {
+    zkcid?: SortOrder
+    zk_category_id?: SortOrder
+    zk_category_name?: SortOrder
+    zk_category_level?: SortOrder
+    zk_category_parentid?: SortOrder
+  }
+
+  export type ZK_CategoryWhereUniqueInput = {
+    zk_category_id?: bigint | number
+  }
+
+  export type ZK_CategoryScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ZK_CategoryScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ZK_CategoryScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ZK_CategoryScalarWhereWithAggregatesInput>
+    zkcid?: IntWithAggregatesFilter | number
+    zk_category_id?: BigIntWithAggregatesFilter | bigint | number
+    zk_category_name?: StringWithAggregatesFilter | string
+    zk_category_level?: IntWithAggregatesFilter | number
+    zk_category_parentid?: BigIntNullableWithAggregatesFilter | bigint | number | null
+  }
+
   export type ZK_CustomerWhereInput = {
     AND?: Enumerable<ZK_CustomerWhereInput>
     OR?: Enumerable<ZK_CustomerWhereInput>
@@ -8692,6 +10753,7 @@ export namespace Prisma {
     zk_customer_email?: StringNullableFilter | string | null
     zk_customer_other_details?: StringFilter | string
     ZK_Order?: ZK_OrderListRelationFilter
+    ZK_ShippingAddress?: XOR<ZK_ShippingAddressRelationFilter, ZK_ShippingAddressWhereInput> | null
   }
 
   export type ZK_CustomerOrderByInput = {
@@ -8719,6 +10781,57 @@ export namespace Prisma {
     zk_customer_other_details?: StringWithAggregatesFilter | string
   }
 
+  export type ZK_ShippingAddressWhereInput = {
+    AND?: Enumerable<ZK_ShippingAddressWhereInput>
+    OR?: Enumerable<ZK_ShippingAddressWhereInput>
+    NOT?: Enumerable<ZK_ShippingAddressWhereInput>
+    zkcid?: IntFilter | number
+    zk_customer_id?: BigIntFilter | bigint | number
+    zk_shipping_id?: BigIntFilter | bigint | number
+    zk_name?: StringFilter | string
+    zk_contact_number?: StringFilter | string
+    zk_addressline_1?: StringFilter | string
+    zk_addressline_2?: StringNullableFilter | string | null
+    zk_state?: StringFilter | string
+    zk_country?: StringFilter | string
+    zk_pincode?: IntFilter | number
+    ZK_Order?: XOR<ZK_OrderRelationFilter, ZK_OrderWhereInput> | null
+    ZK_Customer?: XOR<ZK_CustomerRelationFilter, ZK_CustomerWhereInput>
+  }
+
+  export type ZK_ShippingAddressOrderByInput = {
+    zkcid?: SortOrder
+    zk_customer_id?: SortOrder
+    zk_shipping_id?: SortOrder
+    zk_name?: SortOrder
+    zk_contact_number?: SortOrder
+    zk_addressline_1?: SortOrder
+    zk_addressline_2?: SortOrder
+    zk_state?: SortOrder
+    zk_country?: SortOrder
+    zk_pincode?: SortOrder
+  }
+
+  export type ZK_ShippingAddressWhereUniqueInput = {
+    zk_shipping_id?: bigint | number
+  }
+
+  export type ZK_ShippingAddressScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<ZK_ShippingAddressScalarWhereWithAggregatesInput>
+    OR?: Enumerable<ZK_ShippingAddressScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<ZK_ShippingAddressScalarWhereWithAggregatesInput>
+    zkcid?: IntWithAggregatesFilter | number
+    zk_customer_id?: BigIntWithAggregatesFilter | bigint | number
+    zk_shipping_id?: BigIntWithAggregatesFilter | bigint | number
+    zk_name?: StringWithAggregatesFilter | string
+    zk_contact_number?: StringWithAggregatesFilter | string
+    zk_addressline_1?: StringWithAggregatesFilter | string
+    zk_addressline_2?: StringNullableWithAggregatesFilter | string | null
+    zk_state?: StringWithAggregatesFilter | string
+    zk_country?: StringWithAggregatesFilter | string
+    zk_pincode?: IntWithAggregatesFilter | number
+  }
+
   export type ZK_OrderWhereInput = {
     AND?: Enumerable<ZK_OrderWhereInput>
     OR?: Enumerable<ZK_OrderWhereInput>
@@ -8726,6 +10839,7 @@ export namespace Prisma {
     zkcid?: IntFilter | number
     zk_order_id?: BigIntFilter | bigint | number
     zk_order_number?: StringFilter | string
+    zk_shipping_id?: BigIntFilter | bigint | number
     zk_order_description?: StringNullableFilter | string | null
     zk_order_total_amount?: DecimalFilter | Decimal | number | string
     zk_order_total_tax?: JsonFilter
@@ -8738,12 +10852,14 @@ export namespace Prisma {
     zk_order_termscondition?: StringFilter | string
     ZK_Order_Mapping?: ZK_Order_MappingListRelationFilter
     zk_order_customer_id_fkey?: XOR<ZK_CustomerRelationFilter, ZK_CustomerWhereInput> | null
+    ZK_ShippingAddress?: XOR<ZK_ShippingAddressRelationFilter, ZK_ShippingAddressWhereInput>
   }
 
   export type ZK_OrderOrderByInput = {
     zkcid?: SortOrder
     zk_order_id?: SortOrder
     zk_order_number?: SortOrder
+    zk_shipping_id?: SortOrder
     zk_order_description?: SortOrder
     zk_order_total_amount?: SortOrder
     zk_order_total_tax?: SortOrder
@@ -8767,6 +10883,7 @@ export namespace Prisma {
     zkcid?: IntWithAggregatesFilter | number
     zk_order_id?: BigIntWithAggregatesFilter | bigint | number
     zk_order_number?: StringWithAggregatesFilter | string
+    zk_shipping_id?: BigIntWithAggregatesFilter | bigint | number
     zk_order_description?: StringNullableWithAggregatesFilter | string | null
     zk_order_total_amount?: DecimalWithAggregatesFilter | Decimal | number | string
     zk_order_total_tax?: JsonWithAggregatesFilter
@@ -8923,6 +11040,7 @@ export namespace Prisma {
     zkp_number3?: bigint | number | null
     ZK_Taxes?: ZK_Product_Tax_MappingCreateNestedManyWithoutZk_product_tax_mapping_product_fkeyInput
     ZK_Unit: ZK_UnitCreateNestedOneWithoutZK_ProductInput
+    ZK_Category?: ZK_CategoryCreateNestedOneWithoutZKProductInput
   }
 
   export type ZKProductUncheckedCreateInput = {
@@ -8932,6 +11050,7 @@ export namespace Prisma {
     zkp_code?: string | null
     zkp_name: string
     zkp_description?: string | null
+    zk_category_id?: bigint | number
     zkp_unit: bigint | number
     zkp_unit_selling_price?: Decimal | number | string
     zkp_unit_cost_price?: Decimal | number | string
@@ -8967,6 +11086,7 @@ export namespace Prisma {
     zkp_number3?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ZK_Taxes?: ZK_Product_Tax_MappingUpdateManyWithoutZk_product_tax_mapping_product_fkeyInput
     ZK_Unit?: ZK_UnitUpdateOneRequiredWithoutZK_ProductInput
+    ZK_Category?: ZK_CategoryUpdateOneRequiredWithoutZKProductInput
   }
 
   export type ZKProductUncheckedUpdateInput = {
@@ -8976,6 +11096,7 @@ export namespace Prisma {
     zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_name?: StringFieldUpdateOperationsInput | string
     zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_category_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zkp_unit?: BigIntFieldUpdateOperationsInput | bigint | number
     zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
@@ -8998,6 +11119,7 @@ export namespace Prisma {
     zkp_code?: string | null
     zkp_name: string
     zkp_description?: string | null
+    zk_category_id?: bigint | number
     zkp_unit: bigint | number
     zkp_unit_selling_price?: Decimal | number | string
     zkp_unit_cost_price?: Decimal | number | string
@@ -9039,6 +11161,7 @@ export namespace Prisma {
     zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_name?: StringFieldUpdateOperationsInput | string
     zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_category_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zkp_unit?: BigIntFieldUpdateOperationsInput | bigint | number
     zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
@@ -9152,6 +11275,66 @@ export namespace Prisma {
     zk_unit_name?: StringFieldUpdateOperationsInput | string
   }
 
+  export type ZK_CategoryCreateInput = {
+    zkcid: number
+    zk_category_id?: bigint | number
+    zk_category_name: string
+    zk_category_level?: number
+    zk_category_parentid?: bigint | number | null
+    ZKProduct?: ZKProductCreateNestedOneWithoutZK_CategoryInput
+  }
+
+  export type ZK_CategoryUncheckedCreateInput = {
+    zkcid: number
+    zk_category_id?: bigint | number
+    zk_category_name: string
+    zk_category_level?: number
+    zk_category_parentid?: bigint | number | null
+    ZKProduct?: ZKProductUncheckedCreateNestedOneWithoutZK_CategoryInput
+  }
+
+  export type ZK_CategoryUpdateInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_category_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_category_name?: StringFieldUpdateOperationsInput | string
+    zk_category_level?: IntFieldUpdateOperationsInput | number
+    zk_category_parentid?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ZKProduct?: ZKProductUpdateOneWithoutZK_CategoryInput
+  }
+
+  export type ZK_CategoryUncheckedUpdateInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_category_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_category_name?: StringFieldUpdateOperationsInput | string
+    zk_category_level?: IntFieldUpdateOperationsInput | number
+    zk_category_parentid?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ZKProduct?: ZKProductUncheckedUpdateOneWithoutZK_CategoryInput
+  }
+
+  export type ZK_CategoryCreateManyInput = {
+    zkcid: number
+    zk_category_id?: bigint | number
+    zk_category_name: string
+    zk_category_level?: number
+    zk_category_parentid?: bigint | number | null
+  }
+
+  export type ZK_CategoryUpdateManyMutationInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_category_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_category_name?: StringFieldUpdateOperationsInput | string
+    zk_category_level?: IntFieldUpdateOperationsInput | number
+    zk_category_parentid?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  }
+
+  export type ZK_CategoryUncheckedUpdateManyInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_category_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_category_name?: StringFieldUpdateOperationsInput | string
+    zk_category_level?: IntFieldUpdateOperationsInput | number
+    zk_category_parentid?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  }
+
   export type ZK_CustomerCreateInput = {
     zkcid: number
     zk_customer_id?: bigint | number
@@ -9160,6 +11343,7 @@ export namespace Prisma {
     zk_customer_email?: string | null
     zk_customer_other_details: string
     ZK_Order?: ZK_OrderCreateNestedManyWithoutZk_order_customer_id_fkeyInput
+    ZK_ShippingAddress?: ZK_ShippingAddressCreateNestedOneWithoutZK_CustomerInput
   }
 
   export type ZK_CustomerUncheckedCreateInput = {
@@ -9170,6 +11354,7 @@ export namespace Prisma {
     zk_customer_email?: string | null
     zk_customer_other_details: string
     ZK_Order?: ZK_OrderUncheckedCreateNestedManyWithoutZk_order_customer_id_fkeyInput
+    ZK_ShippingAddress?: ZK_ShippingAddressUncheckedCreateNestedOneWithoutZK_CustomerInput
   }
 
   export type ZK_CustomerUpdateInput = {
@@ -9180,6 +11365,7 @@ export namespace Prisma {
     zk_customer_email?: NullableStringFieldUpdateOperationsInput | string | null
     zk_customer_other_details?: StringFieldUpdateOperationsInput | string
     ZK_Order?: ZK_OrderUpdateManyWithoutZk_order_customer_id_fkeyInput
+    ZK_ShippingAddress?: ZK_ShippingAddressUpdateOneWithoutZK_CustomerInput
   }
 
   export type ZK_CustomerUncheckedUpdateInput = {
@@ -9190,6 +11376,7 @@ export namespace Prisma {
     zk_customer_email?: NullableStringFieldUpdateOperationsInput | string | null
     zk_customer_other_details?: StringFieldUpdateOperationsInput | string
     ZK_Order?: ZK_OrderUncheckedUpdateManyWithoutZk_order_customer_id_fkeyInput
+    ZK_ShippingAddress?: ZK_ShippingAddressUncheckedUpdateOneWithoutZK_CustomerInput
   }
 
   export type ZK_CustomerCreateManyInput = {
@@ -9219,6 +11406,100 @@ export namespace Prisma {
     zk_customer_other_details?: StringFieldUpdateOperationsInput | string
   }
 
+  export type ZK_ShippingAddressCreateInput = {
+    zkcid: number
+    zk_shipping_id?: bigint | number
+    zk_name: string
+    zk_contact_number: string
+    zk_addressline_1: string
+    zk_addressline_2?: string | null
+    zk_state: string
+    zk_country: string
+    zk_pincode: number
+    ZK_Order?: ZK_OrderCreateNestedOneWithoutZK_ShippingAddressInput
+    ZK_Customer: ZK_CustomerCreateNestedOneWithoutZK_ShippingAddressInput
+  }
+
+  export type ZK_ShippingAddressUncheckedCreateInput = {
+    zkcid: number
+    zk_customer_id: bigint | number
+    zk_shipping_id?: bigint | number
+    zk_name: string
+    zk_contact_number: string
+    zk_addressline_1: string
+    zk_addressline_2?: string | null
+    zk_state: string
+    zk_country: string
+    zk_pincode: number
+    ZK_Order?: ZK_OrderUncheckedCreateNestedOneWithoutZK_ShippingAddressInput
+  }
+
+  export type ZK_ShippingAddressUpdateInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_shipping_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_name?: StringFieldUpdateOperationsInput | string
+    zk_contact_number?: StringFieldUpdateOperationsInput | string
+    zk_addressline_1?: StringFieldUpdateOperationsInput | string
+    zk_addressline_2?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_state?: StringFieldUpdateOperationsInput | string
+    zk_country?: StringFieldUpdateOperationsInput | string
+    zk_pincode?: IntFieldUpdateOperationsInput | number
+    ZK_Order?: ZK_OrderUpdateOneWithoutZK_ShippingAddressInput
+    ZK_Customer?: ZK_CustomerUpdateOneRequiredWithoutZK_ShippingAddressInput
+  }
+
+  export type ZK_ShippingAddressUncheckedUpdateInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_customer_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_shipping_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_name?: StringFieldUpdateOperationsInput | string
+    zk_contact_number?: StringFieldUpdateOperationsInput | string
+    zk_addressline_1?: StringFieldUpdateOperationsInput | string
+    zk_addressline_2?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_state?: StringFieldUpdateOperationsInput | string
+    zk_country?: StringFieldUpdateOperationsInput | string
+    zk_pincode?: IntFieldUpdateOperationsInput | number
+    ZK_Order?: ZK_OrderUncheckedUpdateOneWithoutZK_ShippingAddressInput
+  }
+
+  export type ZK_ShippingAddressCreateManyInput = {
+    zkcid: number
+    zk_customer_id: bigint | number
+    zk_shipping_id?: bigint | number
+    zk_name: string
+    zk_contact_number: string
+    zk_addressline_1: string
+    zk_addressline_2?: string | null
+    zk_state: string
+    zk_country: string
+    zk_pincode: number
+  }
+
+  export type ZK_ShippingAddressUpdateManyMutationInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_shipping_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_name?: StringFieldUpdateOperationsInput | string
+    zk_contact_number?: StringFieldUpdateOperationsInput | string
+    zk_addressline_1?: StringFieldUpdateOperationsInput | string
+    zk_addressline_2?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_state?: StringFieldUpdateOperationsInput | string
+    zk_country?: StringFieldUpdateOperationsInput | string
+    zk_pincode?: IntFieldUpdateOperationsInput | number
+  }
+
+  export type ZK_ShippingAddressUncheckedUpdateManyInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_customer_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_shipping_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_name?: StringFieldUpdateOperationsInput | string
+    zk_contact_number?: StringFieldUpdateOperationsInput | string
+    zk_addressline_1?: StringFieldUpdateOperationsInput | string
+    zk_addressline_2?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_state?: StringFieldUpdateOperationsInput | string
+    zk_country?: StringFieldUpdateOperationsInput | string
+    zk_pincode?: IntFieldUpdateOperationsInput | number
+  }
+
   export type ZK_OrderCreateInput = {
     zkcid: number
     zk_order_id?: bigint | number
@@ -9234,12 +11515,14 @@ export namespace Prisma {
     zk_order_termscondition: string
     ZK_Order_Mapping?: ZK_Order_MappingCreateNestedManyWithoutZk_order_mapping_id_fkeyInput
     zk_order_customer_id_fkey?: ZK_CustomerCreateNestedOneWithoutZK_OrderInput
+    ZK_ShippingAddress: ZK_ShippingAddressCreateNestedOneWithoutZK_OrderInput
   }
 
   export type ZK_OrderUncheckedCreateInput = {
     zkcid: number
     zk_order_id?: bigint | number
     zk_order_number: string
+    zk_shipping_id: bigint | number
     zk_order_description?: string | null
     zk_order_total_amount: Decimal | number | string
     zk_order_total_tax: InputJsonValue
@@ -9268,12 +11551,14 @@ export namespace Prisma {
     zk_order_termscondition?: StringFieldUpdateOperationsInput | string
     ZK_Order_Mapping?: ZK_Order_MappingUpdateManyWithoutZk_order_mapping_id_fkeyInput
     zk_order_customer_id_fkey?: ZK_CustomerUpdateOneWithoutZK_OrderInput
+    ZK_ShippingAddress?: ZK_ShippingAddressUpdateOneRequiredWithoutZK_OrderInput
   }
 
   export type ZK_OrderUncheckedUpdateInput = {
     zkcid?: IntFieldUpdateOperationsInput | number
     zk_order_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_order_number?: StringFieldUpdateOperationsInput | string
+    zk_shipping_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_order_description?: NullableStringFieldUpdateOperationsInput | string | null
     zk_order_total_amount?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zk_order_total_tax?: InputJsonValue
@@ -9291,6 +11576,7 @@ export namespace Prisma {
     zkcid: number
     zk_order_id?: bigint | number
     zk_order_number: string
+    zk_shipping_id: bigint | number
     zk_order_description?: string | null
     zk_order_total_amount: Decimal | number | string
     zk_order_total_tax: InputJsonValue
@@ -9322,6 +11608,7 @@ export namespace Prisma {
     zkcid?: IntFieldUpdateOperationsInput | number
     zk_order_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_order_number?: StringFieldUpdateOperationsInput | string
+    zk_shipping_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_order_description?: NullableStringFieldUpdateOperationsInput | string | null
     zk_order_total_amount?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zk_order_total_tax?: InputJsonValue
@@ -9646,6 +11933,11 @@ export namespace Prisma {
     isNot?: ZK_UnitWhereInput
   }
 
+  export type ZK_CategoryRelationFilter = {
+    is?: ZK_CategoryWhereInput
+    isNot?: ZK_CategoryWhereInput
+  }
+
   export type ZKProductZkcid_zkp_nameCompoundUniqueInput = {
     zkcid: number
     zkp_name: string
@@ -9885,6 +12177,21 @@ export namespace Prisma {
     some?: ZK_OrderWhereInput
     none?: ZK_OrderWhereInput
   }
+
+  export type ZK_ShippingAddressRelationFilter = {
+    is?: ZK_ShippingAddressWhereInput | null
+    isNot?: ZK_ShippingAddressWhereInput | null
+  }
+
+  export type ZK_OrderRelationFilter = {
+    is?: ZK_OrderWhereInput
+    isNot?: ZK_OrderWhereInput
+  }
+
+  export type ZK_CustomerRelationFilter = {
+    is?: ZK_CustomerWhereInput
+    isNot?: ZK_CustomerWhereInput
+  }
   export type JsonFilter = 
     | PatchUndefined<
         Either<Required<JsonFilterBase>, Exclude<keyof Required<JsonFilterBase>, 'path'>>,
@@ -9901,11 +12208,6 @@ export namespace Prisma {
     every?: ZK_Order_MappingWhereInput
     some?: ZK_Order_MappingWhereInput
     none?: ZK_Order_MappingWhereInput
-  }
-
-  export type ZK_CustomerRelationFilter = {
-    is?: ZK_CustomerWhereInput | null
-    isNot?: ZK_CustomerWhereInput | null
   }
   export type JsonWithAggregatesFilter = 
     | PatchUndefined<
@@ -9935,11 +12237,6 @@ export namespace Prisma {
      * 
     **/
     max?: NestedJsonFilter
-  }
-
-  export type ZK_OrderRelationFilter = {
-    is?: ZK_OrderWhereInput
-    isNot?: ZK_OrderWhereInput
   }
 
   export type ZK_TaxRelationFilter = {
@@ -9979,6 +12276,12 @@ export namespace Prisma {
     create?: XOR<ZK_UnitCreateWithoutZK_ProductInput, ZK_UnitUncheckedCreateWithoutZK_ProductInput>
     connectOrCreate?: ZK_UnitCreateOrConnectWithoutZK_ProductInput
     connect?: ZK_UnitWhereUniqueInput
+  }
+
+  export type ZK_CategoryCreateNestedOneWithoutZKProductInput = {
+    create?: XOR<ZK_CategoryCreateWithoutZKProductInput, ZK_CategoryUncheckedCreateWithoutZKProductInput>
+    connectOrCreate?: ZK_CategoryCreateOrConnectWithoutZKProductInput
+    connect?: ZK_CategoryWhereUniqueInput
   }
 
   export type ZK_Product_Tax_MappingUncheckedCreateNestedManyWithoutZk_product_tax_mapping_product_fkeyInput = {
@@ -10044,6 +12347,14 @@ export namespace Prisma {
     upsert?: ZK_UnitUpsertWithoutZK_ProductInput
     connect?: ZK_UnitWhereUniqueInput
     update?: XOR<ZK_UnitUpdateWithoutZK_ProductInput, ZK_UnitUncheckedUpdateWithoutZK_ProductInput>
+  }
+
+  export type ZK_CategoryUpdateOneRequiredWithoutZKProductInput = {
+    create?: XOR<ZK_CategoryCreateWithoutZKProductInput, ZK_CategoryUncheckedCreateWithoutZKProductInput>
+    connectOrCreate?: ZK_CategoryCreateOrConnectWithoutZKProductInput
+    upsert?: ZK_CategoryUpsertWithoutZKProductInput
+    connect?: ZK_CategoryWhereUniqueInput
+    update?: XOR<ZK_CategoryUpdateWithoutZKProductInput, ZK_CategoryUncheckedUpdateWithoutZKProductInput>
   }
 
   export type ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZk_product_tax_mapping_product_fkeyInput = {
@@ -10134,6 +12445,38 @@ export namespace Prisma {
     update?: XOR<ZKProductUpdateWithoutZK_UnitInput, ZKProductUncheckedUpdateWithoutZK_UnitInput>
   }
 
+  export type ZKProductCreateNestedOneWithoutZK_CategoryInput = {
+    create?: XOR<ZKProductCreateWithoutZK_CategoryInput, ZKProductUncheckedCreateWithoutZK_CategoryInput>
+    connectOrCreate?: ZKProductCreateOrConnectWithoutZK_CategoryInput
+    connect?: ZKProductWhereUniqueInput
+  }
+
+  export type ZKProductUncheckedCreateNestedOneWithoutZK_CategoryInput = {
+    create?: XOR<ZKProductCreateWithoutZK_CategoryInput, ZKProductUncheckedCreateWithoutZK_CategoryInput>
+    connectOrCreate?: ZKProductCreateOrConnectWithoutZK_CategoryInput
+    connect?: ZKProductWhereUniqueInput
+  }
+
+  export type ZKProductUpdateOneWithoutZK_CategoryInput = {
+    create?: XOR<ZKProductCreateWithoutZK_CategoryInput, ZKProductUncheckedCreateWithoutZK_CategoryInput>
+    connectOrCreate?: ZKProductCreateOrConnectWithoutZK_CategoryInput
+    upsert?: ZKProductUpsertWithoutZK_CategoryInput
+    connect?: ZKProductWhereUniqueInput
+    disconnect?: boolean
+    delete?: boolean
+    update?: XOR<ZKProductUpdateWithoutZK_CategoryInput, ZKProductUncheckedUpdateWithoutZK_CategoryInput>
+  }
+
+  export type ZKProductUncheckedUpdateOneWithoutZK_CategoryInput = {
+    create?: XOR<ZKProductCreateWithoutZK_CategoryInput, ZKProductUncheckedCreateWithoutZK_CategoryInput>
+    connectOrCreate?: ZKProductCreateOrConnectWithoutZK_CategoryInput
+    upsert?: ZKProductUpsertWithoutZK_CategoryInput
+    connect?: ZKProductWhereUniqueInput
+    disconnect?: boolean
+    delete?: boolean
+    update?: XOR<ZKProductUpdateWithoutZK_CategoryInput, ZKProductUncheckedUpdateWithoutZK_CategoryInput>
+  }
+
   export type ZK_OrderCreateNestedManyWithoutZk_order_customer_id_fkeyInput = {
     create?: XOR<Enumerable<ZK_OrderCreateWithoutZk_order_customer_id_fkeyInput>, Enumerable<ZK_OrderUncheckedCreateWithoutZk_order_customer_id_fkeyInput>>
     connectOrCreate?: Enumerable<ZK_OrderCreateOrConnectWithoutZk_order_customer_id_fkeyInput>
@@ -10141,11 +12484,23 @@ export namespace Prisma {
     connect?: Enumerable<ZK_OrderWhereUniqueInput>
   }
 
+  export type ZK_ShippingAddressCreateNestedOneWithoutZK_CustomerInput = {
+    create?: XOR<ZK_ShippingAddressCreateWithoutZK_CustomerInput, ZK_ShippingAddressUncheckedCreateWithoutZK_CustomerInput>
+    connectOrCreate?: ZK_ShippingAddressCreateOrConnectWithoutZK_CustomerInput
+    connect?: ZK_ShippingAddressWhereUniqueInput
+  }
+
   export type ZK_OrderUncheckedCreateNestedManyWithoutZk_order_customer_id_fkeyInput = {
     create?: XOR<Enumerable<ZK_OrderCreateWithoutZk_order_customer_id_fkeyInput>, Enumerable<ZK_OrderUncheckedCreateWithoutZk_order_customer_id_fkeyInput>>
     connectOrCreate?: Enumerable<ZK_OrderCreateOrConnectWithoutZk_order_customer_id_fkeyInput>
     createMany?: ZK_OrderCreateManyZk_order_customer_id_fkeyInputEnvelope
     connect?: Enumerable<ZK_OrderWhereUniqueInput>
+  }
+
+  export type ZK_ShippingAddressUncheckedCreateNestedOneWithoutZK_CustomerInput = {
+    create?: XOR<ZK_ShippingAddressCreateWithoutZK_CustomerInput, ZK_ShippingAddressUncheckedCreateWithoutZK_CustomerInput>
+    connectOrCreate?: ZK_ShippingAddressCreateOrConnectWithoutZK_CustomerInput
+    connect?: ZK_ShippingAddressWhereUniqueInput
   }
 
   export type ZK_OrderUpdateManyWithoutZk_order_customer_id_fkeyInput = {
@@ -10162,6 +12517,16 @@ export namespace Prisma {
     deleteMany?: Enumerable<ZK_OrderScalarWhereInput>
   }
 
+  export type ZK_ShippingAddressUpdateOneWithoutZK_CustomerInput = {
+    create?: XOR<ZK_ShippingAddressCreateWithoutZK_CustomerInput, ZK_ShippingAddressUncheckedCreateWithoutZK_CustomerInput>
+    connectOrCreate?: ZK_ShippingAddressCreateOrConnectWithoutZK_CustomerInput
+    upsert?: ZK_ShippingAddressUpsertWithoutZK_CustomerInput
+    connect?: ZK_ShippingAddressWhereUniqueInput
+    disconnect?: boolean
+    delete?: boolean
+    update?: XOR<ZK_ShippingAddressUpdateWithoutZK_CustomerInput, ZK_ShippingAddressUncheckedUpdateWithoutZK_CustomerInput>
+  }
+
   export type ZK_OrderUncheckedUpdateManyWithoutZk_order_customer_id_fkeyInput = {
     create?: XOR<Enumerable<ZK_OrderCreateWithoutZk_order_customer_id_fkeyInput>, Enumerable<ZK_OrderUncheckedCreateWithoutZk_order_customer_id_fkeyInput>>
     connectOrCreate?: Enumerable<ZK_OrderCreateOrConnectWithoutZk_order_customer_id_fkeyInput>
@@ -10176,6 +12541,62 @@ export namespace Prisma {
     deleteMany?: Enumerable<ZK_OrderScalarWhereInput>
   }
 
+  export type ZK_ShippingAddressUncheckedUpdateOneWithoutZK_CustomerInput = {
+    create?: XOR<ZK_ShippingAddressCreateWithoutZK_CustomerInput, ZK_ShippingAddressUncheckedCreateWithoutZK_CustomerInput>
+    connectOrCreate?: ZK_ShippingAddressCreateOrConnectWithoutZK_CustomerInput
+    upsert?: ZK_ShippingAddressUpsertWithoutZK_CustomerInput
+    connect?: ZK_ShippingAddressWhereUniqueInput
+    disconnect?: boolean
+    delete?: boolean
+    update?: XOR<ZK_ShippingAddressUpdateWithoutZK_CustomerInput, ZK_ShippingAddressUncheckedUpdateWithoutZK_CustomerInput>
+  }
+
+  export type ZK_OrderCreateNestedOneWithoutZK_ShippingAddressInput = {
+    create?: XOR<ZK_OrderCreateWithoutZK_ShippingAddressInput, ZK_OrderUncheckedCreateWithoutZK_ShippingAddressInput>
+    connectOrCreate?: ZK_OrderCreateOrConnectWithoutZK_ShippingAddressInput
+    connect?: ZK_OrderWhereUniqueInput
+  }
+
+  export type ZK_CustomerCreateNestedOneWithoutZK_ShippingAddressInput = {
+    create?: XOR<ZK_CustomerCreateWithoutZK_ShippingAddressInput, ZK_CustomerUncheckedCreateWithoutZK_ShippingAddressInput>
+    connectOrCreate?: ZK_CustomerCreateOrConnectWithoutZK_ShippingAddressInput
+    connect?: ZK_CustomerWhereUniqueInput
+  }
+
+  export type ZK_OrderUncheckedCreateNestedOneWithoutZK_ShippingAddressInput = {
+    create?: XOR<ZK_OrderCreateWithoutZK_ShippingAddressInput, ZK_OrderUncheckedCreateWithoutZK_ShippingAddressInput>
+    connectOrCreate?: ZK_OrderCreateOrConnectWithoutZK_ShippingAddressInput
+    connect?: ZK_OrderWhereUniqueInput
+  }
+
+  export type ZK_OrderUpdateOneWithoutZK_ShippingAddressInput = {
+    create?: XOR<ZK_OrderCreateWithoutZK_ShippingAddressInput, ZK_OrderUncheckedCreateWithoutZK_ShippingAddressInput>
+    connectOrCreate?: ZK_OrderCreateOrConnectWithoutZK_ShippingAddressInput
+    upsert?: ZK_OrderUpsertWithoutZK_ShippingAddressInput
+    connect?: ZK_OrderWhereUniqueInput
+    disconnect?: boolean
+    delete?: boolean
+    update?: XOR<ZK_OrderUpdateWithoutZK_ShippingAddressInput, ZK_OrderUncheckedUpdateWithoutZK_ShippingAddressInput>
+  }
+
+  export type ZK_CustomerUpdateOneRequiredWithoutZK_ShippingAddressInput = {
+    create?: XOR<ZK_CustomerCreateWithoutZK_ShippingAddressInput, ZK_CustomerUncheckedCreateWithoutZK_ShippingAddressInput>
+    connectOrCreate?: ZK_CustomerCreateOrConnectWithoutZK_ShippingAddressInput
+    upsert?: ZK_CustomerUpsertWithoutZK_ShippingAddressInput
+    connect?: ZK_CustomerWhereUniqueInput
+    update?: XOR<ZK_CustomerUpdateWithoutZK_ShippingAddressInput, ZK_CustomerUncheckedUpdateWithoutZK_ShippingAddressInput>
+  }
+
+  export type ZK_OrderUncheckedUpdateOneWithoutZK_ShippingAddressInput = {
+    create?: XOR<ZK_OrderCreateWithoutZK_ShippingAddressInput, ZK_OrderUncheckedCreateWithoutZK_ShippingAddressInput>
+    connectOrCreate?: ZK_OrderCreateOrConnectWithoutZK_ShippingAddressInput
+    upsert?: ZK_OrderUpsertWithoutZK_ShippingAddressInput
+    connect?: ZK_OrderWhereUniqueInput
+    disconnect?: boolean
+    delete?: boolean
+    update?: XOR<ZK_OrderUpdateWithoutZK_ShippingAddressInput, ZK_OrderUncheckedUpdateWithoutZK_ShippingAddressInput>
+  }
+
   export type ZK_Order_MappingCreateNestedManyWithoutZk_order_mapping_id_fkeyInput = {
     create?: XOR<Enumerable<ZK_Order_MappingCreateWithoutZk_order_mapping_id_fkeyInput>, Enumerable<ZK_Order_MappingUncheckedCreateWithoutZk_order_mapping_id_fkeyInput>>
     connectOrCreate?: Enumerable<ZK_Order_MappingCreateOrConnectWithoutZk_order_mapping_id_fkeyInput>
@@ -10187,6 +12608,12 @@ export namespace Prisma {
     create?: XOR<ZK_CustomerCreateWithoutZK_OrderInput, ZK_CustomerUncheckedCreateWithoutZK_OrderInput>
     connectOrCreate?: ZK_CustomerCreateOrConnectWithoutZK_OrderInput
     connect?: ZK_CustomerWhereUniqueInput
+  }
+
+  export type ZK_ShippingAddressCreateNestedOneWithoutZK_OrderInput = {
+    create?: XOR<ZK_ShippingAddressCreateWithoutZK_OrderInput, ZK_ShippingAddressUncheckedCreateWithoutZK_OrderInput>
+    connectOrCreate?: ZK_ShippingAddressCreateOrConnectWithoutZK_OrderInput
+    connect?: ZK_ShippingAddressWhereUniqueInput
   }
 
   export type ZK_Order_MappingUncheckedCreateNestedManyWithoutZk_order_mapping_id_fkeyInput = {
@@ -10218,6 +12645,14 @@ export namespace Prisma {
     disconnect?: boolean
     delete?: boolean
     update?: XOR<ZK_CustomerUpdateWithoutZK_OrderInput, ZK_CustomerUncheckedUpdateWithoutZK_OrderInput>
+  }
+
+  export type ZK_ShippingAddressUpdateOneRequiredWithoutZK_OrderInput = {
+    create?: XOR<ZK_ShippingAddressCreateWithoutZK_OrderInput, ZK_ShippingAddressUncheckedCreateWithoutZK_OrderInput>
+    connectOrCreate?: ZK_ShippingAddressCreateOrConnectWithoutZK_OrderInput
+    upsert?: ZK_ShippingAddressUpsertWithoutZK_OrderInput
+    connect?: ZK_ShippingAddressWhereUniqueInput
+    update?: XOR<ZK_ShippingAddressUpdateWithoutZK_OrderInput, ZK_ShippingAddressUncheckedUpdateWithoutZK_OrderInput>
   }
 
   export type ZK_Order_MappingUncheckedUpdateManyWithoutZk_order_mapping_id_fkeyInput = {
@@ -10761,6 +13196,27 @@ export namespace Prisma {
     create: XOR<ZK_UnitCreateWithoutZK_ProductInput, ZK_UnitUncheckedCreateWithoutZK_ProductInput>
   }
 
+  export type ZK_CategoryCreateWithoutZKProductInput = {
+    zkcid: number
+    zk_category_id?: bigint | number
+    zk_category_name: string
+    zk_category_level?: number
+    zk_category_parentid?: bigint | number | null
+  }
+
+  export type ZK_CategoryUncheckedCreateWithoutZKProductInput = {
+    zkcid: number
+    zk_category_id?: bigint | number
+    zk_category_name: string
+    zk_category_level?: number
+    zk_category_parentid?: bigint | number | null
+  }
+
+  export type ZK_CategoryCreateOrConnectWithoutZKProductInput = {
+    where: ZK_CategoryWhereUniqueInput
+    create: XOR<ZK_CategoryCreateWithoutZKProductInput, ZK_CategoryUncheckedCreateWithoutZKProductInput>
+  }
+
   export type ZK_Product_Tax_MappingUpsertWithWhereUniqueWithoutZk_product_tax_mapping_product_fkeyInput = {
     where: ZK_Product_Tax_MappingWhereUniqueInput
     update: XOR<ZK_Product_Tax_MappingUpdateWithoutZk_product_tax_mapping_product_fkeyInput, ZK_Product_Tax_MappingUncheckedUpdateWithoutZk_product_tax_mapping_product_fkeyInput>
@@ -10801,6 +13257,27 @@ export namespace Prisma {
     zkcid?: IntFieldUpdateOperationsInput | number
     zk_unit_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_unit_name?: StringFieldUpdateOperationsInput | string
+  }
+
+  export type ZK_CategoryUpsertWithoutZKProductInput = {
+    update: XOR<ZK_CategoryUpdateWithoutZKProductInput, ZK_CategoryUncheckedUpdateWithoutZKProductInput>
+    create: XOR<ZK_CategoryCreateWithoutZKProductInput, ZK_CategoryUncheckedCreateWithoutZKProductInput>
+  }
+
+  export type ZK_CategoryUpdateWithoutZKProductInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_category_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_category_name?: StringFieldUpdateOperationsInput | string
+    zk_category_level?: IntFieldUpdateOperationsInput | number
+    zk_category_parentid?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+  }
+
+  export type ZK_CategoryUncheckedUpdateWithoutZKProductInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_category_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_category_name?: StringFieldUpdateOperationsInput | string
+    zk_category_level?: IntFieldUpdateOperationsInput | number
+    zk_category_parentid?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
   }
 
   export type ZK_Product_Tax_MappingCreateWithoutZk_product_tax_mapping_tax_fkeyInput = {
@@ -10858,6 +13335,7 @@ export namespace Prisma {
     zkp_number2?: bigint | number | null
     zkp_number3?: bigint | number | null
     ZK_Taxes?: ZK_Product_Tax_MappingCreateNestedManyWithoutZk_product_tax_mapping_product_fkeyInput
+    ZK_Category?: ZK_CategoryCreateNestedOneWithoutZKProductInput
   }
 
   export type ZKProductUncheckedCreateWithoutZK_UnitInput = {
@@ -10867,6 +13345,7 @@ export namespace Prisma {
     zkp_code?: string | null
     zkp_name: string
     zkp_description?: string | null
+    zk_category_id?: bigint | number
     zkp_unit_selling_price?: Decimal | number | string
     zkp_unit_cost_price?: Decimal | number | string
     zkp_product_img?: string | null
@@ -10910,6 +13389,7 @@ export namespace Prisma {
     zkp_number2?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     zkp_number3?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ZK_Taxes?: ZK_Product_Tax_MappingUpdateManyWithoutZk_product_tax_mapping_product_fkeyInput
+    ZK_Category?: ZK_CategoryUpdateOneRequiredWithoutZKProductInput
   }
 
   export type ZKProductUncheckedUpdateWithoutZK_UnitInput = {
@@ -10919,6 +13399,105 @@ export namespace Prisma {
     zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_name?: StringFieldUpdateOperationsInput | string
     zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_category_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_product_img?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char1?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char2?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char3?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char4?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char5?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_number1?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    zkp_number2?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    zkp_number3?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ZK_Taxes?: ZK_Product_Tax_MappingUncheckedUpdateManyWithoutZk_product_tax_mapping_product_fkeyInput
+  }
+
+  export type ZKProductCreateWithoutZK_CategoryInput = {
+    zkcid: number
+    zkpid?: bigint | number
+    zkp_type?: PRODUCT_TYPE
+    zkp_code?: string | null
+    zkp_name: string
+    zkp_description?: string | null
+    zkp_unit_selling_price?: Decimal | number | string
+    zkp_unit_cost_price?: Decimal | number | string
+    zkp_product_img?: string | null
+    zkp_char1?: string | null
+    zkp_char2?: string | null
+    zkp_char3?: string | null
+    zkp_char4?: string | null
+    zkp_char5?: string | null
+    zkp_number1?: bigint | number | null
+    zkp_number2?: bigint | number | null
+    zkp_number3?: bigint | number | null
+    ZK_Taxes?: ZK_Product_Tax_MappingCreateNestedManyWithoutZk_product_tax_mapping_product_fkeyInput
+    ZK_Unit: ZK_UnitCreateNestedOneWithoutZK_ProductInput
+  }
+
+  export type ZKProductUncheckedCreateWithoutZK_CategoryInput = {
+    zkcid: number
+    zkpid?: bigint | number
+    zkp_type?: PRODUCT_TYPE
+    zkp_code?: string | null
+    zkp_name: string
+    zkp_description?: string | null
+    zkp_unit: bigint | number
+    zkp_unit_selling_price?: Decimal | number | string
+    zkp_unit_cost_price?: Decimal | number | string
+    zkp_product_img?: string | null
+    zkp_char1?: string | null
+    zkp_char2?: string | null
+    zkp_char3?: string | null
+    zkp_char4?: string | null
+    zkp_char5?: string | null
+    zkp_number1?: bigint | number | null
+    zkp_number2?: bigint | number | null
+    zkp_number3?: bigint | number | null
+    ZK_Taxes?: ZK_Product_Tax_MappingUncheckedCreateNestedManyWithoutZk_product_tax_mapping_product_fkeyInput
+  }
+
+  export type ZKProductCreateOrConnectWithoutZK_CategoryInput = {
+    where: ZKProductWhereUniqueInput
+    create: XOR<ZKProductCreateWithoutZK_CategoryInput, ZKProductUncheckedCreateWithoutZK_CategoryInput>
+  }
+
+  export type ZKProductUpsertWithoutZK_CategoryInput = {
+    update: XOR<ZKProductUpdateWithoutZK_CategoryInput, ZKProductUncheckedUpdateWithoutZK_CategoryInput>
+    create: XOR<ZKProductCreateWithoutZK_CategoryInput, ZKProductUncheckedCreateWithoutZK_CategoryInput>
+  }
+
+  export type ZKProductUpdateWithoutZK_CategoryInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zkpid?: BigIntFieldUpdateOperationsInput | bigint | number
+    zkp_type?: EnumPRODUCT_TYPEFieldUpdateOperationsInput | PRODUCT_TYPE
+    zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_name?: StringFieldUpdateOperationsInput | string
+    zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zkp_product_img?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char1?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char2?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char3?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char4?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_char5?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_number1?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    zkp_number2?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    zkp_number3?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    ZK_Taxes?: ZK_Product_Tax_MappingUpdateManyWithoutZk_product_tax_mapping_product_fkeyInput
+    ZK_Unit?: ZK_UnitUpdateOneRequiredWithoutZK_ProductInput
+  }
+
+  export type ZKProductUncheckedUpdateWithoutZK_CategoryInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zkpid?: BigIntFieldUpdateOperationsInput | bigint | number
+    zkp_type?: EnumPRODUCT_TYPEFieldUpdateOperationsInput | PRODUCT_TYPE
+    zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_name?: StringFieldUpdateOperationsInput | string
+    zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
+    zkp_unit?: BigIntFieldUpdateOperationsInput | bigint | number
     zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zkp_product_img?: NullableStringFieldUpdateOperationsInput | string | null
@@ -10947,12 +13526,14 @@ export namespace Prisma {
     zk_order_notes: string
     zk_order_termscondition: string
     ZK_Order_Mapping?: ZK_Order_MappingCreateNestedManyWithoutZk_order_mapping_id_fkeyInput
+    ZK_ShippingAddress: ZK_ShippingAddressCreateNestedOneWithoutZK_OrderInput
   }
 
   export type ZK_OrderUncheckedCreateWithoutZk_order_customer_id_fkeyInput = {
     zkcid: number
     zk_order_id?: bigint | number
     zk_order_number: string
+    zk_shipping_id: bigint | number
     zk_order_description?: string | null
     zk_order_total_amount: Decimal | number | string
     zk_order_total_tax: InputJsonValue
@@ -10973,6 +13554,37 @@ export namespace Prisma {
   export type ZK_OrderCreateManyZk_order_customer_id_fkeyInputEnvelope = {
     data: Enumerable<ZK_OrderCreateManyZk_order_customer_id_fkeyInput>
     skipDuplicates?: boolean
+  }
+
+  export type ZK_ShippingAddressCreateWithoutZK_CustomerInput = {
+    zkcid: number
+    zk_shipping_id?: bigint | number
+    zk_name: string
+    zk_contact_number: string
+    zk_addressline_1: string
+    zk_addressline_2?: string | null
+    zk_state: string
+    zk_country: string
+    zk_pincode: number
+    ZK_Order?: ZK_OrderCreateNestedOneWithoutZK_ShippingAddressInput
+  }
+
+  export type ZK_ShippingAddressUncheckedCreateWithoutZK_CustomerInput = {
+    zkcid: number
+    zk_shipping_id?: bigint | number
+    zk_name: string
+    zk_contact_number: string
+    zk_addressline_1: string
+    zk_addressline_2?: string | null
+    zk_state: string
+    zk_country: string
+    zk_pincode: number
+    ZK_Order?: ZK_OrderUncheckedCreateNestedOneWithoutZK_ShippingAddressInput
+  }
+
+  export type ZK_ShippingAddressCreateOrConnectWithoutZK_CustomerInput = {
+    where: ZK_ShippingAddressWhereUniqueInput
+    create: XOR<ZK_ShippingAddressCreateWithoutZK_CustomerInput, ZK_ShippingAddressUncheckedCreateWithoutZK_CustomerInput>
   }
 
   export type ZK_OrderUpsertWithWhereUniqueWithoutZk_order_customer_id_fkeyInput = {
@@ -10998,6 +13610,7 @@ export namespace Prisma {
     zkcid?: IntFilter | number
     zk_order_id?: BigIntFilter | bigint | number
     zk_order_number?: StringFilter | string
+    zk_shipping_id?: BigIntFilter | bigint | number
     zk_order_description?: StringNullableFilter | string | null
     zk_order_total_amount?: DecimalFilter | Decimal | number | string
     zk_order_total_tax?: JsonFilter
@@ -11008,6 +13621,165 @@ export namespace Prisma {
     zk_order_customer_id?: BigIntNullableFilter | bigint | number | null
     zk_order_notes?: StringFilter | string
     zk_order_termscondition?: StringFilter | string
+  }
+
+  export type ZK_ShippingAddressUpsertWithoutZK_CustomerInput = {
+    update: XOR<ZK_ShippingAddressUpdateWithoutZK_CustomerInput, ZK_ShippingAddressUncheckedUpdateWithoutZK_CustomerInput>
+    create: XOR<ZK_ShippingAddressCreateWithoutZK_CustomerInput, ZK_ShippingAddressUncheckedCreateWithoutZK_CustomerInput>
+  }
+
+  export type ZK_ShippingAddressUpdateWithoutZK_CustomerInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_shipping_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_name?: StringFieldUpdateOperationsInput | string
+    zk_contact_number?: StringFieldUpdateOperationsInput | string
+    zk_addressline_1?: StringFieldUpdateOperationsInput | string
+    zk_addressline_2?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_state?: StringFieldUpdateOperationsInput | string
+    zk_country?: StringFieldUpdateOperationsInput | string
+    zk_pincode?: IntFieldUpdateOperationsInput | number
+    ZK_Order?: ZK_OrderUpdateOneWithoutZK_ShippingAddressInput
+  }
+
+  export type ZK_ShippingAddressUncheckedUpdateWithoutZK_CustomerInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_shipping_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_name?: StringFieldUpdateOperationsInput | string
+    zk_contact_number?: StringFieldUpdateOperationsInput | string
+    zk_addressline_1?: StringFieldUpdateOperationsInput | string
+    zk_addressline_2?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_state?: StringFieldUpdateOperationsInput | string
+    zk_country?: StringFieldUpdateOperationsInput | string
+    zk_pincode?: IntFieldUpdateOperationsInput | number
+    ZK_Order?: ZK_OrderUncheckedUpdateOneWithoutZK_ShippingAddressInput
+  }
+
+  export type ZK_OrderCreateWithoutZK_ShippingAddressInput = {
+    zkcid: number
+    zk_order_id?: bigint | number
+    zk_order_number: string
+    zk_order_description?: string | null
+    zk_order_total_amount: Decimal | number | string
+    zk_order_total_tax: InputJsonValue
+    zk_order_total_discount: InputJsonValue
+    zk_order_createAt?: Date | string
+    zk_order_updatedAt?: Date | string
+    zk_order_createby: number
+    zk_order_notes: string
+    zk_order_termscondition: string
+    ZK_Order_Mapping?: ZK_Order_MappingCreateNestedManyWithoutZk_order_mapping_id_fkeyInput
+    zk_order_customer_id_fkey?: ZK_CustomerCreateNestedOneWithoutZK_OrderInput
+  }
+
+  export type ZK_OrderUncheckedCreateWithoutZK_ShippingAddressInput = {
+    zkcid: number
+    zk_order_id?: bigint | number
+    zk_order_number: string
+    zk_order_description?: string | null
+    zk_order_total_amount: Decimal | number | string
+    zk_order_total_tax: InputJsonValue
+    zk_order_total_discount: InputJsonValue
+    zk_order_createAt?: Date | string
+    zk_order_updatedAt?: Date | string
+    zk_order_createby: number
+    zk_order_customer_id?: bigint | number | null
+    zk_order_notes: string
+    zk_order_termscondition: string
+    ZK_Order_Mapping?: ZK_Order_MappingUncheckedCreateNestedManyWithoutZk_order_mapping_id_fkeyInput
+  }
+
+  export type ZK_OrderCreateOrConnectWithoutZK_ShippingAddressInput = {
+    where: ZK_OrderWhereUniqueInput
+    create: XOR<ZK_OrderCreateWithoutZK_ShippingAddressInput, ZK_OrderUncheckedCreateWithoutZK_ShippingAddressInput>
+  }
+
+  export type ZK_CustomerCreateWithoutZK_ShippingAddressInput = {
+    zkcid: number
+    zk_customer_id?: bigint | number
+    zk_customer_name: string
+    zk_customer_mobile?: string | null
+    zk_customer_email?: string | null
+    zk_customer_other_details: string
+    ZK_Order?: ZK_OrderCreateNestedManyWithoutZk_order_customer_id_fkeyInput
+  }
+
+  export type ZK_CustomerUncheckedCreateWithoutZK_ShippingAddressInput = {
+    zkcid: number
+    zk_customer_id?: bigint | number
+    zk_customer_name: string
+    zk_customer_mobile?: string | null
+    zk_customer_email?: string | null
+    zk_customer_other_details: string
+    ZK_Order?: ZK_OrderUncheckedCreateNestedManyWithoutZk_order_customer_id_fkeyInput
+  }
+
+  export type ZK_CustomerCreateOrConnectWithoutZK_ShippingAddressInput = {
+    where: ZK_CustomerWhereUniqueInput
+    create: XOR<ZK_CustomerCreateWithoutZK_ShippingAddressInput, ZK_CustomerUncheckedCreateWithoutZK_ShippingAddressInput>
+  }
+
+  export type ZK_OrderUpsertWithoutZK_ShippingAddressInput = {
+    update: XOR<ZK_OrderUpdateWithoutZK_ShippingAddressInput, ZK_OrderUncheckedUpdateWithoutZK_ShippingAddressInput>
+    create: XOR<ZK_OrderCreateWithoutZK_ShippingAddressInput, ZK_OrderUncheckedCreateWithoutZK_ShippingAddressInput>
+  }
+
+  export type ZK_OrderUpdateWithoutZK_ShippingAddressInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_order_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_order_number?: StringFieldUpdateOperationsInput | string
+    zk_order_description?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_order_total_amount?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zk_order_total_tax?: InputJsonValue
+    zk_order_total_discount?: InputJsonValue
+    zk_order_createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    zk_order_updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    zk_order_createby?: IntFieldUpdateOperationsInput | number
+    zk_order_notes?: StringFieldUpdateOperationsInput | string
+    zk_order_termscondition?: StringFieldUpdateOperationsInput | string
+    ZK_Order_Mapping?: ZK_Order_MappingUpdateManyWithoutZk_order_mapping_id_fkeyInput
+    zk_order_customer_id_fkey?: ZK_CustomerUpdateOneWithoutZK_OrderInput
+  }
+
+  export type ZK_OrderUncheckedUpdateWithoutZK_ShippingAddressInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_order_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_order_number?: StringFieldUpdateOperationsInput | string
+    zk_order_description?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_order_total_amount?: DecimalFieldUpdateOperationsInput | Decimal | number | string
+    zk_order_total_tax?: InputJsonValue
+    zk_order_total_discount?: InputJsonValue
+    zk_order_createAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    zk_order_updatedAt?: DateTimeFieldUpdateOperationsInput | Date | string
+    zk_order_createby?: IntFieldUpdateOperationsInput | number
+    zk_order_customer_id?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
+    zk_order_notes?: StringFieldUpdateOperationsInput | string
+    zk_order_termscondition?: StringFieldUpdateOperationsInput | string
+    ZK_Order_Mapping?: ZK_Order_MappingUncheckedUpdateManyWithoutZk_order_mapping_id_fkeyInput
+  }
+
+  export type ZK_CustomerUpsertWithoutZK_ShippingAddressInput = {
+    update: XOR<ZK_CustomerUpdateWithoutZK_ShippingAddressInput, ZK_CustomerUncheckedUpdateWithoutZK_ShippingAddressInput>
+    create: XOR<ZK_CustomerCreateWithoutZK_ShippingAddressInput, ZK_CustomerUncheckedCreateWithoutZK_ShippingAddressInput>
+  }
+
+  export type ZK_CustomerUpdateWithoutZK_ShippingAddressInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_customer_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_customer_name?: StringFieldUpdateOperationsInput | string
+    zk_customer_mobile?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_customer_email?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_customer_other_details?: StringFieldUpdateOperationsInput | string
+    ZK_Order?: ZK_OrderUpdateManyWithoutZk_order_customer_id_fkeyInput
+  }
+
+  export type ZK_CustomerUncheckedUpdateWithoutZK_ShippingAddressInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_customer_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_customer_name?: StringFieldUpdateOperationsInput | string
+    zk_customer_mobile?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_customer_email?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_customer_other_details?: StringFieldUpdateOperationsInput | string
+    ZK_Order?: ZK_OrderUncheckedUpdateManyWithoutZk_order_customer_id_fkeyInput
   }
 
   export type ZK_Order_MappingCreateWithoutZk_order_mapping_id_fkeyInput = {
@@ -11043,6 +13815,7 @@ export namespace Prisma {
     zk_customer_mobile?: string | null
     zk_customer_email?: string | null
     zk_customer_other_details: string
+    ZK_ShippingAddress?: ZK_ShippingAddressCreateNestedOneWithoutZK_CustomerInput
   }
 
   export type ZK_CustomerUncheckedCreateWithoutZK_OrderInput = {
@@ -11052,11 +13825,43 @@ export namespace Prisma {
     zk_customer_mobile?: string | null
     zk_customer_email?: string | null
     zk_customer_other_details: string
+    ZK_ShippingAddress?: ZK_ShippingAddressUncheckedCreateNestedOneWithoutZK_CustomerInput
   }
 
   export type ZK_CustomerCreateOrConnectWithoutZK_OrderInput = {
     where: ZK_CustomerWhereUniqueInput
     create: XOR<ZK_CustomerCreateWithoutZK_OrderInput, ZK_CustomerUncheckedCreateWithoutZK_OrderInput>
+  }
+
+  export type ZK_ShippingAddressCreateWithoutZK_OrderInput = {
+    zkcid: number
+    zk_shipping_id?: bigint | number
+    zk_name: string
+    zk_contact_number: string
+    zk_addressline_1: string
+    zk_addressline_2?: string | null
+    zk_state: string
+    zk_country: string
+    zk_pincode: number
+    ZK_Customer: ZK_CustomerCreateNestedOneWithoutZK_ShippingAddressInput
+  }
+
+  export type ZK_ShippingAddressUncheckedCreateWithoutZK_OrderInput = {
+    zkcid: number
+    zk_customer_id: bigint | number
+    zk_shipping_id?: bigint | number
+    zk_name: string
+    zk_contact_number: string
+    zk_addressline_1: string
+    zk_addressline_2?: string | null
+    zk_state: string
+    zk_country: string
+    zk_pincode: number
+  }
+
+  export type ZK_ShippingAddressCreateOrConnectWithoutZK_OrderInput = {
+    where: ZK_ShippingAddressWhereUniqueInput
+    create: XOR<ZK_ShippingAddressCreateWithoutZK_OrderInput, ZK_ShippingAddressUncheckedCreateWithoutZK_OrderInput>
   }
 
   export type ZK_Order_MappingUpsertWithWhereUniqueWithoutZk_order_mapping_id_fkeyInput = {
@@ -11099,6 +13904,7 @@ export namespace Prisma {
     zk_customer_mobile?: NullableStringFieldUpdateOperationsInput | string | null
     zk_customer_email?: NullableStringFieldUpdateOperationsInput | string | null
     zk_customer_other_details?: StringFieldUpdateOperationsInput | string
+    ZK_ShippingAddress?: ZK_ShippingAddressUpdateOneWithoutZK_CustomerInput
   }
 
   export type ZK_CustomerUncheckedUpdateWithoutZK_OrderInput = {
@@ -11108,6 +13914,38 @@ export namespace Prisma {
     zk_customer_mobile?: NullableStringFieldUpdateOperationsInput | string | null
     zk_customer_email?: NullableStringFieldUpdateOperationsInput | string | null
     zk_customer_other_details?: StringFieldUpdateOperationsInput | string
+    ZK_ShippingAddress?: ZK_ShippingAddressUncheckedUpdateOneWithoutZK_CustomerInput
+  }
+
+  export type ZK_ShippingAddressUpsertWithoutZK_OrderInput = {
+    update: XOR<ZK_ShippingAddressUpdateWithoutZK_OrderInput, ZK_ShippingAddressUncheckedUpdateWithoutZK_OrderInput>
+    create: XOR<ZK_ShippingAddressCreateWithoutZK_OrderInput, ZK_ShippingAddressUncheckedCreateWithoutZK_OrderInput>
+  }
+
+  export type ZK_ShippingAddressUpdateWithoutZK_OrderInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_shipping_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_name?: StringFieldUpdateOperationsInput | string
+    zk_contact_number?: StringFieldUpdateOperationsInput | string
+    zk_addressline_1?: StringFieldUpdateOperationsInput | string
+    zk_addressline_2?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_state?: StringFieldUpdateOperationsInput | string
+    zk_country?: StringFieldUpdateOperationsInput | string
+    zk_pincode?: IntFieldUpdateOperationsInput | number
+    ZK_Customer?: ZK_CustomerUpdateOneRequiredWithoutZK_ShippingAddressInput
+  }
+
+  export type ZK_ShippingAddressUncheckedUpdateWithoutZK_OrderInput = {
+    zkcid?: IntFieldUpdateOperationsInput | number
+    zk_customer_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_shipping_id?: BigIntFieldUpdateOperationsInput | bigint | number
+    zk_name?: StringFieldUpdateOperationsInput | string
+    zk_contact_number?: StringFieldUpdateOperationsInput | string
+    zk_addressline_1?: StringFieldUpdateOperationsInput | string
+    zk_addressline_2?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_state?: StringFieldUpdateOperationsInput | string
+    zk_country?: StringFieldUpdateOperationsInput | string
+    zk_pincode?: IntFieldUpdateOperationsInput | number
   }
 
   export type ZK_OrderCreateWithoutZK_Order_MappingInput = {
@@ -11124,12 +13962,14 @@ export namespace Prisma {
     zk_order_notes: string
     zk_order_termscondition: string
     zk_order_customer_id_fkey?: ZK_CustomerCreateNestedOneWithoutZK_OrderInput
+    ZK_ShippingAddress: ZK_ShippingAddressCreateNestedOneWithoutZK_OrderInput
   }
 
   export type ZK_OrderUncheckedCreateWithoutZK_Order_MappingInput = {
     zkcid: number
     zk_order_id?: bigint | number
     zk_order_number: string
+    zk_shipping_id: bigint | number
     zk_order_description?: string | null
     zk_order_total_amount: Decimal | number | string
     zk_order_total_tax: InputJsonValue
@@ -11166,12 +14006,14 @@ export namespace Prisma {
     zk_order_notes?: StringFieldUpdateOperationsInput | string
     zk_order_termscondition?: StringFieldUpdateOperationsInput | string
     zk_order_customer_id_fkey?: ZK_CustomerUpdateOneWithoutZK_OrderInput
+    ZK_ShippingAddress?: ZK_ShippingAddressUpdateOneRequiredWithoutZK_OrderInput
   }
 
   export type ZK_OrderUncheckedUpdateWithoutZK_Order_MappingInput = {
     zkcid?: IntFieldUpdateOperationsInput | number
     zk_order_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_order_number?: StringFieldUpdateOperationsInput | string
+    zk_shipping_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_order_description?: NullableStringFieldUpdateOperationsInput | string | null
     zk_order_total_amount?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zk_order_total_tax?: InputJsonValue
@@ -11203,6 +14045,7 @@ export namespace Prisma {
     zkp_number2?: bigint | number | null
     zkp_number3?: bigint | number | null
     ZK_Unit: ZK_UnitCreateNestedOneWithoutZK_ProductInput
+    ZK_Category?: ZK_CategoryCreateNestedOneWithoutZKProductInput
   }
 
   export type ZKProductUncheckedCreateWithoutZK_TaxesInput = {
@@ -11212,6 +14055,7 @@ export namespace Prisma {
     zkp_code?: string | null
     zkp_name: string
     zkp_description?: string | null
+    zk_category_id?: bigint | number
     zkp_unit: bigint | number
     zkp_unit_selling_price?: Decimal | number | string
     zkp_unit_cost_price?: Decimal | number | string
@@ -11274,6 +14118,7 @@ export namespace Prisma {
     zkp_number2?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     zkp_number3?: NullableBigIntFieldUpdateOperationsInput | bigint | number | null
     ZK_Unit?: ZK_UnitUpdateOneRequiredWithoutZK_ProductInput
+    ZK_Category?: ZK_CategoryUpdateOneRequiredWithoutZKProductInput
   }
 
   export type ZKProductUncheckedUpdateWithoutZK_TaxesInput = {
@@ -11283,6 +14128,7 @@ export namespace Prisma {
     zkp_code?: NullableStringFieldUpdateOperationsInput | string | null
     zkp_name?: StringFieldUpdateOperationsInput | string
     zkp_description?: NullableStringFieldUpdateOperationsInput | string | null
+    zk_category_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zkp_unit?: BigIntFieldUpdateOperationsInput | bigint | number
     zkp_unit_selling_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zkp_unit_cost_price?: DecimalFieldUpdateOperationsInput | Decimal | number | string
@@ -11360,6 +14206,7 @@ export namespace Prisma {
     zkcid: number
     zk_order_id?: bigint | number
     zk_order_number: string
+    zk_shipping_id: bigint | number
     zk_order_description?: string | null
     zk_order_total_amount: Decimal | number | string
     zk_order_total_tax: InputJsonValue
@@ -11385,12 +14232,14 @@ export namespace Prisma {
     zk_order_notes?: StringFieldUpdateOperationsInput | string
     zk_order_termscondition?: StringFieldUpdateOperationsInput | string
     ZK_Order_Mapping?: ZK_Order_MappingUpdateManyWithoutZk_order_mapping_id_fkeyInput
+    ZK_ShippingAddress?: ZK_ShippingAddressUpdateOneRequiredWithoutZK_OrderInput
   }
 
   export type ZK_OrderUncheckedUpdateWithoutZk_order_customer_id_fkeyInput = {
     zkcid?: IntFieldUpdateOperationsInput | number
     zk_order_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_order_number?: StringFieldUpdateOperationsInput | string
+    zk_shipping_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_order_description?: NullableStringFieldUpdateOperationsInput | string | null
     zk_order_total_amount?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zk_order_total_tax?: InputJsonValue
@@ -11407,6 +14256,7 @@ export namespace Prisma {
     zkcid?: IntFieldUpdateOperationsInput | number
     zk_order_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_order_number?: StringFieldUpdateOperationsInput | string
+    zk_shipping_id?: BigIntFieldUpdateOperationsInput | bigint | number
     zk_order_description?: NullableStringFieldUpdateOperationsInput | string | null
     zk_order_total_amount?: DecimalFieldUpdateOperationsInput | Decimal | number | string
     zk_order_total_tax?: InputJsonValue

@@ -14,10 +14,14 @@ const FinanceStoreCommand_1 = require("../FinanceStoreCommand");
 class ProductCommand extends FinanceStoreCommand_1.FinanceStoreCommand {
     addProductTax(zkproduct, zktaxid) {
         const _super = Object.create(null, {
-            create: { get: () => super.create }
+            createMany: { get: () => super.createMany }
         });
         return __awaiter(this, void 0, void 0, function* () {
-            let result = yield _super.create.call(this, "zK_Product_Tax_Mapping", { zk_tax_id: zktaxid, zkpid: zkproduct.zkpid, zkcid: zkproduct.zkcid });
+            let insertData = [];
+            for (let i = 0; i < zktaxid.length; i++) {
+                insertData.push({ zk_tax_id: zktaxid[i], zkpid: zkproduct.zkpid, zkcid: zkproduct.zkcid });
+            }
+            let result = yield _super.createMany.call(this, "zK_Product_Tax_Mapping", insertData);
             return result != null ? true : false;
         });
     }
@@ -26,7 +30,7 @@ class ProductCommand extends FinanceStoreCommand_1.FinanceStoreCommand {
             delete: { get: () => super.delete }
         });
         return __awaiter(this, void 0, void 0, function* () {
-            let result = yield _super.delete.call(this, "zK_Product_Tax_Mapping", { zk_tax_id: zktaxid, zkpid: zkproduct.zkpid, zkcid: zkproduct.zkcid });
+            let result = yield _super.delete.call(this, "zK_Product_Tax_Mapping", { zk_tax_id: { in: [zktaxid] }, zkpid: zkproduct.zkpid, zkcid: zkproduct.zkcid });
             return result != null ? JSON.parse(JSON.stringify(result)) : result;
         });
     }

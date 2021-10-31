@@ -35,6 +35,29 @@ class FinanceStoreCommand {
             return rawJson;
         });
     }
+    createMany(tablename, rowData) {
+        return __awaiter(this, void 0, void 0, function* () {
+            let rawJson = null;
+            const persistence = new FinanceClientPersistence_1.financeClientPersistence();
+            try {
+                const newRow = yield persistence.db[tablename].createMany({
+                    data: rowData
+                }).catch((err) => {
+                    throw (err);
+                }).finally(() => __awaiter(this, void 0, void 0, function* () {
+                    persistence.db.$disconnect();
+                }));
+                rawJson = newRow;
+            }
+            catch (error) {
+                console.log(error.message);
+            }
+            finally {
+                persistence.db.$disconnect();
+            }
+            return rawJson;
+        });
+    }
     update(tablename, whereCondition, updatedRowData) {
         return __awaiter(this, void 0, void 0, function* () {
             let rawJson = null;
